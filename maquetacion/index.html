@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog - Globalización y Sostenibilidad</title>
+    <link rel="stylesheet" href="css/styleindex.css">
+    <link rel="stylesheet" href="css/style-main.css">
+    <link rel="stylesheet" href="css/stylepost.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Blog sobre Globalización y Desarrollo Sostenible</h1>
+        </header>
+
+        <!-- Sección de Noticias más recientes -->
+        <div class="recent-news">
+            <h2>Noticias más recientes</h2>
+            <div class="scroll-container" id="recent-posts">
+                <!-- Los posts más recientes se cargarán aquí dinámicamente -->
+            </div>
+        </div>
+
+        <!-- Sección de Noticias más populares -->
+        <div class="popular-news">
+            <h2>Noticias más populares</h2>
+            <div class="scroll-container" id="popular-posts">
+                <!-- Los posts más populares se cargarán aquí dinámicamente -->
+            </div>
+        </div>
+
+        <footer>
+            <div class="social-icons">
+                <!-- Enlaces a redes sociales -->
+                <a href="https://x.com/PeacenProgress_?t=6e7R2feiXYQwLT2VO96SSA&s=09" target="_blank">
+                    <img src="assets/twitter.jpeg" alt="Twitter">
+                </a>
+                <a href="https://www.instagram.com/peace.in_progress?igsh=MXI5aWk3dnY4ejZ6MA%3D%3D&utm_source=qr" target="_blank">
+                    <img src="assets/intagram.jpeg" alt="Instagram">
+                </a>
+                <a href="https://www.tiktok.com/@peaceinprogressblog?_t=ZM-8uNxqPFV4VS&_r=1" target="_blank">
+                    <img src="assets/tiktok.jpeg" alt="TikTok">
+                </a>
+                <a href="https://www.facebook.com/tu-pagina" target="_blank">
+                    <img src="assets/facebook.jpeg" alt="Facebook">
+                </a>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // Cargar los posts desde el archivo posts.json
+        fetch('posts.json')
+            .then(response => response.json())
+            .then(posts => {
+                // Filtrar los 10 posts más recientes
+                const recentPosts = posts.posts.sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, 10);
+                const popularPosts = posts.posts.sort((a, b) => b.views - a.views).slice(0, 10);
+
+                // Mostrar las noticias más recientes
+                const recentPostsContainer = document.getElementById('recent-posts');
+                recentPosts.forEach(post => {
+                    recentPostsContainer.innerHTML += `
+                        <div class="post-item">
+                            <img class="post-thumbnail" src="${post.image}" alt="${post.title}">
+                            <h3><a href="post.html?id=${post.id}">${post.title}</a></h3>
+                            <p class="post-excerpt">${post.excerpt}</p>
+                        </div>
+                    `;
+                });
+
+                // Mostrar las noticias más populares
+                const popularPostsContainer = document.getElementById('popular-posts');
+                popularPosts.forEach(post => {
+                    popularPostsContainer.innerHTML += `
+                        <div class="post-item">
+                            <img class="post-thumbnail" src="${post.image}" alt="${post.title}">
+                            <h3><a href="post.html?id=${post.id}">${post.title}</a></h3>
+                            <p class="post-excerpt">${post.excerpt}</p>
+                        </div>
+                    `;
+                });
+            })
+            .catch(error => {
+                console.error('Error al cargar los posts:', error);
+            });
+    </script>
+</body>
+</html>

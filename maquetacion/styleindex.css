@@ -1,0 +1,116 @@
+/* Estilos generales */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #0F1B2B;
+    color: #fff;
+}
+
+/* Contenedor principal */
+.container {
+    width: 80%;
+    margin: 0 auto;
+}
+
+/* Estilos para las noticias recientes y populares */
+.recent-news, .popular-news {
+    margin-top: 40px;
+    padding: 10px;
+}
+
+h2 {
+    color: #4874B1;
+    font-size: 2rem;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Contenedor para el scroll horizontal */
+.scroll-container {
+    display: flex;
+    overflow-x: auto;
+    gap: 20px;
+    padding-bottom: 20px;
+}
+
+/* Estilos para cada item de la noticia */
+.news-group {
+    display: flex;
+    gap: 20px;
+}
+
+.post-item {
+    width: 250px;
+    background-color: #1A293E;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    transition: transform 0.3s ease-in-out;
+}
+
+.post-item:hover {
+    transform: scale(1.05);
+}
+
+/* Estilo de las imágenes */
+.post-thumbnail {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+/* Estilo de los títulos */
+.post-item h3 {
+    color: #3F6CA9;
+    font-size: 1.2rem;
+    margin-top: 10px;
+}
+
+/* Estilo del extracto de la noticia */
+.post-excerpt {
+    color: #99caff;
+    font-size: 0.9rem;
+    margin-top: 10px;
+}
+
+/* Enlaces de "Leer más" */
+.read-more {
+    color: #4874B1;
+    text-decoration: none;
+    margin-top: 10px;
+    display: inline-block;
+}
+
+.read-more:hover {
+    color: #275391;
+}
+
+/* Estilos para las flechas de navegación */
+.carousel-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    font-size: 2rem;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 50%;
+    z-index: 1;
+    opacity: 0.7;
+    transition: background-color 0.3s ease;
+}
+
+.carousel-btn:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
+.prev {
+    left: 10px;
+}
+
+.next {
+    right: 10px;
+}

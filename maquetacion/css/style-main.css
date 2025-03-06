@@ -1,0 +1,242 @@
+/* Reset de márgenes y padding */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Estilos generales */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #0F1B2B; 
+    color: white;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+}
+
+/* Contenedor principal */
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Header */
+header {
+    background-color: #1A293E; 
+    color: white;
+    padding: 20px 0;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Título del header */
+header h1 {
+    font-size: 2.5em;
+    animation: fadeIn 1.5s ease-in-out;
+}
+
+/* Estilos para los posts */
+.post-list {
+    margin-top: 20px;
+}
+
+/* Post Item */
+.post-item {
+    background-color: #1A293E;
+    border: 1px solid #4874B1;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 30px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    opacity: 0;
+    animation: fadeInUp 1s ease-in-out forwards;
+}
+
+/* Animación de entrada de los posts */
+@keyframes fadeInUp {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Título del post */
+.post-title {
+    font-size: 2rem;
+    color: #4874B1;
+    margin-bottom: 15px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Extracto del post */
+.post-excerpt {
+    font-size: 1.1em;
+    color: white;
+    background-color: #1A293E;
+    padding: 15px;
+    border-radius: 5px;
+    margin-bottom: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Leer más */
+.read-more {
+    background-color: #275391;
+    color: white;
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    display: inline-block;
+    margin-top: 10px;
+    text-transform: uppercase;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.read-more:hover {
+    background-color: #3F6CA9;
+}
+
+/* Imagen del post */
+.post-thumbnail {
+    width: 100%;
+    max-width: 500px;
+    height: auto;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    transition: transform 0.3s ease;
+}
+
+.post-thumbnail:hover {
+    transform: scale(1.05);
+}
+
+/* Paginación */
+.pagination {
+    text-align: center;
+    margin-top: 30px;
+}
+
+.pagination button {
+    background-color: #4874B1;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    margin: 5px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.pagination button:hover {
+    background-color: #275391;
+}
+
+/* Estilos del comentario */
+.comment {
+    background-color: #1A293E;
+    padding: 15px;
+    border-radius: 5px;
+    margin-bottom: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Estilos para el formulario de comentarios */
+.comments-form {
+    background-color: #1A293E;
+    padding: 20px;
+    border-radius: 10px;
+    margin-top: 20px;
+}
+
+.comments-form h3 {
+    color: #4874B1;
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+}
+
+/* Estilo para los inputs y textarea del formulario de comentarios */
+.comments-form input,
+.comments-form textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #334e68;
+    background-color: #0F1B2B;
+    color: white;
+    border-radius: 5px;
+    font-size: 1rem;
+}
+
+/* Botón de enviar en el formulario de comentarios */
+.comments-form button {
+    background-color: #275391;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.comments-form button:hover {
+    background-color: #3F6CA9;
+}
+
+/* Animación para la aparición de los elementos */
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+/* Animaciones para el contenido */
+.post, .comment, .comments-form {
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+/* Fondo general */
+footer {
+    background-color: #0B1D32;
+    color: white;
+    text-align: center;
+    padding: 15px 0;
+    font-size: 1rem;
+    margin-top: 50px;
+}
+
+/* Responsividad para pantallas pequeñas */
+@media (max-width: 768px) {
+    .container {
+        width: 95%;
+    }
+
+    .post-item {
+        padding: 15px;
+    }
+
+    .post-thumbnail {
+        max-width: 100%;
+    }
+
+    header h1 {
+        font-size: 2em;
+    }
+
+    .post-title {
+        font-size: 1.5rem;
+    }
+}

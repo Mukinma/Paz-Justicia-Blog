@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Noticias - Blog de Noticias</title>
+    <link rel="stylesheet" href="css/stylepost.css">
+</head>
+<body>
+    <header>
+        <h1>Blog de Noticias</h1>
+    </header>
+    <div class="contenedor">
+        <div id="post-list">
+            <!-- Aquí se cargarán las noticias -->
+        </div>
+    </div>
+
+    <script>
+        // Verificar si el usuario está logueado
+        if (!localStorage.getItem('loggedInUser')) {
+            // Si no está logueado, redirigir a la página de login
+            window.location.href = 'post.html';
+        }
+
+        // Aquí cargarías los posts como ya lo hacías antes
+        fetch('posts.json')
+            .then(response => response.json())
+            .then(data => {
+                const postListContainer = document.getElementById('post-list');
+                data.posts.forEach(post => {
+                    const postItem = document.createElement('div');
+                    postItem.classList.add('post-item');
+                    postItem.innerHTML = `
+                        <img src="${post.image}" alt="${post.title}" class="post-thumbnail">
+                        <h2><a href="post.html?id=${post.id}">${post.title}</a></h2>
+                        <p class="post-excerpt">${post.excerpt}</p>
+                        <p class="post-meta">${post.date} | Autor: ${post.author} | Categoría: ${post.category}</p>
+                        <a href="post.html?id=${post.id}" class="read-more">Leer más</a>
+                    `;
+                    postListContainer.appendChild(postItem);
+                });
+            });
+    </script>
+</body>
+</html>

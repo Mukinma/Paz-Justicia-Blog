@@ -1,0 +1,37 @@
+{
+  "posts": [
+      {
+          "id": 1,
+          "title": "La justicia en tiempos de cambio: ODS 16",
+          "author": "María López",
+          "date": "2025-03-05",
+          "category": "ODS 16",
+          "image": "assets/La justicia en tiempos de cambio.jpeg",
+          "excerpt": "La implementación del ODS 16 busca fortalecer las instituciones nacionales para garantizar el acceso a la justicia y la construcción de instituciones inclusivas.",
+          "content": "El ODS 16 busca reducir las desigualdades y promover sociedades pacíficas, justas e inclusivas. En un contexto de creciente polarización, el ODS 16 es crucial para construir una cultura de paz y el fortalecimiento de la justicia a nivel global. La justicia social y económica debe ser promovida por medio de políticas inclusivas y accesibles para todos.",
+          "views": 150
+      },
+      {
+          "id": 2,
+          "title": "La paz y la justicia social como pilares del desarrollo sostenible",
+          "author": "Cristopher Nieves",
+          "date": "2025-03-04",
+          "category": "ODS 16",
+          "image": "assets/desarrollo sostenible.jpeg",
+          "excerpt": "La paz, la justicia y las instituciones sólidas son fundamentales para un desarrollo sostenible y la eliminación de la pobreza.",
+          "content": "El ODS 16 subraya la necesidad de fortalecer las instituciones a todos los niveles, lo que es esencial para la consecución de un desarrollo sostenible. La paz y la justicia deben ser la base para garantizar el respeto de los derechos humanos y permitir el crecimiento económico equitativo. A través de instituciones transparentes y efectivas, se puede asegurar un futuro en el que todos se beneficien de la paz.",
+          "views": 200
+      },
+      {
+          "id": 3,
+          "title": "Instituciones inclusivas y sostenibles: Pilar del ODS 16",
+          "author": "Ana Rodríguez",
+          "date": "2025-03-03",
+          "category": "ODS 16",
+          "image": "assets/inclusivas y sostenibles.jpeg",
+          "excerpt": "Las instituciones inclusivas son clave para garantizar la justicia y la paz en la sociedad. El ODS 16 promueve el acceso universal a la justicia.",
+          "content": "El fortalecimiento de las instituciones nacionales e internacionales es esencial para la promoción de la paz y la justicia en todo el mundo. Las instituciones inclusivas son aquellas que proporcionan un espacio accesible para todos los ciudadanos, promoviendo la participación y la equidad. La integración de todos los sectores sociales en el proceso político es crucial para garantizar la sostenibilidad de las políticas de paz.",
+          "views": 180
+      }
+  ]
+}

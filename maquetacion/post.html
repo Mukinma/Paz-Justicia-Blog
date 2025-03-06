@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Post - Globalización y Sostenibilidad</title>
+    <link rel="stylesheet" href="css/estilos.css">
+    <link rel="stylesheet" href="css/stylepost.css">
+    <link rel="stylesheet" href="css/style-main.css">
+</head>
+<body>
+    <div class="contenedor">
+        <header>
+            <h1>Blog sobre Globalización y Desarrollo Sostenible</h1>
+        </header>
+
+        <div id="post-container">
+            <!-- Aquí se cargará el contenido del post desde posts.json -->
+        </div>
+
+        <div class="comments">
+            <h3>Comentarios</h3>
+            <div id="comments-list">
+                <!-- Aquí se cargarán los comentarios de forma dinámica -->
+            </div>
+        </div>
+
+        <!-- Formulario para añadir un comentario -->
+        <div class="comments-form">
+            <h3>Deja un comentario</h3>
+            <form id="comment-form">
+                <input type="text" id="comment-user" placeholder="Tu nombre" required>
+                <textarea id="comment-text" placeholder="Escribe tu comentario" required></textarea>
+                <button type="submit">Enviar</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Obtener el parámetro 'id' de la URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const postId = urlParams.get('id');
+
+        // Cargar el archivo posts.json
+        fetch('posts.json')
+            .then(response => response.json())
+            .then(posts => {
+                // Buscar el post correspondiente al id en la URL
+                const post = posts.posts.find(post => post.id == postId);
+
+                // Si el post se encuentra, mostrarlo
+                if (post) {
+                    document.getElementById('post-container').innerHTML = `
+                        <div class="post">
+                            <div class="post-header">
+                                <img src="${post.image}" alt="${post.title}" class="post-image">
+                                <div class="post-info">
+                                    <h2 class="post-title">${post.title}</h2>
+                                    <p class="post-meta">Autor: ${post.author} | Fecha: ${post.date} | Categoría: ${post.category}</p>
+                                </div>
+                            </div>
+                            <div class="post-content">
+                                <p>${post.content}</p>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    document.getElementById('post-container').innerHTML = "<p>Post no encontrado.</p>";
+                }
+            })
+            .catch(error => {
+                console.error('Error al cargar los datos de los posts:', error);
+                document.getElementById('post-container').innerHTML = "<p>No se pudo cargar el contenido del post.</p>";
+            });
+
+        // Manejo del envío de comentarios
+        const commentForm = document.getElementById('comment-form');
+        commentForm.addEventListener('submit', function (event) {
+            event.preventDefault(); // Evitar recarga de página
+
+            // Obtener los valores del formulario
+            const userName = document.getElementById('comment-user').value;
+            const commentText = document.getElementById('comment-text').value;
+
+            if (userName && commentText) {
+                // Crear un nuevo comentario
+                const commentDiv = document.createElement('div');
+                commentDiv.classList.add('comment');
+                commentDiv.innerHTML = `<strong>${userName}</strong><p>${commentText}</p>`;
+
+                // Añadir el comentario a la lista de comentarios
+                document.getElementById('comments-list').appendChild(commentDiv);
+
+                // Limpiar el formulario
+                commentForm.reset();
+            }
+        });
+    </script>
+</body>
+</html>
