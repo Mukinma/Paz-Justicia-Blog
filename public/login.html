@@ -1,29 +1,28 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
-    <link rel="stylesheet" href="css/login.css">
+    <link rel="stylesheet" href="./css/login.css">
 </head>
 <body>
-    <aside>
-
-    </aside>
-    <section>
-        <form action="login.php" method="POST">
-            <label for="nombre">Usuario:</label>
-            <input type="text" name="usuario" required>
-            
-            <label for="password">Contraseña:</label>
-            <input type="password" name="password" required>
-        
-            <button type="submit">Iniciar Sesión</button>
-            <button type="submit">Entrar como invitado</button> 
-        </form>
-    </section>
-    
-
-
+    <img src="./images/PeaceInProgress.jpeg" alt="Imagen de teclado con la palabra peace" class="login-image">
+    <form action="login.php" method="POST" class="login-form">
+        <h2>WELCOME!</h2>    
+        <div class="login-container">
+            <h3>Log In</h3>
+            <div class="form-group">
+                <input type="email" id="email" name="email" placeholder="Email" required>
+            </div>
+            <div class="form-group">
+                <input type="password" id="password" name="password" placeholder="Password" required>
+            </div>
+            <a href="#" class="forgot-password"><label for="recordar">Forgot Password?</label></a>
+            <div class="button-group">
+                <button type="submit" class="login-button">Sign up</button>
+            </div>
+        </div>
+    </form>
 </body>
 </html>
