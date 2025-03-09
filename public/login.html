@@ -7,22 +7,27 @@
     <link rel="stylesheet" href="./css/login.css">
 </head>
 <body>
-    <img src="./images/PeaceInProgress.jpeg" alt="Imagen de teclado con la palabra peace" class="login-image">
-    <form action="login.php" method="POST" class="login-form">
-        <h2>WELCOME!</h2>    
-        <div class="login-container">
-            <h3>Log In</h3>
-            <div class="form-group">
-                <input type="email" id="email" name="email" placeholder="Email" required>
-            </div>
-            <div class="form-group">
-                <input type="password" id="password" name="password" placeholder="Password" required>
-            </div>
-            <a href="#" class="forgot-password"><label for="recordar">Forgot Password?</label></a>
-            <div class="button-group">
-                <button type="submit" class="login-button">Sign up</button>
-            </div>
+    <div class="main-container">
+        <img src="./images/PeaceInProgress.jpeg" alt="Imagen de teclado con la palabra peace" class="login-image">
+        <div class = "right-container">
+            <h2>WELCOME!</h2>  
+            <form action="login.php" method="POST" class="login-form">  
+                <div class="login-container">
+                    <h3>Log In</h3>
+                    <div class="form-group">
+                        <input type="email" id="email" name="email" placeholder="Email" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" id="password" name="password" placeholder="Password" required>
+                    </div>
+                    <a href="#" class="forgot-password"><label for="recordar">Forgot Password?</label></a>
+                    <div class="button-group">
+                        <button type="submit" class="login-button">Sign up</button>
+                    </div>
+                </div>
+            </form>
         </div>
-    </form>
+    </div>
+    </div>
 </body>
 </html>
