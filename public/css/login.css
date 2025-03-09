@@ -12,7 +12,7 @@ body {
 
 .main-container {
     display: grid;
-    grid-template-columns: 0.9fr 1fr;
+    grid-template-columns: 1fr 0.9fr; /* Cambiado el orden de las columnas */
     width: 100%;
     place-items: center;
 }
@@ -29,7 +29,7 @@ body {
 
 h2 {
     font-size: 2em;
-    font-weight:bolder;
+    font-weight: bolder;
     color: #4787E4;
     font-family: "Big Family" 700;
     margin-left: 20px;
@@ -37,8 +37,7 @@ h2 {
 
 .login-form {
     padding: 25px;
-    /* Elimina opacity: 50%; */
-    background: rgba(66, 66, 66, 0.25); /* Usa rgba() para la opacidad del fondo */
+    background: rgba(66, 66, 66, 0.25);
     border-radius: 20px;
     box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.15);
     color: #4874B1;
@@ -51,14 +50,12 @@ h2 {
     display: flex;
     justify-content: left;
     margin: 12px;
-    
+
 }
 
 .form-group {
-
     padding: 12px;
-    width: 323px
-    /* Elimina opacity: 100%; */
+    width: 323px;
 }
 
 .form-group:last-of-type {
@@ -98,8 +95,8 @@ h2 {
     outline: 0;
     border: 0;
     cursor: pointer;
-    will-change: box-shadow,transform;
-    background: radial-gradient( 100% 100% at 100% 0%, #89E5FF 0%, #5468FF 100% );
+    will-change: box-shadow, transform;
+    background: radial-gradient(100% 100% at 100% 0%, #89E5FF 0%, #5468FF 100%);
     box-shadow: 0px 0.01em 0.01em rgb(45 35 66 / 40%), 0px 0.3em 0.7em -0.01em rgb(45 35 66 / 30%), inset 0px -0.01em 0px rgb(58 65 111 / 50%);
     padding: 0 2em;
     border-radius: 0.3em;
@@ -118,4 +115,57 @@ h2 {
 .login-button:active {
     box-shadow: inset 0px 0.1em 0.6em #3c4fe0;
     transform: translateY(0em);
+}
+
+@media (max-width: 600px) {
+
+    * {
+        margin: 8px;
+        margin-left: 0px;
+    }
+
+    .login-image {
+        width: 0px;
+        margin: 0px;
+    }
+
+    .login-form {
+        padding: 25px;
+        background: rgba(66, 66, 66, 0.25);
+        border-radius: 20px;
+        box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.15);
+        color: #4874B1;
+        width: 85%;
+        height: 100%;
+        margin-right: 193px;
+        margin-left: 2.3%;
+    }
+
+    .form-group {
+        padding: 12px;
+        width: auto;
+        height: auto;
+        text-align: left;
+    }
+
+    .login-container h3 {
+        font-size: 22px;
+        display: flex;
+        justify-content: left;
+        margin: 10px;
+        width: fit-content;
+        height: fit-content;
+
+    }
+
+    h2 {
+        font-size: 2em;
+        font-weight: bolder;
+        color: #4787E4;
+        font-family: "Big Family" 700;
+        margin-left: 5%;
+        margin-top: 10px;
+        text-align: center center;
+    }
+
 }
