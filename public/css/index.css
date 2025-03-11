@@ -75,7 +75,7 @@ html, body{
     }
 }
 
-@media screen and (max-width: 600px) {
+@media (max-width: 600px) {
     .topnav.responsive {position: relative;}
     .topnav.responsive a.icon {
         position: absolute;
@@ -99,7 +99,12 @@ html, body{
     display: flex;
     align-items: center;
     height: 100vh;
-    background-image: url("D:/PazJusticiaBlog/public/images/fondo1.webp");
+    background-image: linear-gradient(
+        0deg,
+        rgba(0, 0, 0, 0.4),
+        rgba(0, 0, 0, 0.4)
+    )
+    ,url("../images/fondo1.webp");
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -110,19 +115,21 @@ html, body{
 }
 .main-section-container{
     display: flex;
+    margin-left: 50px;
 
 }
 .main-section-content{
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: start;
+    align-items: center;
     width: 30vw;
     height: 30%;
     background-color: rgba(255, 255, 255, 0.1);
     padding: 20px;
     margin-left: 20px;
     border-radius: 10px;
+    
 }
 .main-section-content h3{
     font-size: 0.8em;
@@ -218,18 +225,20 @@ html, body{
     display: flex;
     transition: transform 0.5s ease-in-out;
     justify-content: flex-start;
+    width: auto;
 }
 
 .carousel-item {
-    min-width: 33.333%;
+    min-width: 49.55%;
     height: 60vh;
     background: rgba(255, 255, 255, 0.1);
     display: flex;
-    align-items: center;
+    align-items: center center;
     justify-content: center;
     font-size: 2rem;
     color: white;
     border-radius: 10px;
+    margin-right: 6px;
 }
 
 .prev, .next {
@@ -283,15 +292,23 @@ html, body{
 .follow-us{
     display: flex;
     flex-direction: column;
-    padding: 10px;
-}
-.follow-us h6{
-    background-color: rgba(255, 255, 255, 0.2);
     padding: 5px;
-    border-radius: 10px;
-    
 }
-.about-us{
+.follow-us h6 {
+    background-color: rgba(255, 255, 255, 0.2);
+    padding: 5px 118px 5px 118px;
+    border-radius: 10px;
+    width: fit-content;
+    margin: 20px auto;
+    display: block;
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+} 
+.follow-us h6:hover {
+    background-color: rgba(255, 255, 255, 0.4);
+}
+.about-us { /*Texto*/
     display: flex;
     flex-direction: column;
     padding: 10px;
@@ -299,18 +316,134 @@ html, body{
 .about-us h6{
     margin: 0;
     background-color: rgba(255, 255, 255, 0.2);
-    padding: 5px;
+    padding: 5px 20px 5px 20px; /* Ajusta el padding */
     border-radius: 10px;
 }
-.about-us-container{
+.about-us-container {
     background: linear-gradient(180deg, #5682C0 0%, #1F4B89 100%);
-    margin-left: 20px;
     display: flex;
     flex-direction: column;
-    width: 18vw;
+    align-items: stretch;
+    padding: 20px;
     border-radius: 10px;
+    box-sizing: border-box;
+    width: 80%;
+    max-width: 500px;
+    margin: 20px auto;
+    grid-column: 2 / 3;
+}
+.about-us h6:hover {
+    background-color: rgba(255, 255, 255, 0.4);
 }
 #about-us{
     font-size: 1rem;
     text-align: justify;
+}
+
+@media (max-width: 600px) {
+    .topnav{
+        position: fixed;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        transition: transform 0.3s ease !important;
+        z-index: 9999;
+    }
+
+    .main-section-container{
+        position: absolute;
+        top: 17%;
+        left: 16.5%;
+        margin: 0px;    
+    }
+    
+    .main-section-content{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: start;
+        width: 45vw;
+        height: 30%;
+        background-color: rgba(255, 255, 255, 0.1);
+        padding: 20px;
+        margin-left: 20px;
+        border-radius: 10px;
+    }
+
+    #main-section{
+        background-image: linear-gradient(
+            0deg,
+            rgba(0, 0, 0, 0.67),
+            rgba(0, 0, 0, 0.67)
+        )
+        ,url("../images/fondo1.webp");
+    }
+
+    .carousel-track {
+        display: flex;
+        transition: transform 0.5s ease-in-out;
+        justify-content: flex-start;
+        width: auto;
+    }
+
+    .carousel-item {
+        min-width: 89%;
+        height: 60vh;
+        background: rgba(255, 255, 255, 0.1);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2rem;
+        color: white;
+        border-radius: 10px;
+        margin-right: 8px;
+        
+    }
+
+      .cascade-post-container{
+        background-color: white;
+        width: 6vw;
+        margin-right: 10px;
+        border-radius: 10px;
+    }
+    .follow-us{
+        display: flex;
+        flex-direction: column;
+        padding: 5px;
+    }
+    .follow-us h6{
+        background-color: rgba(255, 255, 255, 0.2);
+        padding: 5px 78px 5px 77px; /* Ajusta el padding */
+        border-radius: 10px;
+        display: inline-block; /* Permite aplicar padding y márgenes */
+        text-align: center; /* Centra el texto */
+        cursor: pointer; /* Cambia el cursor a una mano */
+        transition: background-color 0.3s ease; /* Añade una transición */ 
+        
+    }
+    .about-us p{ /*Texto*/
+        display: flex;
+        flex-direction: column;
+        padding-left: 20px;
+        padding-right: 20px;
+        padding: 10px;
+    }
+    .about-us h6{
+        margin: 0;
+        background-color: rgba(255, 255, 255, 0.2);
+        padding: 5px;
+        border-radius: 10px;
+    }
+    .about-us-container{
+        background: linear-gradient(180deg, #5682C0 0%, #1F4B89 100%);
+        grid-column: 1 / 3;
+        margin-left: 10px;
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        width: 70vw;
+        border-radius: 10px;
+        
+    }
 }

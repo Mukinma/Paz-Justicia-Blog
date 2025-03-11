@@ -28,7 +28,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     nextBtn.addEventListener("click", () => {
-        if (index < 2) {
+        if (index < 4) {
             index++;
             updateCarousel();
         }
