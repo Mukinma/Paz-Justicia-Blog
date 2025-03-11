@@ -227,18 +227,41 @@ html, body{
     justify-content: flex-start;
     width: auto;
 }
-
 .carousel-item {
     min-width: 49.55%;
     height: 60vh;
     background: rgba(255, 255, 255, 0.1);
     display: flex;
-    align-items: center center;
-    justify-content: center;
-    font-size: 2rem;
-    color: white;
+    flex-direction: column; /* Apila imagen y texto verticalmente */
+    align-items: center;
     border-radius: 10px;
     margin-right: 6px;
+    overflow: hidden; /* Asegura que la imagen no sobresalga */
+}
+
+.carousel-item img {
+    width: 100%; /* La imagen ocupa todo el ancho */
+    height: 40%; /* La imagen ocupa 1/4 de la altura */
+    object-fit: cover; /* Cubre el área sin distorsionar */
+}
+
+.carousel-item p {
+    margin: 0;
+    padding: 10px; /* Añade un poco de espacio alrededor del texto */
+    font-size: 1rem;
+    font-display: justify;
+    flex-grow: 1; /* El texto ocupa el espacio restante */
+    display: flex; /* Permite centrar el texto verticalmente */
+    align-items: center; /* Centra el texto verticalmente */
+    justify-content: center; /* Centra el texto horizontalmente */
+    text-align: center; /* Centra el texto horizontalmente */
+}
+a{
+    text-decoration: none;
+    color: white;
+}
+a:hover{
+    color: rgb(61, 99, 223);
 }
 
 .prev, .next {
@@ -330,7 +353,7 @@ html, body{
     width: 80%;
     max-width: 500px;
     margin: 20px auto;
-    grid-column: 2 / 3;
+    grid-column: 1 / 3;
 }
 .about-us h6:hover {
     background-color: rgba(255, 255, 255, 0.4);
@@ -380,32 +403,61 @@ html, body{
         ,url("../images/fondo1.webp");
     }
 
+    .carousel {
+        position: relative;
+        width: 90%; 
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+    }
+    
+    .carousel-track-container {
+        overflow: hidden;
+        width: 80%;
+    }
+    
     .carousel-track {
         display: flex;
         transition: transform 0.5s ease-in-out;
         justify-content: flex-start;
         width: auto;
     }
-
     .carousel-item {
-        min-width: 89%;
+        min-width: 49.55%;
         height: 60vh;
         background: rgba(255, 255, 255, 0.1);
         display: flex;
+        flex-direction: column; /* Apila imagen y texto verticalmente */
         align-items: center;
-        justify-content: center;
-        font-size: 2rem;
-        color: white;
         border-radius: 10px;
-        margin-right: 8px;
-        
+        margin-right: 6px;
+        overflow: hidden; /* Asegura que la imagen no sobresalga */
     }
-
-      .cascade-post-container{
-        background-color: white;
-        width: 6vw;
-        margin-right: 10px;
-        border-radius: 10px;
+    
+    .carousel-item img {
+        width: 100%; /* La imagen ocupa todo el ancho */
+        height: 40%; /* La imagen ocupa 1/4 de la altura */
+        object-fit: cover; /* Cubre el área sin distorsionar */
+    }
+    
+    .carousel-item p {
+        margin: 0;
+        padding: 10px; /* Añade un poco de espacio alrededor del texto */
+        font-size: 1rem;
+        font-display: justify;
+        flex-grow: 1; /* El texto ocupa el espacio restante */
+        display: flex; /* Permite centrar el texto verticalmente */
+        align-items: center; /* Centra el texto verticalmente */
+        justify-content: center; /* Centra el texto horizontalmente */
+        text-align: center; /* Centra el texto horizontalmente */
+    }
+    a{
+        text-decoration: none;
+        color: white;
+    }
+    a:hover{
+        color: rgb(61, 99, 223);
     }
     .follow-us{
         display: flex;
