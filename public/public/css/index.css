@@ -1,0 +1,570 @@
+@import url('https://fonts.googleapis.com/css2?family=Unica+One&display=swap');
+
+html, body{
+    margin: 0;
+    font-family: "Unica One", sans-serif;
+    background-color: #C4DFDF;
+
+}
+#logo-site{
+    width: 20vh;
+    display: block;
+    margin-left: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    cursor: pointer;
+}
+.logo-container{
+    display: flex;
+    justify-content: center;
+    justify-content: start;
+    background: none;
+    border: none;
+}
+.topnav {
+    position:fixed;
+    width: 100%;
+    z-index: 1000;
+    background-color: rgba(0, 0, 0, 0.4);
+    overflow: hidden;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    border-bottom: 5px;
+}
+
+.topnav input{
+    width: 40vw;
+    height: 4vh;
+    padding: 5px;
+    border-radius: 5px;
+    border: none;
+    background-color: rgba(255, 255, 255, 0.6);
+    color: rgb(0, 0, 0);
+}
+
+.topnav a {
+    float: left;
+    display: block;
+    color: #f2f2f2;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
+}
+
+.topnav a:hover {
+    background-color: #ddd;
+    color: black;
+}
+
+.topnav a.active {
+    background-color: #04AA6D;
+    color: white;
+}
+
+.topnav .icon {
+    display: none;
+}
+
+@media screen and (max-width: 600px) {
+        .topnav a {display: none;}
+        .topnav a.icon {
+        float: right;
+        display: block;
+    }
+}
+
+@media (max-width: 600px) {
+    .topnav.responsive {position: relative;}
+    .topnav.responsive a.icon {
+        position: absolute;
+        right: 0;
+        top: 0;
+    }
+    .topnav.responsive a {
+        float: none;
+        display: block;
+        text-align: left;
+    }
+}
+.section{
+    display: flex;
+    align-items: center;
+    height: 100vh;
+    color: white;
+}
+/* main section */
+#main-section{
+    display: flex;
+    align-items: center;
+    height: 100vh;
+    background-image: linear-gradient(
+        0deg,
+        rgba(0, 0, 0, 0.4),
+        rgba(0, 0, 0, 0.4)
+    )
+    ,url("../images/fondo1.webp");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    color: white;
+    font-size: 30px;
+    font-weight: bold;
+    text-align: center;
+}
+.main-section-container{
+    display: flex;
+    margin-left: 50px;
+
+}
+.main-section-content{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 30vw;
+    height: 30%;
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 20px;
+    margin-left: 20px;
+    border-radius: 10px;
+    
+}
+.main-section-content h3{
+    font-size: 0.8em;
+}
+
+.main-section-content p{
+    font-size: 0.6em;
+    text-align: justify;
+}
+
+.learn-more{
+    width: 10rem;
+    height: auto;
+    cursor: pointer;
+    padding: 10px;
+    border-radius: 12px;
+    border: none;
+    background-color: rgba(255, 255, 255, 0.4);
+    color: white;
+    font-weight: bold;
+}
+.main-section-content button:hover{
+    background-color: rgba(255, 255, 255, 0.6);
+}
+.learn-more span{
+    font-size: 1em;
+}
+#scrollButton {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: rgba(255, 255, 255, 0.2);
+    color: black;
+    border: none;
+    border-radius: 10px;
+    font-weight: bolder;
+    display: flex;
+    padding: 10px;
+}
+
+#scrollButton:hover {
+    background-color: rgba(255, 255, 255, 0.4);
+}
+#scrollButton img{
+    width: 2vw;
+    height: 2vw;
+}
+/* popular section */
+#popular-section{
+    background: linear-gradient(180deg, #1C2537 22.99%, #132F4B 94.5%);
+    color: white;
+    font-size: 30px;
+    font-weight: bold;
+    text-align: center;
+    display: flex;
+    align-items: flex-end;
+}
+.popular-section-container{
+    margin-top: 5vh;
+    margin-bottom: 5vh;
+    display: flex;
+    align-items: center;
+    height: 80%;
+    width: 100%;
+    background: rgba(15, 27, 43, 1);
+    flex-direction: column;
+    padding-top: 0;
+    justify-content: space-evenly;
+}
+.popular-section-container h3{
+    background: rgba(255, 255, 255, 0.41);
+    padding: 3px;
+    border-radius: 10px;
+    margin: 0;
+}
+.carousel {
+    position: relative;
+    width: 90%; 
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.carousel-track-container {
+    overflow: hidden;
+    width: 80%;
+}
+
+.carousel-track {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+    justify-content: flex-start;
+    width: auto;
+}
+.carousel-item {
+    min-width: 35%;
+    height: 60vh;
+    background: rgba(255, 255, 255, 0.1);
+    display: flex;
+    flex-direction: column; /* Apila imagen y texto verticalmente */
+    align-items: center;
+    border-radius: 10px;
+    margin-right: 6px;
+    overflow: hidden; /* Asegura que la imagen no sobresalga */
+}
+
+.carousel-item img {
+    width: 100%; /* La imagen ocupa todo el ancho */
+    height: 45%; /* La imagen ocupa 1/4 de la altura */
+    object-fit: cover; /* Cubre el área sin distorsionar */
+}
+
+.carousel-item p {
+    margin: 0;
+    padding: 10px; /* Añade un poco de espacio alrededor del texto */
+    font-size: 1rem;
+    font-display: justify;
+    flex-grow: 1; /* El texto ocupa el espacio restante */
+    display: flex; /* Permite centrar el texto verticalmente */
+    align-items: center; /* Centra el texto verticalmente */
+    justify-content: center; /* Centra el texto horizontalmente */
+    text-align: center; /* Centra el texto horizontalmente */
+}
+a{
+    text-decoration: none;
+    color: white;
+}
+a:hover{
+    color: rgb(61, 99, 223);
+}
+
+.prev, .next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.7); 
+    color: white;
+    border: none;
+    cursor: pointer;
+    padding: 15px;
+    font-size: 24px;
+    border-radius: 10px;
+    z-index: 10;
+}
+
+.prev { left: 0px; }
+.next { right: 0px; }
+
+.prev:hover, .next:hover {
+    background: rgba(255, 255, 255, 0.5);
+}
+.carousel button{
+    color: white;
+}
+
+/* recent section */
+#recent-section{
+    background-color: rgb(19, 47, 75);
+    color: white;
+    font-size: 30px;
+    font-weight: bold;
+    text-align: center;
+    display: flex;
+    justify-content: space-evenly;
+}
+.recent-section-container{
+    display: flex;
+    justify-content: space-evenly;
+}
+.column-section-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.cascade-post-container {
+    width: 405px;
+    margin-top: 60px;
+    margin-bottom: 40px;
+    margin-left: 50px;
+    grid-column: 1 / 3;
+    order: 1;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.281);
+    position: static;
+}
+
+.cascade-post-container h3{
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
+
+.cascade-post-container p{
+    font-size: 1.5rem;
+}
+
+.cascade-post-container p:hover{
+    background-color: rgba(52, 186, 240, 0.4);
+}
+
+.cascade-post-container img{
+    width: 100%;
+    height: 40%;
+}
+.follow-us{
+    display: flex;
+    flex-direction: column;
+    padding: 5px;
+}
+.follow-us h6 {
+    background-color: rgba(255, 255, 255, 0.2);
+    padding: 5px 118px 5px 118px;
+    border-radius: 10px;
+    width: fit-content;
+    margin: 20px auto;
+    display: block;
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+} 
+.follow-us h6:hover {
+    background-color: rgba(255, 255, 255, 0.4);
+}
+.about-us { /*Texto*/
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+}
+.about-us h6{
+    margin: 0;
+    background-color: rgba(255, 255, 255, 0.2);
+    padding: 5px 20px 5px 20px; /* Ajusta el padding */
+    border-radius: 10px;
+}
+.about-us-container {
+    background: linear-gradient(180deg, #5682C0 0%, #1F4B89 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    padding: 20px;
+    border-radius: 10px;
+    box-sizing: border-box;
+    width: 80%;
+    max-width: 500px;
+    margin: 20px auto;
+    grid-column: 1 / 3;
+    order: 2;
+}
+.about-us h6:hover {
+    background-color: rgba(255, 255, 255, 0.4);
+}
+#about-us{
+    font-size: 1rem;
+    text-align: justify;
+}
+
+@media (max-width: 600px) {
+    .topnav{
+        position: fixed;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        transition: transform 0.3s ease !important;
+        z-index: 9999;
+    }
+
+    .main-section-container{
+        position: absolute;
+        top: 17%;
+        left: 16.5%;
+        margin: 0px;    
+    }
+    
+    .main-section-content{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: start;
+        width: 45vw;
+        height: 30%;
+        background-color: rgba(255, 255, 255, 0.1);
+        padding: 20px;
+        margin-left: 20px;
+        border-radius: 10px;
+    }
+
+    #main-section{
+        background-image: linear-gradient(
+            0deg,
+            rgba(0, 0, 0, 0.67),
+            rgba(0, 0, 0, 0.67)
+        )
+        ,url("../images/fondo1.webp");
+    }
+
+    .carousel {
+        position: relative;
+        width: 90%; 
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+    }
+    
+    .carousel-track-container {
+        overflow: hidden;
+        width: 80%;
+    }
+    
+    .carousel-track {
+        display: flex;
+        transition: transform 0.5s ease-in-out;
+        justify-content: flex-start;
+        width: auto;
+    }
+    .carousel-item {
+        min-width: 49.55%;
+        height: 60vh;
+        background: rgba(255, 255, 255, 0.1);
+        display: flex;
+        flex-direction: column; /* Apila imagen y texto verticalmente */
+        align-items: center;
+        border-radius: 10px;
+        margin-right: 6px;
+        overflow: hidden; /* Asegura que la imagen no sobresalga */
+    }
+    
+    .carousel-item img {
+        width: 100%; /* La imagen ocupa todo el ancho */
+        height: 40%; /* La imagen ocupa 1/4 de la altura */
+        object-fit: cover; /* Cubre el área sin distorsionar */
+    }
+    
+    .carousel-item p {
+        margin: 0;
+        padding: 10px; /* Añade un poco de espacio alrededor del texto */
+        font-size: 1rem;
+        font-display: justify;
+        flex-grow: 1; /* El texto ocupa el espacio restante */
+        display: flex; /* Permite centrar el texto verticalmente */
+        align-items: center; /* Centra el texto verticalmente */
+        justify-content: center; /* Centra el texto horizontalmente */
+        text-align: center; /* Centra el texto horizontalmente */
+    }
+    a{
+        text-decoration: none;
+        color: white;
+    }
+    a:hover{
+        color: rgb(61, 99, 223);
+    }
+
+    .column-section-container {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+    }
+    
+    .cascade-post-container {
+        order: 1;
+        grid-column: 1/3;
+        margin-top: 460px;
+        width: 70vw;
+        align-items: center;
+        margin-left: 10px;
+        display: flex;
+        flex-direction: column;
+        border-radius: 10px;
+        background: rgba(255, 255, 255, 0.281);
+        position: static;
+    }
+
+    .cascade-post-container h3{
+        margin: 0;
+        padding: 0;
+        text-align: center;
+    }
+
+    .cascade-post-container p{
+        font-size: 1.5rem;
+    }
+
+    .cascade-post-container p:hover{
+        background-color: rgba(52, 186, 240, 0.4);
+    }
+
+    .cascade-post-container img{
+        width: 100%;
+        height: 40%;
+    }
+
+    .follow-us{
+        display: flex;
+        flex-direction: column;
+        padding: 5px;
+    }
+    .follow-us h6{
+        background-color: rgba(255, 255, 255, 0.2);
+        padding: 5px 78px 5px 77px; /* Ajusta el padding */
+        border-radius: 10px;
+        display: inline-block; /* Permite aplicar padding y márgenes */
+        text-align: center; /* Centra el texto */
+        cursor: pointer; /* Cambia el cursor a una mano */
+        transition: background-color 0.3s ease; /* Añade una transición */ 
+        
+    }
+    .about-us p{ /*Texto*/
+        display: flex;
+        flex-direction: column;
+        padding-left: 20px;
+        padding-right: 20px;
+        padding: 10px;
+    }
+    .about-us h6{
+        margin: 0;
+        background-color: rgba(255, 255, 255, 0.2);
+        padding: 5px;
+        border-radius: 10px;
+    }
+    .about-us-container{
+        background: linear-gradient(180deg, #5682C0 0%, #1F4B89 100%);
+        grid-column: 1 / 3;
+        margin-left: 10px;
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        width: 70vw;
+        border-radius: 10px;
+        order: 2;
+        
+    }
+}
