@@ -390,7 +390,7 @@ header nav a {
     }
 }
 
-@media screen and (max-width: 678px) {
+@media screen and (min-width: 100px) {
     .carousel .list .item .content {
         padding-right: 0;
     }
@@ -437,7 +437,7 @@ header nav a {
 }
 
 .nav-links a:hover {
-    color: #6DAECF;
+    color: #f1683a;
 }
 
 .see-more-button {
@@ -453,13 +453,13 @@ header nav a {
 }
 
 .see-more-button:hover {
-    background-color: #6DAECF;
+    background-color: #f1683a;
     color: #fff;
 }
 
 .login-button {
     padding: 8px 16px;
-    background-color: #6DAECF;
+    background-color: #f1683a;
     color: white;
     border-radius: 20px;
     transition: background-color 0.3s;
@@ -467,5 +467,5 @@ header nav a {
 
 .login-button:hover {
     background-color: #fff;
-    color: #6DAECF;
+    color: #f1683a;
 }
