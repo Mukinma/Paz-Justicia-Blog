@@ -247,6 +247,10 @@ header nav a {
     padding: 1vh 2vw;
     text-align: left;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
 }
 .content-body table tr:hover {
     background: rgba(255, 255, 255, 0.1);
@@ -254,7 +258,10 @@ header nav a {
 .content-body table tbody tr{
     display: table-row;
     height: 10vh;
+    min-height: 10vh;
+    max-height: 10vh;
     overflow: hidden;
+    box-sizing: border-box;
 }
 .content-body table thead tr{
     display: table-row;
@@ -267,7 +274,64 @@ header nav a {
     cursor: pointer;
     margin-right: 1vw;
 }
-.content-body input[type="checkbox"]:checked {
-    background: #3375D6;
-    border-radius: 50%;
+.content-body::-webkit-scrollbar {
+    width: 0.5vw;
+    height: 10px;
+}
+.content-body::-webkit-scrollbar-track {
+    background: rgba(43, 74, 117, 0.226);
+    border-radius: 8px;
+}
+.content-body::-webkit-scrollbar-thumb {
+    background: #dadada;
+    border-radius: 8px;
+    border: 2px solid rgba(160, 160, 160, 0.226);
+}
+.content-body::-webkit-scrollbar-thumb:hover {
+    background: #9b9b9b;
+}
+.profile{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #FFF;
+}
+.profile h1{
+    font-size: clamp(1.5rem, 2vw, 3rem);
+}
+.profile-tools button{
+    width: 30%;
+    height: 12vh;
+    align-content: center;
+    align-items: center;
+    justify-items: center;
+    justify-content: center;
+    display: flex;
+    background: linear-gradient(180deg, #1c54a700 0%, #0c1829a4 100%);
+    border: none;
+    border-radius: 8px 8px 0 0;
+    color: #FFF;
+    font-size: clamp(0.8rem, 1vw, 1.2rem);
+    font-weight: 600;
+    cursor: pointer;
+    flex-direction: column;
+}
+.profile-tools button:hover{
+    background: linear-gradient(180deg, #1c54a700 0%, #0c1829a4 100%);
+    box-shadow: 0px 1px 2px 0px rgba(16, 24, 40, 0.05);
+    transition: background-color 0.3s ease;
+}
+.profile-tools button:active{
+    background: linear-gradient(180deg, #1c54a700 0%, #0c1829a4 100%);
+    box-shadow: 0px 1px 2px 0px rgba(16, 24, 40, 0.05);
+    transition: background-color 0.3s ease;
+}
+.profile-tools{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 90%;
 }
