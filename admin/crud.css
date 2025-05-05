@@ -157,6 +157,17 @@ header nav a {
 .filter-icon {
     margin-right: 1vw;
 }
+.content{
+    width: 80vw;
+    height: 100vh;
+    padding: 15vh 2vw 0 2vw;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    overflow-y: auto; /* Allow vertical scrolling */
+}
 .content-tools .add-button {
     background: url('../assets/plus-circle.svg') no-repeat center center;
     background-size: cover;
@@ -217,7 +228,7 @@ header nav a {
 }
 .content-body table {
     width: 100%;
-    height: 100%;
+    max-height: 70vh;
     border-collapse: collapse;
     box-shadow: 0px 1px 2px 0px rgba(16, 24, 40, 0.05);
     background: rgba(43, 74, 117, 0.226);
@@ -250,16 +261,18 @@ header nav a {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-
+}
+.content-body table tbody{
+    display: table-row-group;
+    max-height: 100%;
+    overflow-y: auto;
 }
 .content-body table tr:hover {
     background: rgba(255, 255, 255, 0.1);
 }
 .content-body table tbody tr{
     display: table-row;
-    height: 10vh;
-    min-height: 10vh;
-    max-height: 10vh;
+    height: 8.2vh;
     overflow: hidden;
     box-sizing: border-box;
 }
@@ -273,6 +286,13 @@ header nav a {
     height: 20px;
     cursor: pointer;
     margin-right: 1vw;
+}
+.content-body table tfoot {
+    width: 70vh;
+    height: 6vh;
+    position: sticky;
+    bottom: 0;
+    background: #0D1B24;
 }
 .content-body::-webkit-scrollbar {
     width: 0.5vw;
@@ -334,4 +354,9 @@ header nav a {
     align-items: center;
     justify-content: space-between;
     width: 90%;
+}
+.profile-tools-icon{
+    width: 5vh;
+    height: 5vh;
+    color: #FFF;
 }
