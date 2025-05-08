@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PeaceInProgress</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+        integrity="..." crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/noticias.css">
+</head>
+
+<body>
+    <header>
+        <img src="../assets/logo.png" class="logo" onclick="location.href='index.html'">
+
+        <div class="search-bar">
+            <input type="text" placeholder="Search...">
+            <span class="search-icon">🔍</span>
+        </div>
+
+        <nav>
+            <a href="">Home</a>
+            <a href="contact/contact.html">Contact</a>
+            <a href="">Info</a>
+            <a href="login/login.html" class="btn">Login</a>
+        </nav>
+    </header>
+
+
+    <div class="carousel">
+        <div class="list">
+            <div class="item">
+                <img src="../assets/img1.jpg" />
+                <div class="content">
+                    <div class="title">LA CENSURA</div>
+                    <div class="topic">DE LAS PROTESTAS</div>
+                    <div class="des">
+                        En Rusia, la gente sigue protestando contra la guerra de Ucrania. Sin embargo, las autoridades
+                        rusas están decididas a acabar con las protestas por completo...
+                    </div>
+                    <div class="buttons">
+                        <a href="articulo1.html" class="see-more-button">SEE MORE</a>
+                    </div>
+                </div>
+            </div>
+            <div class="item">
+                <img src="../assets/img2.jpg">
+                <div class="content">
+                    <div class="title">LA IGLESIA</div>
+                    <div class="topic"></div>
+                    <div class="des">
+                        En un contexto de creciente violencia que afecta de manera alarmante a los jóvenes de México, la
+                        Iglesia Católica ha emitido un mensaje de solidaridad y acción, invitando a los agentes de
+                        pastoral de adolescentes y jóvenes a unirse en la tarea urgente de construir la paz en el país.
+                    </div>
+                    <div class="buttons">
+                        <a href="articulo2.html" class="see-more-button">SEE MORE</a>
+                    </div>
+                </div>
+            </div>
+            <div class="item">
+                <img src="../assets/img3.jpg">
+                <div class="content">
+                    <div class="title">MARCHA </div>
+                    <div class="topic">DE PAZ</div>
+                    <div class="des">
+                        Culiacán, Sinaloa, ha sido escenario de dos manifestaciones en menos de 72 horas.
+                        La primera, ocurrida hace dos días, culminó con la irrupción de manifestantes en el Palacio de
+                        Gobierno. La segunda, este domingo, reunió a miles de personas que exigieron justicia por las
+                        victimas.
+                    </div>
+                    <div class="buttons">
+                        <a href="articulo3.html" class="see-more-button">SEE MORE</a>
+                    </div>
+                </div>
+            </div>
+            <div class="item">
+                <img src="../assets/img4.jpg">
+                <div class="content">
+                    <div class="title">PLAN DE </div>
+                    <div class="topic">SEGURIDAD</div>
+                    <div class="des">
+                        “No va a regresar la guerra contra el narco”, advirtió Sheinbaum en conferencia de prensa.
+                        “Nosotros vamos a usar prevención y atención a las causas (…) Los delitos de alto impacto van a
+                        disminuir porque hay una estrategia y se va a cumplir”...
+                    </div>
+                    <div class="buttons">
+                        <a href="articulo4.html" class="see-more-button">SEE MORE</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- list thumnail -->
+        <div class="thumbnail">
+            <div class="item">
+                <img src="../assets/img1.jpg">
+                <div class="content">
+                    <div class="title">
+                        LA CENSURA
+                    </div>
+                    <div class="description">
+                        de las protestas contra la guerra
+                    </div>
+                </div>
+            </div>
+            <div class="item">
+                <img src="../assets/img2.jpg">
+                <div class="content">
+                    <div class="title">
+                        LA IGLESIA
+                    </div>
+                    <div class="description">
+                        urge a contruir la paz ante ola de violencia
+                    </div>
+                </div>
+            </div>
+            <div class="item">
+                <img src="../assets/img3.jpg">
+                <div class="content">
+                    <div class="title">
+                        MARCHA DE PAZ
+                    </div>
+                    <div class="description">
+                        en Sinaloa por los ciudadanos
+                    </div>
+                </div>
+            </div>
+            <div class="item">
+                <img src="../assets/img4.jpg">
+                <div class="content">
+                    <div class="title">
+                        PLAN DE SEGURIDAD
+                    </div>
+                    <div class="description">
+                        Anunció Claudia Sheinbaum
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- next prev -->
+
+        <div class="arrows">
+            <button id="prev">
+                < <button id="next">>
+            </button>
+        </div>
+        <!-- time running -->
+        <div class="time"></div>
+    </div>
+    <section class="section-recientes">
+        <h2>Más Recientes</h2>
+
+        <div class="recientes-content">
+            <div class="reciente-principal">
+                <img src="../assets/fondopeace.jpg" alt="Noticia Principal">
+                <div class="info">
+                    <small>Administrador | 21 Abril, 2025</small>
+                    <h3>JORNADAS DE PAZ POR EL GOBIERNO DE MÉXICO</h3>
+                    <img src="../assets/imagenreciente.jpg" alt="Imagen adicional" class="main-image">
+                    <p>Jalisco a la vanguardia en la promoción de la cultura de paz: es el primer programa de su
+                        tipo en
+                        el país, encaminado a promover y fortalecer la cultura de prevención y seguridad escolar...
+                    </p>
+                    <button>Ver más ➔</button>
+                </div>
+            </div>
+
+            <div class="recientes-secundarios">
+                <!-- Noticias pequeñas -->
+                <div class="noticia-secundaria">
+                    <img src="../assets/img1.jpg" alt="Noticia 1">
+                    <div class="info">
+                        <small>Administrador | 21 Abril, 2025</small>
+                        <h4>Programa Estatal de Cultura de Paz</h4>
+                        <p>Contribuyendo al bienestar escolar...</p>
+                    </div>
+                </div>
+
+                <div class="noticia-secundaria">
+                    <img src="../assets/img2.jpg" alt="Noticia 2">
+                    <div class="info">
+                        <small>Administrador | 22 Abril, 2025</small>
+                        <h4>Iniciativas Escolares en Jalisco</h4>
+                        <p>Apoyo a comunidades educativas...</p>
+                    </div>
+                </div>
+
+                <div class="noticia-secundaria">
+                    <img src="../assets/img3.jpg" alt="Noticia 3">
+                    <div class="info">
+                        <small>Administrador | 23 Abril, 2025</small>
+                        <h4>Conferencias sobre Cultura de Paz</h4>
+                        <p>Expertos nacionales en el tema...</p>
+                    </div>
+                </div>
+
+                <div class="noticia-secundaria">
+                    <img src="../assets/img4.jpg" alt="Noticia 4">
+                    <div class="info">
+                        <small>Administrador | 24 Abril, 2025</small>
+                        <h4>Talleres para Promover la Paz</h4>
+                        <p>Actividades lúdicas en escuelas...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección Carrusel de Noticias -->
+
+    <script src="noticia-script.js"></script>
+
+    <footer class="footer">
+        <div class="container container-footer">
+            <div class="container-container-container-footer">
+                <div class="menu-footer">
+                    <div class="contact-info">
+                        <p class="title-footer">Información de Contacto</p>
+                        <ul>
+                            <li>Teléfono: 314-149-5596</li>
+                            <li>EmaiL: PeaceInProgress.com</li>
+                        </ul>
+                        <div class="social-icons">
+                            <span class="facebook">
+                                <i class="fa-brands fa-facebook-f"></i>
+                            </span>
+                            <span class="twitter">
+                                <i class="fa-brands fa-twitter"></i>
+                            </span>
+                            <span class="instagram">
+                                <i class="fa-brands fa-instagram"></i>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="information">
+                        <p class="title-footer">Información</p>
+                        <ul>
+                            <li><a href="#">Acerca de Nosotros</a></li>
+                            <li><a href="#">Contactános</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="logo-footer">
+                    <img src="../assets/logo.png" alt="Logo Peace In Progress">
+                </div>
+            </div>
+
+            <div class="copyright">
+                <p>
+                    PEACE IN PROGRESS &copy; 2025
+            </div>
+        </div>
+    </footer>
+    <script src="app.js"></script>
+</body>
+
+</html>
