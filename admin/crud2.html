@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin control</title>
+    <link rel="stylesheet" href="crud2.css">
+    <script src="crud.js" defer></script>
+</head>
+<body>
+    <div class="left-side">
+        <h1>Admin control</h1>
+        <img src="../assets/profile-icon.svg" alt="profile" class="profile-icon">
+        <h2>Juan Mastercrack</h2>
+        <p>Admin</p>
+
+        <div class="left-side-options">
+            <button id="articlesButton">Articles</button>
+            <button id="categoriesButton">Categories</button>
+            <button id="commentsButton">Comments</button>
+            <button id="usersButton">Users</button>
+            <button id="statisticsButton">Statistics</button>
+            <button id="resourcesButton">Resources</button>
+        </div>
+    </div>
+    <div class="right-side">
+        <header>
+            <img src="../assets/logo.png" class="logo" alt="logo">
+            <div class="header-options">
+                <img src="../assets/home-icon.svg" alt="home" class="home-icon">
+                <img src="../assets/logout-icon.svg" alt="logout" class="logout-icon">
+            </div>
+        </header>
+        <div class="rectangle">
+            <div class="rectangle-text">
+                <h1>Welcome back, Juan</h1>
+                <p>Here you can manage your articles and contacts.</p>
+            </div>
+            <img src="../assets/hand-header.svg" alt="hand" class="hand-header">
+        </div>"
+        <div class="content" id="articles">
+            <div class="content-header">
+                <div class="content-tools">
+                    <h2>Articles List</h2>
+                    <input type="text" class="search-bar">
+                    <button class="filter-button">
+                        <img src="../assets/filters-icon.svg" alt="filter" class="filter-icon">
+                        Filters
+                    </button>
+                    <button class="add-button"></button>
+                </div>
+            </div>
+            <div class="content-body">
+                <table>
+                    <thead>
+                        <tr>
+                            <th><input type="checkbox"></th>
+                            <th>Title</th>
+                            <th>Category</th>
+                            <th>State</th>
+                            <th>Autor</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><input type="checkbox"></td>
+                            <td>1</td>
+                            <td>John Doe</td>
+                            <td>30</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox"></td>
+                            <td>2</td>
+                            <td>Jane Smith</td>
+                            <td>25</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox"></td>
+                            <td>3</td>
+                            <td>Sam Brown</td>
+                            <td>22</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox"></td>
+                            <td>1</td>
+                            <td>John Doe</td>
+                            <td>30</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox"></td>
+                            <td>2</td>
+                            <td>Jane Smith</td>
+                            <td>25</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox"></td>
+                            <td>3</td>
+                            <td>Sam Brown</td>
+                            <td>22</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox"></td>
+                            <td>1</td>
+                            <td>John Doe</td>
+                            <td>30</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox"></td>
+                            <td>2</td>
+                            <td>Jane Smith</td>
+                            <td>25</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox"></td>
+                            <td>3</td>
+                            <td>Sam Brown</td>
+                            <td>22</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox"></td>
+                            <td>1</td>
+                            <td>John Doe</td>
+                            <td>30</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox"></td>
+                            <td>2</td>
+                            <td>Jane Smith</td>
+                            <td>25</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox"></td>
+                            <td>3</td>
+                            <td>Sam Brown</td>
+                            <td>22</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox"></td>
+                            <td>1</td>
+                            <td>John Doe</td>
+                            <td>30</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox"></td>
+                            <td>2</td>
+                            <td>Jane Smith</td>
+                            <td>25</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox"></td>
+                            <td>3</td>
+                            <td>Sam Brown</td>
+                            <td>22</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox"></td>
+                            <td>1</td>
+                            <td>John Doe</td>
+                            <td>30</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox"></td>
+                            <td>2</td>
+                            <td>Jane Smith</td>
+                            <td>25</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox"></td>
+                            <td>3</td>
+                            <td>Sam Brown</td>
+                            <td>22</td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>  
+        </div>
+        <div class="content" id="categories">
+            <div class="content-header">
+                <div class="content-tools">
+                    <h2>Categories List</h2>
+                    <input type="text" class="search-bar">
+                    <button class="filter-button">
+                        <img src="../assets/filters-icon.svg" alt="filter" class="filter-icon">
+                        Filters
+                    </button>
+                    <button class="add-button"></button>
+                </div>
+            </div>
+            <div class="content-body">
+                <table>
+                    <thead>
+                        <tr>
+                            <th><input type="checkbox"></th>
+                            <th>Name</th>
+                            <th>Slug</th>
+                            <th>Associated article</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><input type="checkbox"></td>
+                            <td>1</td>
+                            <td>John Doe</td>
+                            <td>30</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox"></td>
+                            <td>2</td>
+                            <td>Jane Smith</td>
+                            <td>25</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox"></td>
+                            <td>3</td>
+                            <td>Sam Brown</td>
+                            <td>22</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox"></td>
+                            <td>1</td>
+                            <td>John Doe</td>
+                            <td>30</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox"></td>
+                            <td>2</td>
+                            <td>Jane Smith</td>
+                            <td>25</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox"></td>
+                            <td>3</td>
+                            <td>Sam Brown</td>
+                            <td>22</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox"></td>
+                            <td>1</td>
+                            <td>John Doe</td>
+                            <td>30</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox"></td>
+                            <td>2</td>
+                            <td>Jane Smith</td>
+                            <td>25</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox"></td>
+                            <td>3</td>
+                            <td>Sam Brown</td>
+                            <td>22</td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>  
+        </div>
+        <div class="content" id="comments">
+            <div class="content-header">
+                <div class="content-tools">
+                    <h2>Comments List</h2>
+                    <input type="text" class="search-bar">
+                    <button class="filter-button">
+                        <img src="../assets/filters-icon.svg" alt="filter" class="filter-icon">
+                        Filters
+                    </button>
+                    <button class="add-button"></button>
+                </div>
+            </div>
+            <div class="content-body">
+                <table>
+                    <thead>
+                        <tr>
+                            <th><input type="checkbox"></th>
+                            <th>Comment fragment</th>
+                            <th>User</th>
+                            <th>State</th>
+                            <th>Associated article</th>
+                            <th>Date</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><input type="checkbox"></td>
+                            <td>1</td>
+                            <td>John Doe</td>
+                            <td>30</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox"></td>
+                            <td>2</td>
+                            <td>Jane Smith</td>
+                            <td>25</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox"></td>
+                            <td>3</td>
+                            <td>Sam Brown</td>
+                            <td>22</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox"></td>
+                            <td>1</td>
+                            <td>John Doe</td>
+                            <td>30</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox"></td>
+                            <td>2</td>
+                            <td>Jane Smith</td>
+                            <td>25</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox"></td>
+                            <td>3</td>
+                            <td>Sam Brown</td>
+                            <td>22</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox"></td>
+                            <td>1</td>
+                            <td>John Doe</td>
+                            <td>30</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox"></td>
+                            <td>2</td>
+                            <td>Jane Smith</td>
+                            <td>25</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox"></td>
+                            <td>3</td>
+                            <td>Sam Brown</td>
+                            <td>22</td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>  
+        </div>
+        <div class="content" id="users">
+            <div class="content-header">
+                <div class="content-tools">
+                    <h2>Users List</h2>
+                    <input type="text" class="search-bar">
+                    <button class="filter-button">
+                        <img src="../assets/filters-icon.svg" alt="filter" class="filter-icon">
+                        Filters
+                    </button>
+                    <button class="add-button"></button>
+                </div>
+            </div>
+            <div class="content-body">
+                <table>
+                    <thead>
+                        <tr>
+                            <th><input type="checkbox"></th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Rol</th>
+                            <th>Registration date</th>
+                            <th>Number of posts</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><input type="checkbox"></td>
+                            <td>1</td>
+                            <td>John Doe</td>
+                            <td>30</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox"></td>
+                            <td>2</td>
+                            <td>Jane Smith</td>
+                            <td>25</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox"></td>
+                            <td>3</td>
+                            <td>Sam Brown</td>
+                            <td>22</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox"></td>
+                            <td>1</td>
+                            <td>John Doe</td>
+                            <td>30</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox"></td>
+                            <td>2</td>
+                            <td>Jane Smith</td>
+                            <td>25</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox"></td>
+                            <td>3</td>
+                            <td>Sam Brown</td>
+                            <td>22</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox"></td>
+                            <td>1</td>
+                            <td>John Doe</td>
+                            <td>30</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox"></td>
+                            <td>2</td>
+                            <td>Jane Smith</td>
+                            <td>25</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox"></td>
+                            <td>3</td>
+                            <td>Sam Brown</td>
+                            <td>22</td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>  
+        </div>
+        <div class="content" id="statistics">
+            <div class="content-header">
+                <div class="content-tools">
+                    <h2>Statistics</h2>
+                    <input type="text" class="search-bar">
+                    <button class="filter-button">
+                        <img src="../assets/filters-icon.svg" alt="filter" class="filter-icon">
+                        Filters
+                    </button>
+                    <button class="add-button"></button>
+                </div>
+            </div>
+            <div class="content-body">
+                <table>
+                    <thead>
+                        <tr>
+                            <th><input type="checkbox"></th>
+                            <th>Name</th>
+                            <th>Last update</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><input type="checkbox"></td>
+                            <td>1</td>
+                            <td>John Doe</td>
+                            <td>30</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox"></td>
+                            <td>2</td>
+                            <td>Jane Smith</td>
+                            <td>25</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox"></td>
+                            <td>3</td>
+                            <td>Sam Brown</td>
+                            <td>22</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox"></td>
+                            <td>1</td>
+                            <td>John Doe</td>
+                            <td>30</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox"></td>
+                            <td>2</td>
+                            <td>Jane Smith</td>
+                            <td>25</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox"></td>
+                            <td>3</td>
+                            <td>Sam Brown</td>
+                            <td>22</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox"></td>
+                            <td>1</td>
+                            <td>John Doe</td>
+                            <td>30</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox"></td>
+                            <td>2</td>
+                            <td>Jane Smith</td>
+                            <td>25</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox"></td>
+                            <td>3</td>
+                            <td>Sam Brown</td>
+                            <td>22</td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>  
+        </div>
+        <div class="content" id="resources">
+            <div class="content-header">
+                <div class="content-tools">
+                    <h2>Resources List</h2>
+                    <input type="text" class="search-bar">
+                    <button class="filter-button">
+                        <img src="../assets/filters-icon.svg" alt="filter" class="filter-icon">
+                        Filters
+                    </button>
+                    <button class="add-button"></button>
+                </div>
+            </div>
+            <div class="content-body">
+                <table>
+                    <thead>
+                        <tr>
+                            <th><input type="checkbox"></th>
+                            <th>Name</th>
+                            <th>Type</th>
+                            <th>Upload date</th>
+                            <th>Size</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><input type="checkbox"></td>
+                            <td>1</td>
+                            <td>John Doe</td>
+                            <td>30</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox"></td>
+                            <td>2</td>
+                            <td>Jane Smith</td>
+                            <td>25</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox"></td>
+                            <td>3</td>
+                            <td>Sam Brown</td>
+                            <td>22</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox"></td>
+                            <td>1</td>
+                            <td>John Doe</td>
+                            <td>30</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox"></td>
+                            <td>2</td>
+                            <td>Jane Smith</td>
+                            <td>25</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox"></td>
+                            <td>3</td>
+                            <td>Sam Brown</td>
+                            <td>22</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox"></td>
+                            <td>1</td>
+                            <td>John Doe</td>
+                            <td>30</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox"></td>
+                            <td>2</td>
+                            <td>Jane Smith</td>
+                            <td>25</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox"></td>
+                            <td>3</td>
+                            <td>Sam Brown</td>
+                            <td>22</td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>  
+        </div>
+    </div>
+    <div class="overlay" id="overlay"></div>
+    <div class="modal" id="modal">
+        <div class="modal-body">
+            <div class="left-modal">
+                <h1>Add a new article</h1>
+                <div class="buttons-modal">
+                    <button class="cancel-article">Cancel</button>
+                    <button class="add-article" id="submit-button">Add article</button>
+                </div>
+            </div>
+            <div class="right-modal">
+                <div class="modal-header">
+                    <button id="close-modal" class="close-button">&times;</button>
+                </div>
+                <div class="container">
+                    <form action="insertar_post.php" method="POST" id="myForm">
+                        <!-- Título del Post -->
+                        <label for="titulo">Título del Post</label>
+                        <input type="text" id="titulo" name="titulo" required>
+            
+                        <!-- Descripción del Post -->
+                        <label for="descripcion">Descripción del Post</label>
+                        <textarea id="descripcion" name="descripcion" required></textarea>
+            
+                        <!-- Categoría del Post -->
+                        <label for="categoria">Categoría</label>
+                        <select id="categoria" name="categoria" required>
+                            <option value="Justicia y derechos">Justicia y derechos</option>
+                            <option value="Cultura de paz">Cultura de paz</option>
+                            <option value="Instituciones sólidas">Instituciones sólidas</option>
+                            <option value="Participación ciudadana">Participación ciudadana</option>
+                            <option value="Noticias y actualidad">Noticias y actualidad</option>
+                            <option value="Opinión">Opinión</option>
+                            <option value="Educación cívica">Educación cívica</option>
+                            <option value="Historias de impacto">Historias de impacto</option>
+                            <option value="Recursos y herramientas">Recursos y herramientas</option>
+                        </select>
+            
+                        <!-- Contenido del Post -->
+                        <label for="contenido">Contenido del Post</label>
+                        <textarea id="contenido" name="contenido" required></textarea>
+            
+                        <!-- Fecha de Publicación -->
+                        <label for="fecha">Fecha de Publicación</label>
+                        <input type="date" id="fecha" name="fecha" required>
+            
+                        <!-- Imagen o Multimedia -->
+                        <label for="imagen">Imagen</label>
+                        <input type="file" id="imagen" name="imagen" accept="image/*,video/*">            
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
