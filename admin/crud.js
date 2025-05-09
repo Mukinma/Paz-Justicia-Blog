@@ -12,7 +12,7 @@ const closeModalButton = document.getElementById('close-modal');
 const overlay = document.getElementById('overlay');
 
 const submitButton = document.getElementById('submit-button'); // Botón externo
-const form = document.getElementById('myForm'); // Formulario
+const form = document.getElementById('myForm1'); // Formulario
 
 // Botones de navegación
 const articlesButton = document.getElementById('articlesButton'); // Botón de artículos

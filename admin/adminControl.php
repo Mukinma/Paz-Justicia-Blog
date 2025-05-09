@@ -5,15 +5,21 @@ try {
     // Prepare and execute the SQL query to fetch posts
     $sqlCategorias = "SELECT c.nombre AS NombreCategoria, c.slug AS SlugCategoria, COUNT(p.id_post) AS CantidadArticulos FROM categorias c LEFT JOIN posts p ON c.id_categoria = p.id_categoria GROUP BY c.id_categoria, c.nombre, c.slug ORDER BY CantidadArticulos DESC";
     $sqlCategoriasOpcion = "SELECT id_categoria, nombre FROM categorias ORDER BY nombre ASC";
-    $stmt = $pdo->query($sqlCategoriasOpcion);
-    $categoriasOpcion = $stmt->fetchAll(PDO::FETCH_ASSOC);
     $sqlUsuarios = "SELECT u.nombre AS NombreUsuario, u.email AS EmailUsuario, u.rol AS RolUsuario, u.fecha_registro AS FechaRegistro, COUNT(p.id_post) AS CantidadPosts FROM usuarios u LEFT JOIN posts p ON u.id_usuario = p.id_usuario GROUP BY u.id_usuario, u.nombre, u.email, u.rol, u.fecha_registro";
+    $sqlResources = "SELECT r.titulo AS NombreRecurso, r.fecha_subida AS FechaSubida, r.alt_text AS TextoAlternativo FROM imagenes r ORDER BY r.fecha_subida DESC";
+    $sqlArticulos = "SELECT p.titulo AS Titulo, c.nombre AS Categoria, p.estado AS Estado, u.nombre AS Autor FROM posts p LEFT JOIN categorias c ON p.id_categoria = c.id_categoria LEFT JOIN usuarios u ON p.id_usuario = u.id_usuario ORDER BY p.id_post DESC";
 
     // Execute the query and fetch results
     $stmt = $pdo->query($sqlCategorias);
     $categorias = $stmt->fetchAll(PDO::FETCH_ASSOC);
     $stmt = $pdo->query($sqlUsuarios);
     $usuarios = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $stmt = $pdo->query($sqlCategoriasOpcion);
+    $categoriasOpcion = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $stmt = $pdo->query($sqlResources);
+    $recursos = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $stmt = $pdo->query($sqlArticulos);
+    $articulos = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 } catch (PDOException $e) {
     die("Error al obtener publicaciones: " . $e->getMessage());
@@ -85,7 +91,19 @@ try {
                         </tr>
                     </thead>
                     <tbody>
-                        
+                        <?php foreach ($articulos as $articulo): ?>
+                            <tr>
+                                <td><input type="checkbox"></td>
+                                <td><?php echo htmlspecialchars($articulo['Titulo']); ?></td>
+                                <td><?php echo htmlspecialchars($articulo['Categoria']); ?></td>
+                                <td><?php echo htmlspecialchars($articulo['Estado']); ?></td>
+                                <td><?php echo htmlspecialchars($articulo['Autor']); ?></td>
+                                <td>
+                                    <button class="edit-button">Edit</button>
+                                    <button class="delete-button">Delete</button>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
                     </tbody>
                     <tfoot>
                         <tr>
@@ -402,70 +420,27 @@ try {
                         <tr>
                             <th><input type="checkbox"></th>
                             <th>Name</th>
-                            <th>Type</th>
                             <th>Upload date</th>
-                            <th>Size</th>
+                            <th>Alternative text</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td><input type="checkbox"></td>
-                            <td>1</td>
-                            <td>John Doe</td>
-                            <td>30</td>
-                        </tr>
-                        <tr>
-                            <td><input type="checkbox"></td>
-                            <td>2</td>
-                            <td>Jane Smith</td>
-                            <td>25</td>
-                        </tr>
-                        <tr>
-                            <td><input type="checkbox"></td>
-                            <td>3</td>
-                            <td>Sam Brown</td>
-                            <td>22</td>
-                        </tr>
-                        <tr>
-                            <td><input type="checkbox"></td>
-                            <td>1</td>
-                            <td>John Doe</td>
-                            <td>30</td>
-                        </tr>
-                        <tr>
-                            <td><input type="checkbox"></td>
-                            <td>2</td>
-                            <td>Jane Smith</td>
-                            <td>25</td>
-                        </tr>
-                        <tr>
-                            <td><input type="checkbox"></td>
-                            <td>3</td>
-                            <td>Sam Brown</td>
-                            <td>22</td>
-                        </tr>
-                        <tr>
-                            <td><input type="checkbox"></td>
-                            <td>1</td>
-                            <td>John Doe</td>
-                            <td>30</td>
-                        </tr>
-                        <tr>
-                            <td><input type="checkbox"></td>
-                            <td>2</td>
-                            <td>Jane Smith</td>
-                            <td>25</td>
-                        </tr>
-                        <tr>
-                            <td><input type="checkbox"></td>
-                            <td>3</td>
-                            <td>Sam Brown</td>
-                            <td>22</td>
-                        </tr>
+                        <?php
+                            foreach ($recursos as $recurso) {
+                                echo '<tr>';
+                                echo '<td><input type="checkbox"></td>';
+                                echo '<td>' . htmlspecialchars($recurso['NombreRecurso']) . '</td>';
+                                echo '<td>' . htmlspecialchars($recurso['FechaSubida']) . '</td>';
+                                echo '<td>' . htmlspecialchars($recurso['TextoAlternativo']) . '</td>';
+                                echo '<td><button class="edit-button">Edit</button><button class="delete-button">Delete</button></td>';
+                                echo '</tr>';
+                            }
+                        ?>
                     </tbody>
                     <tfoot>
                         <tr>
+                            <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
@@ -491,7 +466,7 @@ try {
                     <button id="close-modal" class="close-button">&times;</button>
                 </div>
                 <div class="container">
-                    <form action="insertar_post.php" method="POST" id="myForm">
+                    <form action="insertar_post.php" method="POST" id="myForm1" enctype="multipart/form-data">
                         <!-- Título del Post -->
                         <label for="titulo">Título del Post</label>
                         <input type="text" id="titulo" name="titulo" required>
@@ -520,7 +495,7 @@ try {
             
                         <!-- Imagen o Multimedia -->
                         <label for="imagen">Imagen</label>
-                        <input id="imagen" name="imagen">            
+                        <input type="file" id="imagen" name="imagen">            
                     </form>
                 </div>
             </div>

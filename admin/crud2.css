@@ -415,7 +415,7 @@ header{
 .left-modal h1 {
     font-size: clamp(1.5rem, 2vw, 3rem);
     color: #FFF;
-
+    text-align: center;
 }
 .buttons-modal{
     display: flex;
