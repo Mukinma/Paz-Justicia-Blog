@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost
--- Tiempo de generación: 09-05-2025 a las 03:07:00
+-- Tiempo de generación: 09-05-2025 a las 03:36:11
 -- Versión del servidor: 8.0.17
 -- Versión de PHP: 7.3.10
 
@@ -268,9 +268,7 @@ ALTER TABLE `tags`
 --
 ALTER TABLE `usuarios`
   ADD PRIMARY KEY (`id_usuario`),
-  ADD UNIQUE KEY `email` (`email`),
-  ADD UNIQUE KEY `email_2` (`email`),
-  ADD KEY `idx_usuarios_email` (`email`);
+  ADD UNIQUE KEY `email` (`email`);
 
 --
 -- AUTO_INCREMENT de las tablas volcadas
@@ -321,9 +319,7 @@ ALTER TABLE `usuarios`
 --
 ALTER TABLE `comentarios`
   ADD CONSTRAINT `comentarios_ibfk_1` FOREIGN KEY (`id_post`) REFERENCES `posts` (`id_post`) ON DELETE CASCADE,
-  ADD CONSTRAINT `comentarios_ibfk_2` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id_usuario`) ON DELETE SET NULL,
-  ADD CONSTRAINT `fk_comentarios_post` FOREIGN KEY (`id_post`) REFERENCES `posts` (`id_post`),
-  ADD CONSTRAINT `fk_comentarios_usuario` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id_usuario`);
+  ADD CONSTRAINT `comentarios_ibfk_2` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id_usuario`) ON DELETE SET NULL;
 
 --
 -- Filtros para la tabla `imagenes`
