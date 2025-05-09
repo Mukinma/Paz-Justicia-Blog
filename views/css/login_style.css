@@ -17,7 +17,7 @@ body {
     align-items: center;
     justify-content: center;
     background: #f0f0f0;
-    background-image: url('fondopeace.jpg');
+    background-image: url('..assets/fondopeace.jpg');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
