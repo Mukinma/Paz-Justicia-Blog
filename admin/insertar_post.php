@@ -47,7 +47,7 @@ function subirImagen($file, $uploadDir, $allowedTypes, $maxFileSize) {
         throw new Exception("No se pudo guardar el archivo subido.");
     }
     
-    return $filename;
+    return $uploadDir . $filename; // Return full path
 }
 
 // Verificar si se ha enviado el formulario

@@ -7,7 +7,7 @@ try {
     $sqlCategoriasOpcion = "SELECT id_categoria, nombre FROM categorias ORDER BY nombre ASC";
     $sqlUsuarios = "SELECT u.nombre AS NombreUsuario, u.email AS EmailUsuario, u.rol AS RolUsuario, u.fecha_registro AS FechaRegistro, COUNT(p.id_post) AS CantidadPosts FROM usuarios u LEFT JOIN posts p ON u.id_usuario = p.id_usuario GROUP BY u.id_usuario, u.nombre, u.email, u.rol, u.fecha_registro";
     $sqlResources = "SELECT r.titulo AS NombreRecurso, r.fecha_subida AS FechaSubida, r.alt_text AS TextoAlternativo FROM imagenes r ORDER BY r.fecha_subida DESC";
-    $sqlArticulos = "SELECT p.titulo AS Titulo, c.nombre AS Categoria, p.estado AS Estado, u.nombre AS Autor FROM posts p LEFT JOIN categorias c ON p.id_categoria = c.id_categoria LEFT JOIN usuarios u ON p.id_usuario = u.id_usuario ORDER BY p.id_post DESC";
+    $sqlArticulos = "SELECT p.id_post AS ID, p.titulo AS Titulo, c.nombre AS Categoria, p.estado AS Estado, u.nombre AS Autor FROM posts p LEFT JOIN categorias c ON p.id_categoria = c.id_categoria LEFT JOIN usuarios u ON p.id_usuario = u.id_usuario ORDER BY p.id_post DESC";
 
     // Execute the query and fetch results
     $stmt = $pdo->query($sqlCategorias);
@@ -86,7 +86,7 @@ try {
                             <th>Title</th>
                             <th>Category</th>
                             <th>State</th>
-                            <th>Autor</th>
+                            <th>Author</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -99,8 +99,8 @@ try {
                                 <td><?php echo htmlspecialchars($articulo['Estado']); ?></td>
                                 <td><?php echo htmlspecialchars($articulo['Autor']); ?></td>
                                 <td>
-                                    <button class="edit-button">Edit</button>
-                                    <button class="delete-button">Delete</button>
+                                    <button class="edit-button" data-id="<?php echo $articulo['ID']; ?>">Edit</button>
+                                    <button class="delete-button" data-id="<?php echo $articulo['ID']; ?>">Delete</button>
                                 </td>
                             </tr>
                         <?php endforeach; ?>
@@ -595,6 +595,87 @@ try {
                         <label for="imagen">Imagen</label>
                         <input id="imagen" name="imagen">            
                     </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal" id="modal-edit-article">
+        <div class="modal-body">
+            <div class="left-modal">
+                <h1>Edit article</h1>
+                <div class="buttons-modal">
+                    <button class="cancel-article" id="cancel-edit">Cancel</button>
+                    <button class="add-article" id="submit-edit-button">Save changes</button>
+                </div>
+            </div>
+            <div class="right-modal">
+                <div class="modal-header">
+                    <button id="close-edit-modal" class="close-button">&times;</button>
+                </div>
+                <div class="container">
+                    <form action="editar_post.php" method="POST" id="editForm" enctype="multipart/form-data">
+                        <input type="hidden" id="edit-id" name="id" value="">
+                        
+                        <!-- Título del Post -->
+                        <label for="edit-titulo">Título del Post</label>
+                        <input type="text" id="edit-titulo" name="titulo" required>
+            
+                        <!-- Descripción del Post -->
+                        <label for="edit-descripcion">Descripción del Post</label>
+                        <textarea id="edit-descripcion" name="descripcion" required></textarea>
+            
+                        <!-- Categoría del Post -->
+                        <label for="edit-categoria">Categoría</label>
+                        <select id="edit-categoria" name="categoria" required>
+                            <?php
+                            foreach ($categoriasOpcion as $categoria) {
+                                echo '<option value="' . htmlspecialchars($categoria['id_categoria']) . '">' . htmlspecialchars($categoria['nombre']) . '</option>';
+                            }
+                            ?>
+                        </select>
+            
+                        <!-- Contenido del Post -->
+                        <label for="edit-contenido">Contenido del Post</label>
+                        <textarea id="edit-contenido" name="contenido" required></textarea>
+            
+                        <!-- Estado -->
+                        <label for="edit-estado">Estado</label>
+                        <select id="edit-estado" name="estado">
+                            <option value="publicado">Publicado</option>
+                            <option value="borrador">Borrador</option>
+                        </select>
+                        
+                        <!-- Imagen actual -->
+                        <div id="current-image-container">
+                            <p>Current image:</p>
+                            <img id="current-image" src="" alt="Current article image" style="max-width:200px;">
+                        </div>
+                        
+                        <!-- Nueva Imagen (opcional) -->
+                        <label for="edit-imagen">Nueva Imagen (opcional)</label>
+                        <input type="file" id="edit-imagen" name="imagen">            
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal" id="modal-delete-confirmation">
+        <div class="modal-body">
+            <div class="left-modal">
+                <h1>Confirm Deletion</h1>
+                <div class="buttons-modal">
+                    <button class="cancel-article" id="cancel-delete">Cancel</button>
+                    <button class="delete-article" id="confirm-delete-button">Delete</button>
+                </div>
+            </div>
+            <div class="right-modal">
+                <div class="modal-header">
+                    <button id="close-delete-modal" class="close-button">&times;</button>
+                </div>
+                <div class="container">
+                    <h2>Are you sure you want to delete this article?</h2>
+                    <p id="post-delete-title"></p>
+                    <p class="warning-text">This action cannot be undone.</p>
                 </div>
             </div>
         </div>
