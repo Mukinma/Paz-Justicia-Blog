@@ -58,7 +58,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $descripcion = trim($_POST['descripcion']);
         $contenido = trim($_POST['contenido']);
         $id_categoria = intval($_POST['categoria']);
-        $fecha_publicacion = $_POST['fecha'];
+        $fecha_publicacion = date('Y-m-d H:i:s'); // Usar fecha actual
         $id_usuario = 1; // Asumimos que es el admin con ID 1
         
         // Validaciones básicas
