@@ -5,16 +5,16 @@ try {
     // Prepare and execute the SQL query to fetch posts
     $sqlCategorias = "SELECT c.nombre AS NombreCategoria, c.slug AS SlugCategoria, COUNT(p.id_post) AS CantidadArticulos FROM categorias c LEFT JOIN posts p ON c.id_categoria = p.id_categoria GROUP BY c.id_categoria, c.nombre, c.slug ORDER BY CantidadArticulos DESC";
     $sqlCategoriasOpcion = "SELECT id_categoria, nombre FROM categorias ORDER BY nombre ASC";
-    $sqlUsuarios = "SELECT u.nombre AS NombreUsuario, u.email AS EmailUsuario, u.rol AS RolUsuario, u.fecha_registro AS FechaRegistro, COUNT(p.id_post) AS CantidadPosts FROM usuarios u LEFT JOIN posts p ON u.id_usuario = p.id_usuario GROUP BY u.id_usuario, u.nombre, u.email, u.rol, u.fecha_registro";
+    $sqlUsuarios = "SELECT u.name AS NombreUsuario, u.email AS EmailUsuario, u.rol AS RolUsuario, u.fecha_registro AS FechaRegistro, COUNT(p.id_post) AS CantidadPosts FROM usuarios u LEFT JOIN posts p ON u.id_usuario = p.id_usuario GROUP BY u.id_usuario, u.name, u.email, u.rol, u.fecha_registro";
     $sqlResources = "SELECT r.titulo AS NombreRecurso, r.fecha_subida AS FechaSubida, r.alt_text AS TextoAlternativo FROM imagenes r ORDER BY r.fecha_subida DESC";
-    $sqlArticulos = "SELECT p.id_post AS ID, p.titulo AS Titulo, c.nombre AS Categoria, p.estado AS Estado, u.nombre AS Autor 
+    $sqlArticulos = "SELECT p.id_post AS ID, p.titulo AS Titulo, c.nombre AS Categoria, p.estado AS Estado, u.name AS Autor 
                      FROM posts p 
                      LEFT JOIN categorias c ON p.id_categoria = c.id_categoria 
                      LEFT JOIN usuarios u ON p.id_usuario = u.id_usuario 
                      WHERE p.estado = 'publicado' 
                      ORDER BY p.id_post DESC";
 
-    $sqlArticulosArchivados = "SELECT p.id_post AS ID, p.titulo AS Titulo, c.nombre AS Categoria, p.estado AS Estado, u.nombre AS Autor 
+    $sqlArticulosArchivados = "SELECT p.id_post AS ID, p.titulo AS Titulo, c.nombre AS Categoria, p.estado AS Estado, u.name AS Autor 
                               FROM posts p 
                               LEFT JOIN categorias c ON p.id_categoria = c.id_categoria 
                               LEFT JOIN usuarios u ON p.id_usuario = u.id_usuario 
@@ -568,31 +568,43 @@ try {
                 </div>
                 <div class="container">
                     <form action="insertar_post.php" method="POST" id="myForm1" enctype="multipart/form-data">
-                        <!-- Título del Post -->
-                        <label for="titulo">Título del Post</label>
-                        <input type="text" id="titulo" name="titulo" required>
-            
-                        <!-- Descripción del Post -->
-                        <label for="descripcion">Descripción del Post</label>
-                        <textarea id="descripcion" name="descripcion" required></textarea>
-            
-                        <!-- Categoría del Post -->
-                        <label for="categoria">Categoría</label>
-                        <select id="categoria" name="categoria" required>
-                            <?php
-                            foreach ($categoriasOpcion as $categoria) {
-                                echo '<option value="' . htmlspecialchars($categoria['id_categoria']) . '">' . htmlspecialchars($categoria['nombre']) . '</option>';
-                            }
-                            ?>
-                        </select>
-            
-                        <!-- Contenido del Post -->
-                        <label for="contenido">Contenido del Post</label>
-                        <textarea id="contenido" name="contenido" required></textarea>
-
-                        <!-- Imagen o Multimedia -->
-                        <label for="imagen">Imagen</label>
-                        <input type="file" id="imagen" name="imagen">            
+                        <div class="form-group">
+                            <label for="titulo">Título:</label>
+                            <input type="text" id="titulo" name="titulo" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="descripcion">Descripción:</label>
+                            <textarea id="descripcion" name="descripcion" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="contenido">Contenido:</label>
+                            <textarea id="contenido" name="contenido" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="categoria">Categoría:</label>
+                            <select id="categoria" name="categoria" required>
+                                <?php
+                                // Obtener categorías de la base de datos
+                                $sql = "SELECT id_categoria, nombre FROM categorias ORDER BY nombre";
+                                $stmt = $pdo->query($sql);
+                                while ($row = $stmt->fetch()) {
+                                    echo "<option value='" . $row['id_categoria'] . "'>" . htmlspecialchars($row['nombre']) . "</option>";
+                                }
+                                ?>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="imagen_ilustrativa">Imagen Ilustrativa:</label>
+                            <input type="file" id="imagen_ilustrativa" name="imagen_ilustrativa" accept="image/*">
+                            <small>Esta imagen se mostrará como imagen principal del post</small>
+                            <img id="preview_ilustrativa" class="image-preview" alt="Vista previa de la imagen ilustrativa">
+                        </div>
+                        <div class="form-group">
+                            <label for="imagen_background">Imagen de Fondo:</label>
+                            <input type="file" id="imagen_background" name="imagen_background" accept="image/*">
+                            <small>Esta imagen se usará como fondo del post</small>
+                            <img id="preview_background" class="image-preview" alt="Vista previa de la imagen de fondo">
+                        </div>
                     </form>
                 </div>
             </div>
