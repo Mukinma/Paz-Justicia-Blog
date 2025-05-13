@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin control</title>
+    <link rel="stylesheet" href="crud.css">
+    <script src="crud.js" defer></script>
+</head>
+<body>
+    <div class="left-side">
+        <header>
+            <img src="../assets/logo.png" class="logo" alt="logo">
+            <h1>Admin Control</h1>
+            <nav>
+                <a href="">Home</a>
+                <a href="contact/contact.html">Contact</a>
+                <a href="">Info</a>
+            </nav>
+        </header>
+        <div class="content">
+            <div class="content-header">
+                <div class="content-tools">
+                    <input type="text">
+                    <button class="filter-button">
+                        <img src="../assets/filters-icon.svg" alt="filter" class="filter-icon">
+                        Filters
+                    </button>
+                    <button class="add-button"></button>
+                </div>
+            </div>
+            <div class="content-body">
+                <table>
+                    <thead>
+                        <tr>
+                            <th><input type="checkbox"></th>
+                            <th>Name</th>
+                            <th>Last update</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><input type="checkbox"></td>
+                            <td>1</td>
+                            <td>John Doe</td>
+                            <td>30</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox"></td>
+                            <td>2</td>
+                            <td>Jane Smith</td>
+                            <td>25</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox"></td>
+                            <td>3</td>
+                            <td>Sam Brown</td>
+                            <td>22</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox"></td>
+                            <td>1</td>
+                            <td>John Doe</td>
+                            <td>30</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox"></td>
+                            <td>2</td>
+                            <td>Jane Smith</td>
+                            <td>25</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox"></td>
+                            <td>3</td>
+                            <td>Sam Brown</td>
+                            <td>22</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox"></td>
+                            <td>1</td>
+                            <td>John Doe</td>
+                            <td>30</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox"></td>
+                            <td>2</td>
+                            <td>Jane Smith</td>
+                            <td>25</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox"></td>
+                            <td>3</td>
+                            <td>Sam Brown</td>
+                            <td>22</td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>  
+        </div>
+    </div>
+    <div class="right-side">
+        <img src="../assets/logo.png" alt="logo" class="right-logo">
+        <div class="profile">
+            <img src="../assets/profile-icon.svg" alt="profile" class="profile-image">
+            <h1 class="profile-name">Admin</h1>
+        </div>
+        <div class="profile-tools">
+            <button class="profile-button">
+                <img src="../assets/user.svg" alt="profile" class="profile-tools-icon">
+                <p>Profile</p>
+            </button>
+            <button class="settings-button">
+                <img src="../assets/Nut.svg" alt="settings" class="profile-tools-icon">
+                <p>Settings</p>
+            </button>
+            <button class="logout-button">
+                <img src="../assets/logout-icon.svg" alt="logout" class="profile-tools-icon">
+                <p>Logout</p>
+            </button>
+        </div>
+    </div>
+    <div class="overlay" id="overlay"></div>
+    <div class="modal" id="modal">
+        <div class="modal-body">
+            <div class="left-modal">
+                <h1>Add a new article</h1>
+                <div class="buttons-modal">
+                    <button class="cancel-article">Cancel</button>
+                    <button class="add-article" id="submit-button">Add article</button>
+                </div>
+            </div>
+            <div class="right-modal">
+                <div class="modal-header">
+                    <button id="close-modal" class="close-button">&times;</button>
+                </div>
+                <div class="container">
+                    <form action="insertar_post.php" method="POST" id="myForm">
+                        <!-- Título del Post -->
+                        <label for="titulo">Título del Post</label>
+                        <input type="text" id="titulo" name="titulo" required>
+            
+                        <!-- Descripción del Post -->
+                        <label for="descripcion">Descripción del Post</label>
+                        <textarea id="descripcion" name="descripcion" required></textarea>
+            
+                        <!-- Categoría del Post -->
+                        <label for="categoria">Categoría</label>
+                        <select id="categoria" name="categoria" required>
+                            <option value="Justicia y derechos">Justicia y derechos</option>
+                            <option value="Cultura de paz">Cultura de paz</option>
+                            <option value="Instituciones sólidas">Instituciones sólidas</option>
+                            <option value="Participación ciudadana">Participación ciudadana</option>
+                            <option value="Noticias y actualidad">Noticias y actualidad</option>
+                            <option value="Opinión">Opinión</option>
+                            <option value="Educación cívica">Educación cívica</option>
+                            <option value="Historias de impacto">Historias de impacto</option>
+                            <option value="Recursos y herramientas">Recursos y herramientas</option>
+                        </select>
+            
+                        <!-- Contenido del Post -->
+                        <label for="contenido">Contenido del Post</label>
+                        <textarea id="contenido" name="contenido" required></textarea>
+            
+                        <!-- Fecha de Publicación -->
+                        <label for="fecha">Fecha de Publicación</label>
+                        <input type="date" id="fecha" name="fecha" required>
+            
+                        <!-- Imagen o Multimedia -->
+                        <label for="imagen">Imagen</label>
+                        <input type="file" id="imagen" name="imagen" accept="image/*,video/*">            
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
