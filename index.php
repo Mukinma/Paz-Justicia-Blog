@@ -26,6 +26,7 @@
             <a href="contact/contact.html">Contact</a>
             <a href="">Info</a>
             <a href="usuario/usuario.php" class="btn">Login</a>
+            <a href="admin/adminControl.php" class="btn">Admin control</a>
         </nav>
     </header>
 

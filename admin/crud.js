@@ -479,12 +479,21 @@ function unarchivePost(postId, buttonElement) {
 
 // Función para agregar event listeners a los botones
 function addButtonListeners(row) {
+    // Agregar event listener al botón de vista
+    const viewButton = row.querySelector('.view-button');
+    if (viewButton) {
+        viewButton.addEventListener('click', function() {
+            const postId = this.getAttribute('data-id');
+            window.location.href = `../views/post.php?id=${postId}`;
+        });
+    }
+    
     // Agregar event listener al botón de editar
     const editButton = row.querySelector('.edit-button');
     if (editButton) {
         editButton.addEventListener('click', function() {
             const postId = this.getAttribute('data-id');
-            fetchPostData(postId);
+            openEditModal(postId);
         });
     }
     
@@ -709,6 +718,17 @@ document.addEventListener('DOMContentLoaded', () => {
             if (postId) {
                 handleDeletePost(postId);
             }
+        });
+    });
+});
+
+// Agregar event listeners para los botones de vista
+document.addEventListener('DOMContentLoaded', function() {
+    const viewButtons = document.querySelectorAll('.view-button[data-id]');
+    viewButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const postId = this.getAttribute('data-id');
+            window.location.href = `../views/post.php?id=${postId}`;
         });
     });
 });
