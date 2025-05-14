@@ -286,31 +286,31 @@ function deletePost(postId, buttonElement) {
             
             setTimeout(() => {
                 row.remove();
-                // Show success message
-                alert('Post deleted successfully');
+                // Show success notification
+                showNotification('Post eliminado correctamente', 'success');
             }, 300);
         } else {
-            // Show error message
-            alert('Error deleting post: ' + data.message);
+            // Show error notification
+            showNotification('Error al eliminar el post: ' + data.message, 'error');
         }
     })
     .catch(error => {
         console.error('Error:', error);
-        alert('Error deleting post. Please try again.');
+        showNotification('Error al eliminar el post. Por favor, intente nuevamente.', 'error');
     });
 }
 
-function showNotification(message) {
-    const modal = document.getElementById('notificationModal');
-    modal.textContent = message;
-    modal.style.display = 'block';
-    document.body.classList.add('modal-open');
-    
-    // Ocultar el modal después de 2.5 segundos
+function showNotification(message, type = 'info') {
+    const notification = document.getElementById('notificationModal');
+    notification.textContent = message;
+    notification.className = `notification-modal ${type}`;
+    notification.style.display = 'block';
+
+    // Remover la clase modal-open del body después de que la notificación desaparezca
     setTimeout(() => {
-        modal.style.display = 'none';
+        notification.style.display = 'none';
         document.body.classList.remove('modal-open');
-    }, 2500);
+    }, 3000);
 }
 
 function archivePost(postId, buttonElement) {
@@ -594,6 +594,121 @@ document.addEventListener('DOMContentLoaded', function() {
             // Guardar el ID del post y el botón para usarlos en la confirmación
             window.deletePostId = postId;
             window.deleteButtonElement = this;
+        });
+    });
+});
+
+// Función para manejar la vista previa de imágenes
+function handleImagePreview(input, previewId) {
+    const preview = document.getElementById(previewId);
+    const file = input.files[0];
+    
+    if (file) {
+        const reader = new FileReader();
+        
+        reader.onload = function(e) {
+            preview.src = e.target.result;
+            preview.style.display = 'block';
+            preview.classList.add('active');
+        }
+        
+        reader.readAsDataURL(file);
+    } else {
+        preview.src = '';
+        preview.style.display = 'none';
+        preview.classList.remove('active');
+    }
+}
+
+// Agregar event listeners para los campos de imagen
+document.addEventListener('DOMContentLoaded', function() {
+    const imagenIlustrativa = document.getElementById('imagen_ilustrativa');
+    const imagenBackground = document.getElementById('imagen_background');
+    
+    if (imagenIlustrativa) {
+        imagenIlustrativa.addEventListener('change', function() {
+            handleImagePreview(this, 'preview_ilustrativa');
+        });
+    }
+    
+    if (imagenBackground) {
+        imagenBackground.addEventListener('change', function() {
+            handleImagePreview(this, 'preview_background');
+        });
+    }
+});
+
+// Función para manejar la eliminación de posts
+function handleDeletePost(postId) {
+    const modal = document.getElementById('modal-delete-confirmation');
+    const overlay = document.getElementById('overlay');
+    const postTitle = document.getElementById('post-delete-title');
+    const confirmButton = document.getElementById('confirm-delete-button');
+    const cancelButton = document.getElementById('cancel-delete');
+    const closeButton = document.getElementById('close-delete-modal');
+
+    // Obtener el título del post
+    const postRow = document.querySelector(`tr[data-id="${postId}"]`);
+    if (postRow) {
+        const titleCell = postRow.querySelector('td:nth-child(2)');
+        postTitle.textContent = titleCell.textContent;
+    }
+
+    // Mostrar el modal
+    modal.style.display = 'flex';
+    overlay.style.display = 'block';
+
+    // Función para cerrar el modal
+    const closeModal = () => {
+        modal.style.display = 'none';
+        overlay.style.display = 'none';
+    };
+
+    // Event listeners para cerrar el modal
+    cancelButton.onclick = closeModal;
+    closeButton.onclick = closeModal;
+    overlay.onclick = closeModal;
+
+    // Manejar la confirmación de eliminación
+    confirmButton.onclick = async () => {
+        try {
+            const formData = new FormData();
+            formData.append('id', postId);
+
+            const response = await fetch('eliminar_post.php', {
+                method: 'POST',
+                body: formData
+            });
+
+            const data = await response.json();
+
+            if (data.success) {
+                // Mostrar notificación de éxito
+                showNotification('Post eliminado correctamente', 'success');
+                // Eliminar la fila de la tabla
+                if (postRow) {
+                    postRow.remove();
+                }
+                // Cerrar el modal
+                closeModal();
+            } else {
+                throw new Error(data.message);
+            }
+        } catch (error) {
+            showNotification('Error al eliminar el post: ' + error.message, 'error');
+        }
+    };
+}
+
+// Agregar event listeners a los botones de eliminar
+document.addEventListener('DOMContentLoaded', () => {
+    const deleteButtons = document.querySelectorAll('.delete-button');
+    deleteButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const postId = button.getAttribute('data-id');
+            if (postId) {
+                handleDeletePost(postId);
+            }
         });
     });
 });

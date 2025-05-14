@@ -22,7 +22,7 @@ function generarSlug($titulo) {
 }
 
 // Función para subir imagen
-function subirImagen($file, $uploadDir, $allowedTypes, $maxFileSize) {
+function subirImagen($file, $uploadDir, $allowedTypes, $maxFileSize, $tipo_imagen) {
     if ($file['error'] !== UPLOAD_ERR_OK) {
         throw new Exception("Error al subir el archivo: " . $file['error']);
     }
@@ -74,30 +74,54 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             throw new Exception("Debe seleccionar una categoría válida");
         }
         
-        // Procesar imagen si se subió
+        // Procesar imágenes si se subieron
         $id_imagen_destacada = null;
-        if (!empty($_FILES['imagen']['name'])) {
-            // Debug information
-            error_log("File info: " . print_r($_FILES['imagen'], true));
+        $id_imagen_background = null;
+
+        // Procesar imagen ilustrativa
+        if (!empty($_FILES['imagen_ilustrativa']['name'])) {
+            $imagenPath = subirImagen($_FILES['imagen_ilustrativa'], $uploadDir, $allowedTypes, $maxFileSize, 'ilustrativa');
             
-            $imagenPath = subirImagen($_FILES['imagen'], $uploadDir, $allowedTypes, $maxFileSize);
-            
-            // Insertar la imagen en la base de datos
-            $sqlImagen = "INSERT INTO imagenes (ruta, titulo, alt_text, id_usuario) 
-                         VALUES (:ruta, :titulo, :alt_text, :id_usuario)";
+            // Insertar la imagen ilustrativa en la base de datos
+            $sqlImagen = "INSERT INTO imagenes (ruta, titulo, alt_text, tipo_imagen, id_usuario) 
+                         VALUES (:ruta, :titulo, :alt_text, :tipo_imagen, :id_usuario)";
             
             $stmtImagen = $pdo->prepare($sqlImagen);
-            $tituloImagen = "Imagen destacada para: " . substr($titulo, 0, 50);
+            $tituloImagen = "Imagen ilustrativa para: " . substr($titulo, 0, 50);
             $altText = "Imagen ilustrativa del post: " . substr($titulo, 0, 100);
             
             $stmtImagen->execute([
                 ':ruta' => $imagenPath,
                 ':titulo' => $tituloImagen,
                 ':alt_text' => $altText,
+                ':tipo_imagen' => 'ilustrativa',
                 ':id_usuario' => $id_usuario
             ]);
             
             $id_imagen_destacada = $pdo->lastInsertId();
+        }
+
+        // Procesar imagen de fondo
+        if (!empty($_FILES['imagen_background']['name'])) {
+            $imagenPath = subirImagen($_FILES['imagen_background'], $uploadDir, $allowedTypes, $maxFileSize, 'background');
+            
+            // Insertar la imagen de fondo en la base de datos
+            $sqlImagen = "INSERT INTO imagenes (ruta, titulo, alt_text, tipo_imagen, id_usuario) 
+                         VALUES (:ruta, :titulo, :alt_text, :tipo_imagen, :id_usuario)";
+            
+            $stmtImagen = $pdo->prepare($sqlImagen);
+            $tituloImagen = "Imagen de fondo para: " . substr($titulo, 0, 50);
+            $altText = "Imagen de fondo del post: " . substr($titulo, 0, 100);
+            
+            $stmtImagen->execute([
+                ':ruta' => $imagenPath,
+                ':titulo' => $tituloImagen,
+                ':alt_text' => $altText,
+                ':tipo_imagen' => 'background',
+                ':id_usuario' => $id_usuario
+            ]);
+            
+            $id_imagen_background = $pdo->lastInsertId();
         }
         
         // Generar el slug
@@ -114,8 +138,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
         
         // Preparar la consulta SQL para insertar el post
-        $sql = "INSERT INTO posts (titulo, slug, resumen, contenido, id_categoria, id_imagen_destacada, id_usuario, fecha_publicacion, estado) 
-                VALUES (:titulo, :slug, :resumen, :contenido, :id_categoria, :id_imagen_destacada, :id_usuario, :fecha_publicacion, 'publicado')";
+        $sql = "INSERT INTO posts (titulo, slug, resumen, contenido, id_categoria, id_imagen_destacada, id_imagen_background, id_usuario, fecha_publicacion, estado) 
+                VALUES (:titulo, :slug, :resumen, :contenido, :id_categoria, :id_imagen_destacada, :id_imagen_background, :id_usuario, :fecha_publicacion, 'publicado')";
         
         $stmt = $pdo->prepare($sql);
         
@@ -126,6 +150,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->bindParam(':contenido', $contenido, PDO::PARAM_STR);
         $stmt->bindParam(':id_categoria', $id_categoria, PDO::PARAM_INT);
         $stmt->bindParam(':id_imagen_destacada', $id_imagen_destacada, PDO::PARAM_INT);
+        $stmt->bindParam(':id_imagen_background', $id_imagen_background, PDO::PARAM_INT);
         $stmt->bindParam(':id_usuario', $id_usuario, PDO::PARAM_INT);
         $stmt->bindParam(':fecha_publicacion', $fecha_publicacion, PDO::PARAM_STR);
         
