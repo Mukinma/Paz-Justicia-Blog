@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost
--- Tiempo de generación: 13-05-2025 a las 19:21:12
+-- Tiempo de generación: 14-05-2025 a las 13:38:43
 -- Versión del servidor: 8.0.17
 -- Versión de PHP: 7.3.10
 
@@ -22,28 +22,6 @@ SET time_zone = "+00:00";
 -- Base de datos: `blog`
 --
 
-DELIMITER $$
---
--- Funciones
---
-CREATE DEFINER=`root`@`localhost` FUNCTION `quitar_acentos` (`cadena` VARCHAR(255)) RETURNS VARCHAR(255) CHARSET utf8 COLLATE utf8_spanish2_ci BEGIN
-    SET cadena = REPLACE(cadena, 'á', 'a');
-    SET cadena = REPLACE(cadena, 'é', 'e');
-    SET cadena = REPLACE(cadena, 'í', 'i');
-    SET cadena = REPLACE(cadena, 'ó', 'o');
-    SET cadena = REPLACE(cadena, 'ú', 'u');
-    SET cadena = REPLACE(cadena, 'Á', 'a');
-    SET cadena = REPLACE(cadena, 'É', 'e');
-    SET cadena = REPLACE(cadena, 'Í', 'i');
-    SET cadena = REPLACE(cadena, 'Ó', 'o');
-    SET cadena = REPLACE(cadena, 'Ú', 'u');
-    SET cadena = REPLACE(cadena, 'ñ', 'n');
-    SET cadena = REPLACE(cadena, 'Ñ', 'n');
-    RETURN cadena;
-END$$
-
-DELIMITER ;
-
 -- --------------------------------------------------------
 
 --
@@ -53,7 +31,7 @@ DELIMITER ;
 CREATE TABLE `categorias` (
   `id_categoria` int(11) NOT NULL,
   `nombre` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `slug` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `slug` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `descripcion` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -101,6 +79,16 @@ CREATE TABLE `comentarios` (
   `user_agent` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Volcado de datos para la tabla `comentarios`
+--
+
+INSERT INTO `comentarios` (`id_comentario`, `id_post`, `id_usuario`, `nombre_autor`, `email_autor`, `contenido`, `fecha_comentario`, `aprobado`, `ip_address`, `user_agent`) VALUES
+(1, 7, 2, NULL, NULL, 'Prueba 1', '2025-05-14 01:21:49', 1, NULL, NULL),
+(2, 7, 2, NULL, NULL, 'ingaturroña', '2025-05-14 01:22:01', 1, NULL, NULL),
+(3, 7, 2, NULL, NULL, 'si jala', '2025-05-14 01:22:10', 1, NULL, NULL),
+(4, 7, 2, NULL, NULL, 'XD', '2025-05-14 01:22:23', 1, NULL, NULL);
+
 -- --------------------------------------------------------
 
 --
@@ -114,17 +102,16 @@ CREATE TABLE `imagenes` (
   `alt_text` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `fecha_subida` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `id_usuario` int(11) NOT NULL,
-  `tipo_imagen` ENUM('background', 'ilustrativa') NOT NULL DEFAULT 'ilustrativa'
+  `tipo_imagen` enum('background','ilustrativa') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'ilustrativa'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Volcado de datos para la tabla `imagenes`
 --
 
-INSERT INTO `imagenes` (`id_imagen`, `ruta`, `titulo`, `alt_text`, `fecha_subida`, `id_usuario`) VALUES
-(1, '681db3e354e95.png', 'Imagen destacada para: Prueba 14', 'Imagen ilustrativa del post: Prueba 14', '2025-05-09 01:50:59', 1),
-(2, '../assets/681e26e219cf9.png', 'Imagen destacada para: Prueba 15', 'Imagen ilustrativa del post: Prueba 15', '2025-05-09 10:01:38', 1),
-(3, '../assets/681e4ff08565e.png', 'Imagen destacada para: Prueba 16', 'Imagen ilustrativa del post: Prueba 16', '2025-05-09 12:56:48', 1);
+INSERT INTO `imagenes` (`id_imagen`, `ruta`, `titulo`, `alt_text`, `fecha_subida`, `id_usuario`, `tipo_imagen`) VALUES
+(7, '../assets/68240907ba2b3.jpeg', 'Imagen ilustrativa para: LA GUERRA DE RUSIA Y UCRANIA', 'Imagen ilustrativa del post: LA GUERRA DE RUSIA Y UCRANIA', '2025-05-13 21:07:51', 2, 'ilustrativa'),
+(8, '../assets/68240907bc9d4.jpg', 'Imagen de fondo para: LA GUERRA DE RUSIA Y UCRANIA', 'Imagen de fondo del post: LA GUERRA DE RUSIA Y UCRANIA', '2025-05-13 21:07:51', 2, 'background');
 
 -- --------------------------------------------------------
 
@@ -154,12 +141,7 @@ CREATE TABLE `posts` (
 --
 
 INSERT INTO `posts` (`id_post`, `titulo`, `slug`, `resumen`, `contenido`, `id_categoria`, `id_imagen_destacada`, `id_imagen_background`, `id_usuario`, `fecha_publicacion`, `fecha_actualizacion`, `estado`, `visitas`, `referencia_url`) VALUES
-(1, 'Prueba 1', 'prueba-1', 'Primer intento de insertar', 'me eestaa volviendo locoo', 2, NULL, NULL, 1, '2025-05-08 00:00:00', '2025-05-11 04:12:56', 'publicado', 0, NULL),
-(2, 'Prueba 2', 'prueba-2', 'Segundo intento de insertar', 'me eestaa volviendo locoo, me eestaa volviendo locoo, me eestaa volviendo locoo, me eestaa volviendo locoo', 2, NULL, NULL, 1, '2025-05-08 00:00:00', '2025-05-11 03:32:29', 'publicado', 0, NULL),
-(3, 'Prueba 12', 'prueba-12', 'Ayuda', 'No puedo amar, ¿no puedo amar?\r\n¿O solo no amo como aman los demás?\r\n¿Cómo hay que amar? ¿Hay que amar?\r\nHay que desarmar los preceptos hechos y tirarse al mar', 2, NULL, NULL, 1, '2025-05-09 00:00:00', NULL, 'publicado', 0, NULL),
-(4, 'Prueba 14', 'prueba-14', ':(', '...', 6, 1, NULL, 1, '2025-05-09 00:00:00', NULL, 'publicado', 0, NULL),
-(5, 'Prueba 15', 'prueba-15', 'AAAAAAAAAAAa', 'Matenme', 9, 2, NULL, 1, '2025-05-09 00:00:00', NULL, 'publicado', 0, NULL),
-(6, 'Prueba 16-2', 'prueba-16-2', 'Ahuevo', '¡Cómo han pasado los años!, pero sé muy bien, que lo han escuchado\r\nTambién deben de saber que todas las hazañas que este hombre ha logrado\r\nQue por los años ochentas ya era el encargado del mundo del narco\r\nY que formó un gran imperio que hasta la fecha\r\nAún sigue dando\r\n\r\nVoy a presentarme, mi nombre es Rafael Caro Quintero\r\nPregunten a sus abuelos, yo sé que más de alguno\r\nMe escuchó en el noticiero\r\nSoy considerado el narco de narcos y el número uno\r\nSoy de Sinaloa, proveniente de La Noria\r\nY pa todo el mundo\r\n\r\nLa cárcel no es pa siempre, como lo aclaré en aquella entrevista\r\nBien recuerdo las preguntas que me estaba haciendo aquella señorita\r\nYo no conseguí lo que alcancé a tener, \"fácil\", como ella decía\r\nCreo que le quedó bien clara la respuesta que le di\r\n\"¡Nada es fácil en la vida!\"\r\n\r\nPorque nada es fácil en la vida\r\nPor más sencillo que sea, ¡ja, jay!\r\nSomos T3r Elemento, con la R records\r\n\r\nHoy el tiempo ha pasado, la tormenta terminó, pienso hacer muchas cosas\r\nArrepentido, jamás, lo hecho, hecho está, así se escribió en la historia\r\nMe relacionaron con la muerte de un agente de la DEA\r\nCreo que están equivocados, como dice aquel corrido\r\n\"¡Yo no maté a Camarena!\"\r\n\r\nMis sentencias he cumplido, después de veintiocho años\r\nHoy salgo por la puerta\r\nFue bastante tiempo para pensar bien las cosas, vengo con más experiencia\r\nY hoy mi pelo ya no es negro, pues también cambió, de canas se ha pintado\r\nY aunque soy un poco viejo, sigo haciendo bien las cosas\r\nSiempre lo he demostrado\r\n\r\nYa me voy a despedir, respiro aire libre, hoy estoy muy contento\r\nVisitar a mi familia, tengo mucho que contarles, tengo ganas de verlos\r\nDon Rafa ya salió y viene con todo, su legado sigue activo\r\nSu apellido es Caro y el señor sigue siendo\r\nMuy seguro de sí mismo', 8, 3, NULL, 1, '2025-05-09 00:00:00', '2025-05-12 07:49:56', 'publicado', 0, NULL);
+(7, 'LA GUERRA DE RUSIA Y UCRANIA', 'la-guerra-de-rusia-y-ucrania', 'En Rusia, protestar contra la guerra puede costarte hasta 15 años de prisión. La censura no solo silencia, también castiga.', 'La censura de las protestas\r\nDesde el inicio de la invasión a gran escala de Ucrania en febrero de 2022, el gobierno ruso ha intensificado su represión contra cualquier forma de disidencia, implementando leyes que criminalizan la protesta pacífica y la libertad de expresión. Estas medidas han resultado en la detención y encarcelamiento de miles de ciudadanos que se oponen a la guerra, según informes de Amnistía Internacional.\r\n\r\nLegislación para silenciar la disidencia\r\nPoco después de iniciada la guerra, Rusia introdujo leyes de censura que penalizan la difusión de \"información falsa\" y la \"desacreditación\" de las fuerzas armadas, con penas de hasta 15 años de prisión. Estas leyes han sido utilizadas para castigar a quienes expresan opiniones contrarias a la narrativa oficial sobre el conflicto en Ucrania.\r\n\r\nRepresalias más allá del encarcelamiento\r\nAdemás de las penas de prisión, las autoridades rusas han empleado otras tácticas para reprimir la disidencia: • Confiscación de propiedades: En 2024, se aprobó una ley que permite confiscar bienes de personas acusadas bajo las leyes de censura de guerra • Represión a menores: Niños y niñas han sido víctimas de persecución política debido a las opiniones de sus padres o por expresar su desacuerdo con la guerra • Negación de contacto familiar: A los detenidos se les ha negado sistemáticamente el contacto con sus familias, como en el caso del político de oposición Vladimir Kara-Murza, quien estuvo más de un año sin comunicación con sus seres queridos.\r\n\r\nAmnistía Internacional insta a la comunidad internacional a exigir la derogación de las leyes de censura de guerra en Rusia y la liberación inmediata de todas las personas encarceladas por expresar pacíficamente sus opiniones. La organización también anima a firmar peticiones y enviar mensajes de solidaridad a los presos de conciencia. La represión en Rusia ha alcanzado niveles alarmantes, equiparando las penas por protestar contra la guerra con las impuestas por delitos graves como el atraco a mano armada. Es fundamental que la comunidad internacional se solidarice con quienes defienden la paz y la libertad de expresión en Rusia.', 1, 7, 8, 2, '2025-05-14 03:07:51', NULL, 'publicado', 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -170,6 +152,34 @@ INSERT INTO `posts` (`id_post`, `titulo`, `slug`, `resumen`, `contenido`, `id_ca
 CREATE TABLE `posts_tags` (
   `id_post` int(11) NOT NULL,
   `id_tag` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `post_metadatos`
+--
+
+CREATE TABLE `post_metadatos` (
+  `id_metadato` int(11) NOT NULL,
+  `id_post` int(11) NOT NULL,
+  `meta_key` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `meta_value` text COLLATE utf8mb4_unicode_ci
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `registro_actividades`
+--
+
+CREATE TABLE `registro_actividades` (
+  `id_registro` int(11) NOT NULL,
+  `id_usuario` int(11) DEFAULT NULL,
+  `tipo_actividad` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `descripcion` text COLLATE utf8mb4_unicode_ci,
+  `ip_address` varchar(45) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `fecha_actividad` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -215,15 +225,19 @@ CREATE TABLE `usuarios` (
   `rol` enum('admin','editor','lector') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'lector',
   `activo` tinyint(1) NOT NULL DEFAULT '1',
   `avatar` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `biografia` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci
+  `biografia` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `token_recuperacion` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `fecha_expiracion_token` datetime DEFAULT NULL,
+  `intentos_login` int(11) NOT NULL DEFAULT '0',
+  `bloqueado_hasta` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Volcado de datos para la tabla `usuarios`
 --
 
-INSERT INTO `usuarios` (`id_usuario`, `name`, `email`, `pass`, `fecha_registro`, `ultimo_login`, `rol`, `activo`, `avatar`, `biografia`) VALUES
-(1, 'Juan Pérez', 'alphalogic.peaceinprogress@gmail.com', 'fatima2581', '2025-05-07 14:00:20', NULL, 'lector', 1, NULL, NULL);
+INSERT INTO `usuarios` (`id_usuario`, `name`, `email`, `pass`, `fecha_registro`, `ultimo_login`, `rol`, `activo`, `avatar`, `biografia`, `token_recuperacion`, `fecha_expiracion_token`, `intentos_login`, `bloqueado_hasta`) VALUES
+(2, 'Christopher Eugenio Nieves Martínez', 'cnieves0@ucol.mx', '$2y$10$A3VAT6BsMOQRrdCltWM69.wnhcvWZFoQzvFwQ1vBfOOT8lzWtuDSG', '2025-05-13 15:39:04', NULL, 'admin', 1, NULL, NULL, NULL, NULL, 0, NULL);
 
 --
 -- Índices para tablas volcadas
@@ -244,7 +258,9 @@ ALTER TABLE `comentarios`
   ADD PRIMARY KEY (`id_comentario`),
   ADD KEY `id_post` (`id_post`),
   ADD KEY `id_usuario` (`id_usuario`),
-  ADD KEY `idx_comentarios_post` (`id_post`);
+  ADD KEY `idx_comentarios_post` (`id_post`),
+  ADD KEY `idx_comentarios_fecha` (`fecha_comentario`),
+  ADD KEY `idx_comentarios_aprobado` (`aprobado`);
 
 --
 -- Indices de la tabla `imagenes`
@@ -264,7 +280,10 @@ ALTER TABLE `posts`
   ADD KEY `id_imagen_background` (`id_imagen_background`),
   ADD KEY `id_usuario` (`id_usuario`),
   ADD KEY `idx_posts_slug` (`slug`),
-  ADD KEY `idx_posts_imagen_background` (`id_imagen_background`);
+  ADD KEY `idx_posts_imagen_background` (`id_imagen_background`),
+  ADD KEY `idx_posts_fecha` (`fecha_publicacion`),
+  ADD KEY `idx_posts_estado` (`estado`),
+  ADD KEY `idx_posts_categoria` (`id_categoria`);
 
 --
 -- Indices de la tabla `posts_tags`
@@ -274,11 +293,27 @@ ALTER TABLE `posts_tags`
   ADD KEY `id_tag` (`id_tag`);
 
 --
+-- Indices de la tabla `post_metadatos`
+--
+ALTER TABLE `post_metadatos`
+  ADD PRIMARY KEY (`id_metadato`),
+  ADD UNIQUE KEY `idx_post_meta` (`id_post`,`meta_key`);
+
+--
+-- Indices de la tabla `registro_actividades`
+--
+ALTER TABLE `registro_actividades`
+  ADD PRIMARY KEY (`id_registro`),
+  ADD KEY `id_usuario` (`id_usuario`),
+  ADD KEY `idx_registro_fecha` (`fecha_actividad`);
+
+--
 -- Indices de la tabla `sesiones`
 --
 ALTER TABLE `sesiones`
   ADD PRIMARY KEY (`id_sesion`),
-  ADD KEY `id_usuario` (`id_usuario`);
+  ADD KEY `id_usuario` (`id_usuario`),
+  ADD KEY `idx_sesiones_fecha` (`fecha_ultima_actividad`);
 
 --
 -- Indices de la tabla `tags`
@@ -293,7 +328,9 @@ ALTER TABLE `tags`
 --
 ALTER TABLE `usuarios`
   ADD PRIMARY KEY (`id_usuario`),
-  ADD UNIQUE KEY `email` (`email`);
+  ADD UNIQUE KEY `email` (`email`),
+  ADD KEY `idx_usuarios_email` (`email`),
+  ADD KEY `idx_usuarios_rol` (`rol`);
 
 --
 -- AUTO_INCREMENT de las tablas volcadas
@@ -309,19 +346,31 @@ ALTER TABLE `categorias`
 -- AUTO_INCREMENT de la tabla `comentarios`
 --
 ALTER TABLE `comentarios`
-  MODIFY `id_comentario` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_comentario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de la tabla `imagenes`
 --
 ALTER TABLE `imagenes`
-  MODIFY `id_imagen` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_imagen` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT de la tabla `posts`
 --
 ALTER TABLE `posts`
-  MODIFY `id_post` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id_post` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
+-- AUTO_INCREMENT de la tabla `post_metadatos`
+--
+ALTER TABLE `post_metadatos`
+  MODIFY `id_metadato` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `registro_actividades`
+--
+ALTER TABLE `registro_actividades`
+  MODIFY `id_registro` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `tags`
@@ -333,7 +382,7 @@ ALTER TABLE `tags`
 -- AUTO_INCREMENT de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- Restricciones para tablas volcadas
@@ -375,6 +424,18 @@ ALTER TABLE `posts_tags`
   ADD CONSTRAINT `posts_tags_ibfk_2` FOREIGN KEY (`id_tag`) REFERENCES `tags` (`id_tag`) ON DELETE CASCADE;
 
 --
+-- Filtros para la tabla `post_metadatos`
+--
+ALTER TABLE `post_metadatos`
+  ADD CONSTRAINT `fk_metadatos_post` FOREIGN KEY (`id_post`) REFERENCES `posts` (`id_post`) ON DELETE CASCADE;
+
+--
+-- Filtros para la tabla `registro_actividades`
+--
+ALTER TABLE `registro_actividades`
+  ADD CONSTRAINT `fk_registro_usuario` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id_usuario`) ON DELETE SET NULL;
+
+--
 -- Filtros para la tabla `sesiones`
 --
 ALTER TABLE `sesiones`
@@ -385,67 +446,3 @@ COMMIT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-
--- Mejorar la tabla usuarios con campos adicionales y mejor seguridad
-ALTER TABLE `usuarios` 
-  ADD COLUMN `token_recuperacion` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  ADD COLUMN `fecha_expiracion_token` datetime DEFAULT NULL,
-  ADD COLUMN `intentos_login` int(11) NOT NULL DEFAULT '0',
-  ADD COLUMN `bloqueado_hasta` datetime DEFAULT NULL,
-  ADD INDEX `idx_usuarios_email` (`email`),
-  ADD INDEX `idx_usuarios_rol` (`rol`);
-
--- Mejorar la tabla posts con índices adicionales
-ALTER TABLE `posts` 
-  ADD INDEX `idx_posts_fecha` (`fecha_publicacion`),
-  ADD INDEX `idx_posts_estado` (`estado`),
-  ADD INDEX `idx_posts_categoria` (`id_categoria`);
-
--- Mejorar la tabla comentarios con índices adicionales
-ALTER TABLE `comentarios` 
-  ADD INDEX `idx_comentarios_fecha` (`fecha_comentario`),
-  ADD INDEX `idx_comentarios_aprobado` (`aprobado`);
-
--- Mejorar la tabla sesiones con índice adicional
-ALTER TABLE `sesiones` 
-  ADD INDEX `idx_sesiones_fecha` (`fecha_ultima_actividad`);
-
--- Agregar tabla para registro de actividades
-CREATE TABLE `registro_actividades` (
-  `id_registro` int(11) NOT NULL AUTO_INCREMENT,
-  `id_usuario` int(11) DEFAULT NULL,
-  `tipo_actividad` varchar(50) NOT NULL,
-  `descripcion` text,
-  `ip_address` varchar(45) DEFAULT NULL,
-  `fecha_actividad` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id_registro`),
-  KEY `id_usuario` (`id_usuario`),
-  KEY `idx_registro_fecha` (`fecha_actividad`),
-  CONSTRAINT `fk_registro_usuario` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id_usuario`) ON DELETE SET NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- Agregar tabla para metadatos de posts
-CREATE TABLE `post_metadatos` (
-  `id_metadato` int(11) NOT NULL AUTO_INCREMENT,
-  `id_post` int(11) NOT NULL,
-  `meta_key` varchar(255) NOT NULL,
-  `meta_value` text,
-  PRIMARY KEY (`id_metadato`),
-  UNIQUE KEY `idx_post_meta` (`id_post`,`meta_key`),
-  CONSTRAINT `fk_metadatos_post` FOREIGN KEY (`id_post`) REFERENCES `posts` (`id_post`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- Agregar tabla para suscripciones
-CREATE TABLE `suscripciones` (
-  `id_suscripcion` int(11) NOT NULL AUTO_INCREMENT,
-  `email` varchar(255) NOT NULL,
-  `token_confirmacion` varchar(255) DEFAULT NULL,
-  `confirmado` tinyint(1) NOT NULL DEFAULT '0',
-  `fecha_suscripcion` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `fecha_confirmacion` datetime DEFAULT NULL,
-  PRIMARY KEY (`id_suscripcion`),
-  UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- Actualizar los datos existentes (asumiendo que las imágenes actuales son ilustrativas)
-UPDATE `imagenes` SET `tipo_imagen` = 'ilustrativa' WHERE `tipo_imagen` IS NULL;
