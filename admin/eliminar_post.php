@@ -5,69 +5,75 @@ error_reporting(E_ALL);
 
 require '../config/db.php';
 
-// Check if the request is a POST request and has an ID
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id'])) {
-    $id = intval($_POST['id']);
-    
+header('Content-Type: application/json');
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
-        // Start transaction
-        $pdo->beginTransaction();
+        // Obtener el ID del post a eliminar
+        $id_post = isset($_POST['id']) ? intval($_POST['id']) : 0;
         
-        // Get image ID before deleting the post (if exists)
-        $sqlGetImage = "SELECT id_imagen_destacada FROM posts WHERE id_post = :id";
-        $stmtGetImage = $pdo->prepare($sqlGetImage);
-        $stmtGetImage->bindParam(':id', $id, PDO::PARAM_INT);
-        $stmtGetImage->execute();
-        $imageId = $stmtGetImage->fetchColumn();
-        
-        // Delete post
-        $sqlDeletePost = "DELETE FROM posts WHERE id_post = :id";
-        $stmtDeletePost = $pdo->prepare($sqlDeletePost);
-        $stmtDeletePost->bindParam(':id', $id, PDO::PARAM_INT);
-        $result = $stmtDeletePost->execute();
-        
-        // If image exists and was used only by this post, delete it too
-        if ($imageId) {
-            // Check if image is used by other posts
-            $sqlCheckImage = "SELECT COUNT(*) FROM posts WHERE id_imagen_destacada = :image_id";
-            $stmtCheckImage = $pdo->prepare($sqlCheckImage);
-            $stmtCheckImage->bindParam(':image_id', $imageId, PDO::PARAM_INT);
-            $stmtCheckImage->execute();
-            
-            if ($stmtCheckImage->fetchColumn() == 0) {
-                // Get image path to delete the file
-                $sqlGetImagePath = "SELECT ruta FROM imagenes WHERE id_imagen = :image_id";
-                $stmtGetImagePath = $pdo->prepare($sqlGetImagePath);
-                $stmtGetImagePath->bindParam(':image_id', $imageId, PDO::PARAM_INT);
-                $stmtGetImagePath->execute();
-                $imagePath = $stmtGetImagePath->fetchColumn();
-                
-                // Delete image record from database
-                $sqlDeleteImage = "DELETE FROM imagenes WHERE id_imagen = :image_id";
-                $stmtDeleteImage = $pdo->prepare($sqlDeleteImage);
-                $stmtDeleteImage->bindParam(':image_id', $imageId, PDO::PARAM_INT);
-                $stmtDeleteImage->execute();
-                
-                // Delete the actual file if it exists
-                if ($imagePath && file_exists($imagePath)) {
-                    unlink($imagePath);
+        if ($id_post <= 0) {
+            throw new Exception('ID de post inválido');
+        }
+
+        // Primero, eliminar las imágenes asociadas
+        $sql_imagenes = "SELECT id_imagen_destacada, id_imagen_background FROM posts WHERE id_post = ?";
+        $stmt = $pdo->prepare($sql_imagenes);
+        $stmt->execute([$id_post]);
+        $imagenes = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        // Eliminar las imágenes físicamente si existen
+        if ($imagenes) {
+            $sql_rutas = "SELECT ruta FROM imagenes WHERE id_imagen IN (?, ?)";
+            $stmt = $pdo->prepare($sql_rutas);
+            $stmt->execute([$imagenes['id_imagen_destacada'], $imagenes['id_imagen_background']]);
+            $rutas = $stmt->fetchAll(PDO::FETCH_COLUMN);
+
+            foreach ($rutas as $ruta) {
+                if ($ruta && file_exists("../assets/" . $ruta)) {
+                    unlink("../assets/" . $ruta);
                 }
             }
         }
-        
-        // Commit transaction
-        $pdo->commit();
-        
-        if ($result) {
-            echo json_encode(['success' => true, 'message' => 'Post deleted successfully']);
-        } else {
-            echo json_encode(['success' => false, 'message' => 'Failed to delete post']);
+
+        // Eliminar las relaciones en posts_tags
+        $sql_delete_tags = "DELETE FROM posts_tags WHERE id_post = ?";
+        $stmt = $pdo->prepare($sql_delete_tags);
+        $stmt->execute([$id_post]);
+
+        // Eliminar los comentarios asociados
+        $sql_delete_comentarios = "DELETE FROM comentarios WHERE id_post = ?";
+        $stmt = $pdo->prepare($sql_delete_comentarios);
+        $stmt->execute([$id_post]);
+
+        // Finalmente, eliminar el post
+        $sql_delete_post = "DELETE FROM posts WHERE id_post = ?";
+        $stmt = $pdo->prepare($sql_delete_post);
+        $stmt->execute([$id_post]);
+
+        // Eliminar las imágenes de la base de datos
+        if ($imagenes) {
+            $sql_delete_imagenes = "DELETE FROM imagenes WHERE id_imagen IN (?, ?)";
+            $stmt = $pdo->prepare($sql_delete_imagenes);
+            $stmt->execute([$imagenes['id_imagen_destacada'], $imagenes['id_imagen_background']]);
         }
-    } catch (PDOException $e) {
-        // Rollback on error
-        $pdo->rollBack();
-        echo json_encode(['success' => false, 'message' => 'Database error: ' . $e->getMessage()]);
+
+        echo json_encode([
+            'success' => true,
+            'message' => 'Post eliminado correctamente'
+        ]);
+
+    } catch (Exception $e) {
+        http_response_code(500);
+        echo json_encode([
+            'success' => false,
+            'message' => 'Error al eliminar el post: ' . $e->getMessage()
+        ]);
     }
 } else {
-    echo json_encode(['success' => false, 'message' => 'Invalid request']);
+    http_response_code(405);
+    echo json_encode([
+        'success' => false,
+        'message' => 'Método no permitido'
+    ]);
 }
