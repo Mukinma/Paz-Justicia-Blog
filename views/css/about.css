@@ -66,6 +66,21 @@ header nav {
     gap: 30px;
 }
 
+.traductor {
+    background: none;
+    border: 2px solid #eee;
+    color: #eee;
+    padding: 6px 14px;
+    border-radius: 6px;
+    font-weight: 500;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    top: -2px; /* 🔼 Esto lo sube 2px */
+}
+
+
 header nav a {
     color: #eee;
     text-decoration: none;
