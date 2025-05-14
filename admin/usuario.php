@@ -2,7 +2,7 @@
 session_start();//mantiene la sesion ya iniciada la anterior que uno registra
 $mensaje_error = "";//mensajes para erro(usuario ya registrado, contraseña incorrecta etc..)
 
-//este apartados nos irve para al tener errores en el login mande mensajes dependiendo el caso de error
+//este apartados nos sirve para al tener errores en el login mande mensajes dependiendo el caso de error
 $mensaje_error_login = ""; // para errores en login
 
 if (!isset($_SESSION['intentos'])) {
@@ -107,6 +107,7 @@ if(isset($_POST['login'])) {
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="../views/css/login_style.css">
     <script src="../js/app.js"></script>
+    <script defer src="../js/contact.js"></script>
 </head>
 
 <body>
