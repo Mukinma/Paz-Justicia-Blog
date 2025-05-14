@@ -1,4 +1,12 @@
 <?php
+session_start();
+
+// Verificar si el usuario está logueado
+if (!isset($_SESSION['usuario'])) {
+    header('Location: usuario.php');
+    exit();
+}
+
 require '../config/db.php';
 
 try {
@@ -21,6 +29,19 @@ try {
                               WHERE p.estado = 'archivado' 
                               ORDER BY p.id_post DESC";
 
+    $sqlComentarios = "SELECT c.id_comentario, 
+                          c.contenido,
+                          c.fecha_comentario,
+                          c.aprobado,
+                          c.ip_address,
+                          u.name as usuario_nombre,
+                          p.titulo as post_titulo,
+                          p.id_post
+                   FROM comentarios c
+                   LEFT JOIN usuarios u ON c.id_usuario = u.id_usuario
+                   LEFT JOIN posts p ON c.id_post = p.id_post
+                   ORDER BY c.fecha_comentario DESC";
+
     // Execute the query and fetch results
     $stmt = $pdo->query($sqlCategorias);
     $categorias = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -32,6 +53,8 @@ try {
     $recursos = $stmt->fetchAll(PDO::FETCH_ASSOC);
     $stmt = $pdo->query($sqlArticulos);
     $articulos = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $stmt = $pdo->query($sqlComentarios);
+    $comentarios = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 } catch (PDOException $e) {
     die("Error al obtener publicaciones: " . $e->getMessage());
@@ -51,8 +74,19 @@ try {
     <div class="left-side">
         <h1>Admin control</h1>
         <img src="../assets/profile-icon.svg" alt="profile" class="profile-icon">
-        <h2>Juan Mastercrack</h2>
-        <p>Admin</p>
+        <h2><?php 
+            $nombre_completo = $_SESSION['usuario'];
+            $nombre_palabras = explode(' ', $nombre_completo);
+            $primeras_dos_palabras = array_slice($nombre_palabras, 0, 2);
+            echo implode(' ', $primeras_dos_palabras); 
+        ?></h2>
+        <p><?php 
+            $sql = "SELECT rol FROM usuarios WHERE name = ?";
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute([$_SESSION['usuario']]);
+            $rol = $stmt->fetchColumn();
+            echo ucfirst($rol); // Capitalizar la primera letra del rol
+        ?></p>
 
         <div class="left-side-options">
             <button id="articlesButton">Articles</button>
@@ -67,13 +101,19 @@ try {
         <header>
             <img src="../assets/logo.png" class="logo" alt="logo">
             <div class="header-options">
-                <img src="../assets/home-icon.svg" alt="home" class="home-icon">
-                <img src="../assets/logout-icon.svg" alt="logout" class="logout-icon">
+                <img src="../assets/home-icon.svg" alt="home" class="home-icon" onclick="window.location.href='../index.php'" style="cursor: pointer;">
+                <a href="logout.php" class="logout-link">
+                    <img src="../assets/logout-icon.svg" alt="logout" class="logout-icon">
+                </a>
             </div>
         </header>
         <div class="rectangle">
             <div class="rectangle-text">
-                <h1>Welcome back, Juan</h1>
+                <h1>Welcome back, <?php 
+            $nombre_completo = $_SESSION['usuario'];
+            $nombre_palabras = explode(' ', $nombre_completo);
+            $primera_palabra = array_slice($nombre_palabras, 0, 1);
+            echo implode(' ', $primera_palabra); ?></h1>
                 <p>Here you can manage what you need.</p>
             </div>
             <img src="../assets/hand-header.svg" alt="hand" class="hand-header">
@@ -288,67 +328,58 @@ try {
                             <th><input type="checkbox"></th>
                             <th>Comment fragment</th>
                             <th>User</th>
-                            <th>State</th>
                             <th>Associated article</th>
+                            <th>State</th>
                             <th>Date</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td><input type="checkbox"></td>
-                            <td>1</td>
-                            <td>John Doe</td>
-                            <td>30</td>
-                        </tr>
-                        <tr>
-                            <td><input type="checkbox"></td>
-                            <td>2</td>
-                            <td>Jane Smith</td>
-                            <td>25</td>
-                        </tr>
-                        <tr>
-                            <td><input type="checkbox"></td>
-                            <td>3</td>
-                            <td>Sam Brown</td>
-                            <td>22</td>
-                        </tr>
-                        <tr>
-                            <td><input type="checkbox"></td>
-                            <td>1</td>
-                            <td>John Doe</td>
-                            <td>30</td>
-                        </tr>
-                        <tr>
-                            <td><input type="checkbox"></td>
-                            <td>2</td>
-                            <td>Jane Smith</td>
-                            <td>25</td>
-                        </tr>
-                        <tr>
-                            <td><input type="checkbox"></td>
-                            <td>3</td>
-                            <td>Sam Brown</td>
-                            <td>22</td>
-                        </tr>
-                        <tr>
-                            <td><input type="checkbox"></td>
-                            <td>1</td>
-                            <td>John Doe</td>
-                            <td>30</td>
-                        </tr>
-                        <tr>
-                            <td><input type="checkbox"></td>
-                            <td>2</td>
-                            <td>Jane Smith</td>
-                            <td>25</td>
-                        </tr>
-                        <tr>
-                            <td><input type="checkbox"></td>
-                            <td>3</td>
-                            <td>Sam Brown</td>
-                            <td>22</td>
-                        </tr>
+                        <?php if (empty($comentarios)): ?>
+                            <tr>
+                                <td colspan="7" class="no-results">
+                                    <div class="no-results-message">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="no-results-icon">
+                                            <path fill="currentColor" d="M256 32c12.9 0 24.6 7.8 29.6 19.8s2.2 25.7-6.9 34.9L264 94.6l24.7 24.7c9.2 9.2 11.9 22.9 6.9 34.9S268.9 176 256 176s-24.6-7.8-29.6-19.8s-2.2-25.7 6.9-34.9L248 94.6l-24.7-24.7c-9.2-9.2-11.9-22.9-6.9-34.9S243.1 32 256 32zM160 256c17.7 0 32 14.3 32 32v96c0 17.7-14.3 32-32 32H96c-17.7 0-32-14.3-32-32V288c0-17.7 14.3-32 32-32h64zm128 0c17.7 0 32 14.3 32 32v96c0 17.7-14.3 32-32 32H224c-17.7 0-32-14.3-32-32V288c0-17.7 14.3-32 32-32h64zm128 0c17.7 0 32 14.3 32 32v96c0 17.7-14.3 32-32 32H352c-17.7 0-32-14.3-32-32V288c0-17.7 14.3-32 32-32h64z"/>
+                                        </svg>
+                                        <p>No hay comentarios disponibles</p>
+                                        <span>Los comentarios aparecerán aquí</span>
+                                    </div>
+                                </td>
+                            </tr>
+                        <?php else: ?>
+                            <?php foreach ($comentarios as $comentario): ?>
+                                <tr>
+                                    <td><input type="checkbox"></td>
+                                    <td><?php echo htmlspecialchars(substr($comentario['contenido'], 0, 50)) . '...'; ?></td>
+                                    <td><?php echo htmlspecialchars($comentario['usuario_nombre'] ?? 'Anónimo'); ?></td>
+                                    <td>
+                                        <a href="../views/post.php?id=<?php echo $comentario['id_post']; ?>" target="_blank">
+                                            <?php echo htmlspecialchars(substr($comentario['post_titulo'], 0, 30)) . '...'; ?>
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <span class="status-badge <?php echo $comentario['aprobado'] ? 'approved' : 'pending'; ?>">
+                                            <?php echo $comentario['aprobado'] ? 'Aprobado' : 'Pendiente'; ?>
+                                        </span>
+                                    </td>
+                                    <td><?php echo date('d/m/Y H:i', strtotime($comentario['fecha_comentario'])); ?></td>
+                                    <td>
+                                        <?php if (!$comentario['aprobado']): ?>
+                                            <button class="approve-button" data-id="<?php echo $comentario['id_comentario']; ?>" title="Aprobar">
+                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentcolor" d="M173.898 439.404l-166.4-166.4c-9.997-9.997-9.997-26.206 0-36.204l36.203-36.204c9.997-9.998 26.207-9.998 36.204 0L192 312.69 432.095 72.596c9.997-9.997 26.207-9.997 36.204 0l36.203 36.204c9.997 9.997 9.997 26.206 0 36.204l-294.4 294.401c-9.998 9.997-26.207 9.997-36.204-.001z"/></svg>
+                                            </button>
+                                        <?php endif; ?>
+                                        <button class="view-comment-button" data-id="<?php echo $comentario['id_comentario']; ?>" title="Ver">
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><path fill="currentcolor" d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM144 256a144 144 0 1 1 288 0 144 144 0 1 1 -288 0zm144-64c0 35.3-28.7 64-64 64c-7.1 0-13.9-1.2-20.3-3.3c-5.5-1.8-11.9 1.6-11.7 7.4c.3 6.9 1.3 13.8 3.2 20.7c13.7 51.2 66.4 81.6 117.6 67.9s81.6-66.4 67.9-117.6c-11.1-41.5-47.8-69.4-88.6-71.1c-5.8-.2-9.2 6.1-7.4 11.7c2.1 6.4 3.3 13.2 3.3 20.3z"/></svg>
+                                        </button>
+                                        <button class="delete-comment-button" data-id="<?php echo $comentario['id_comentario']; ?>" title="Eliminar">
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="currentcolor" d="M135.2 17.7L128 32 32 32C14.3 32 0 46.3 0 64S14.3 96 32 96l384 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-96 0-7.2-14.3C307.4 6.8 296.3 0 284.2 0L163.8 0c-12.1 0-23.2 6.8-28.6 17.7zM416 128L32 128 53.2 467c1.6 25.3 22.6 45 47.9 45l245.8 0c25.3 0 46.3-19.7 47.9-45L416 128z"/></svg>
+                                        </button>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
                     </tbody>
                     <tfoot>
                         <tr>

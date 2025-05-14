@@ -42,7 +42,7 @@ if(isset($_POST['register'])){//al precionar el botton login hace lo sig..
     } else {
     $sql = "INSERT INTO usuarios (name, email, pass) VALUES ('$nombre', '$email', '$pass')";
         if ($conexion->query($sql) === TRUE){
-        echo "<script>window.location.href='../views/index.html';</script>";
+        echo "<script>window.location.href='../index.php';</script>";
     } else {
         $mensaje_error = "Error al registrar: " . $conexion->error;
     }
@@ -82,7 +82,7 @@ if(isset($_POST['login'])) {
             if(password_verify($pass, $usuario['pass'])){
                 $_SESSION['usuario'] = $usuario['name'];
                 $_SESSION['intentos'] = 0; // reinicia intentos exitosamente
-                echo "<script>window.location.href='../views/index.html';</script>";
+                echo "<script>window.location.href='../index.php';</script>";
             } else {
                 $_SESSION['intentos']++;
                     $mensaje_error_login = "Contraseña incorrecta. Intento: " . $_SESSION['intentos'] . " de 3";
