@@ -692,5 +692,30 @@
             </div>
         </div>
     </div>
+    
+    <!-- Modal de edición de categoría -->
+    <div id="modal-edit-category" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Editar Categoría</h2>
+                <button id="close-edit-category-modal" class="close-modal">&times;</button>
+            </div>
+            <form id="editCategoryForm" action="editar_categoria.php" method="POST">
+                <input type="hidden" id="edit-category-id" name="id_categoria">
+                <div class="form-group">
+                    <label for="edit-category-nombre">Nombre:</label>
+                    <input type="text" id="edit-category-nombre" name="nombre" required>
+                </div>
+                <div class="form-group">
+                    <label for="edit-category-descripcion">Descripción:</label>
+                    <textarea id="edit-category-descripcion" name="descripcion" required></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="cancel-edit-category" class="cancel-button">Cancelar</button>
+                    <button type="submit" id="submit-edit-category-button" class="submit-button">Guardar Cambios</button>
+                </div>
+            </form>
+        </div>
+    </div>
 </body>
 </html>

@@ -64,9 +64,24 @@ header {
     background: none;
     border: none;
     cursor: pointer;
-    font-size: 1.5rem;
+    font-size: 2rem;
     color: white;
     padding: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.profile-btn img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid white;
+}
+
+.profile-btn i {
+    font-size: 1.5rem;
 }
 
 .dropdown-content {
@@ -74,10 +89,11 @@ header {
     position: absolute;
     right: 0;
     background-color: rgba(0, 0, 0, 0.9);
-    min-width: 160px;
+    min-width: 200px;
     box-shadow: 0 8px 16px rgba(0,0,0,0.2);
     border-radius: 5px;
     z-index: 1;
+    padding: 0.5rem 0;
 }
 
 .profile-dropdown:hover .dropdown-content {
@@ -88,8 +104,15 @@ header {
     color: white;
     padding: 12px 16px;
     text-decoration: none;
-    display: block;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
     transition: background-color 0.3s;
+}
+
+.dropdown-content a i {
+    width: 20px;
+    text-align: center;
 }
 
 .dropdown-content a:hover {
@@ -756,4 +779,41 @@ header nav a {
 .container-container-container-footer {
     display: flex;
     justify-content: space-between;
+}
+
+.error-message {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #ff4444;
+    color: white;
+    padding: 15px 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    animation: slideDown 0.5s ease-out, fadeOut 0.5s ease-out 4.5s forwards;
+    text-align: center;
+    font-weight: 500;
+}
+
+@keyframes slideDown {
+    from {
+        transform: translate(-50%, -100%);
+        opacity: 0;
+    }
+    to {
+        transform: translate(-50%, 0);
+        opacity: 1;
+    }
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+        visibility: hidden;
+    }
 }
