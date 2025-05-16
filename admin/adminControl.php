@@ -118,7 +118,10 @@ try {
                 </svg>
                 Articles
             </button>
-            <button id="categoriesButton">
+            <button id="categoriesButton" <?php echo ($_SESSION['role'] === 'editor') ? 'class="disabled"' : ''; ?>>
+                <?php if ($_SESSION['role'] === 'editor'): ?>
+                    <div class="tooltip">Solo disponible para administradores</div>
+                <?php endif; ?>
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="24" height="24">
                     <path fill="currentColor" d="M40 48C26.7 48 16 58.7 16 72v48c0 13.3 10.7 24 24 24H88c13.3 0 24-10.7 24-24V72c0-13.3-10.7-24-24-24H40zM192 64c-17.7 0-32 14.3-32 32s14.3 32 32 32H480c17.7 0 32-14.3 32-32s-14.3-32-32-32H192zm0 160c-17.7 0-32 14.3-32 32s14.3 32 32 32H480c17.7 0 32-14.3 32-32s-14.3-32-32-32H192zm0 160c-17.7 0-32 14.3-32 32s14.3 32 32 32H480c17.7 0 32-14.3 32-32s-14.3-32-32-32H192zM16 232v48c0 13.3 10.7 24 24 24H88c13.3 0 24-10.7 24-24V232c0-13.3-10.7-24-24-24H40c-13.3 0-24 10.7-24 24zM40 368c-13.3 0-24 10.7-24 24v48c0 13.3 10.7 24 24 24H88c13.3 0 24-10.7 24-24V392c0-13.3-10.7-24-24-24H40z"/>
                 </svg>
@@ -130,7 +133,10 @@ try {
                 </svg>
                 Comments
             </button>
-            <button id="usersButton">
+            <button id="usersButton" <?php echo ($_SESSION['role'] === 'editor') ? 'class="disabled"' : ''; ?>>
+                <?php if ($_SESSION['role'] === 'editor'): ?>
+                    <div class="tooltip">Solo disponible para administradores</div>
+                <?php endif; ?>
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512" width="24" height="24">
                     <path fill="currentColor" d="M144 0a48 48 0 1 0 0 96 48 48 0 1 0 0-96zM96 144c-26.5 0-48 21.5-48 48s21.5 48 48 48H192c26.5 0 48-21.5 48-48s-21.5-48-48-48H96zM352 0a48 48 0 1 0 0 96 48 48 0 1 0 0-96zM304 144c-26.5 0-48 21.5-48 48s21.5 48 48 48H448c26.5 0 48-21.5 48-48s-21.5-48-48-48H304zM144 512a48 48 0 1 0 0-96 48 48 0 1 0 0 96zM96 368c-26.5 0-48 21.5-48 48s21.5 48 48 48H192c26.5 0 48-21.5 48-48s-21.5-48-48-48H96zM352 512a48 48 0 1 0 0-96 48 48 0 1 0 0 96zM304 368c-26.5 0-48 21.5-48 48s21.5 48 48 48H448c26.5 0 48-21.5 48-48s-21.5-48-48-48H304zM416 208c0-26.5-21.5-48-48-48H272c-26.5 0-48 21.5-48 48s21.5 48 48 48H368c26.5 0 48-21.5 48-48zM160 464c0-26.5-21.5-48-48-48H48c-26.5 0-48 21.5-48 48s21.5 48 48 48H112c26.5 0 48-21.5 48-48zM592 464c0-26.5-21.5-48-48-48H528c-26.5 0-48 21.5-48 48s21.5 48 48 48h16c26.5 0 48-21.5 48-48z"/>
                 </svg>
@@ -480,7 +486,7 @@ try {
                                     echo '<td><span class="role-badge ' . strtolower($usuario['RolUsuario']) . '">' . htmlspecialchars($usuario['RolUsuario']) . '</span></td>';
                                     echo '<td>' . htmlspecialchars($usuario['CantidadPosts']) . '</td>';
                                     echo '<td>
-                                        <button class="change-role-button" data-id="' . $usuario['id_usuario'] . '" data-rol="' . htmlspecialchars($usuario['RolUsuario']) . '" title="Cambiar rol">
+                                        <button class="change-role-button" data-user-id="' . htmlspecialchars($usuario['id_usuario']) . '" data-current-role="' . htmlspecialchars($usuario['RolUsuario']) . '">
                                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentcolor" d="M495.9 166.6c3.2 8.7 .5 18.4-6.4 24.6l-43.3 39.4c1.1 8.3 1.7 16.8 1.7 25.4s-.6 17.1-1.7 25.4l43.3 39.4c6.9 6.2 9.6 15.9 6.4 24.6c-4.4 11.9-9.7 23.3-15.8 34.3l-4.7 8.1c-6.6 11-14 21.4-22.1 31.2c-5.9 7.2-15.7 9.6-24.5 6.8l-55.7-17.7c-13.4 10.3-28.2 18.9-44 25.4l-12.5 57.1c-2 9.1-9 16.3-18.2 17.8c-13.8 2.3-28 3.5-42.5 3.5s-28.7-1.2-42.5-3.5c-9.2-1.5-16.2-8.7-18.2-17.8l-12.5-57.1c-15.8-6.5-30.6-15.1-44-25.4L83.1 425.9c-8.8 2.8-18.6 .3-24.5-6.8c-8.1-9.8-15.5-20.2-22.1-31.2l-4.7-8.1c-6.1-11-11.4-22.4-15.8-34.3c-3.2-8.7-.5-18.4 6.4-24.6l43.3-39.4C64.6 273.1 64 264.6 64 256s.6-17.1 1.7-25.4L22.4 191.2c-6.9-6.2-9.6-15.9-6.4-24.6c4.4-11.9 9.7-23.3 15.8-34.3l4.7-8.1c6.6-11 14-21.4 22.1-31.2c5.9-7.2 15.7-9.6 24.5-6.8l55.7 17.7c13.4-10.3 28.2-18.9 44-25.4l55.7-17.7c8.8-2.8 18.6-.3 24.5 6.8c8.1 9.8 15.5 20.2 22.1 31.2l4.7 8.1c6.1 11 11.4 22.4 15.8 34.3zM256 336a80 80 0 1 0 0-160 80 80 0 1 0 0 160z"/></svg>
                                         </button>
                                     </td>';
@@ -762,32 +768,29 @@ try {
             </div>
         </div>
     </div>
-    <div class="modal" id="modal-change-role">
+    <div id="overlay" class="overlay"></div>
+    <div id="modal-change-role" class="modal">
         <div class="modal-body">
-            <div class="left-modal">
-                <h1>Cambiar Rol</h1>
-                <div class="buttons-modal">
-                    <button class="cancel-article" id="cancel-change-role">Cancelar</button>
-                    <button class="add-article" id="confirm-change-role-button">Guardar Cambios</button>
-                </div>
+            <div class="modal-header">
+                <button id="close-change-role-modal" class="close-button">&times;</button>
             </div>
-            <div class="right-modal">
-                <div class="modal-header">
-                    <button id="close-change-role-modal" class="close-button">&times;</button>
-                </div>
-                <div class="container">
-                    <form id="changeRoleForm">
-                        <input type="hidden" id="change-role-user-id" name="id_usuario" value="">
-                        <div class="form-group">
-                            <label for="new-role">Nuevo Rol:</label>
-                            <select id="new-role" name="rol" required>
-                                <option value="admin">Administrador</option>
-                                <option value="editor">Editor</option>
-                                <option value="lector">Lector</option>
-                            </select>
-                        </div>
-                    </form>
-                </div>
+            <div class="left-modal">
+                <h2>Cambiar Rol de Usuario</h2>
+                <form id="change-role-form">
+                    <input type="hidden" id="change-role-user-id" name="id_usuario">
+                    <div class="form-group">
+                        <label for="new-role">Nuevo Rol:</label>
+                        <select id="new-role" name="rol" required>
+                            <option value="admin">Administrador</option>
+                            <option value="editor">Editor</option>
+                            <option value="lector">Lector</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="buttons-modal">
+                <button id="cancel-change-role" class="cancel-article">Cancelar</button>
+                <button id="confirm-change-role-button" class="add-article">Confirmar Cambio</button>
             </div>
         </div>
     </div>

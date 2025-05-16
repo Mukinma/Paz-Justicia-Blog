@@ -80,18 +80,26 @@ document.addEventListener('DOMContentLoaded', function() {
     // Funciones para gestionar modales
     function openModal(modal) {
         if (overlay && modal) {
-    overlay.style.display = 'block';
-            modal.style.display = 'block';
-    document.body.classList.add('modal-open');
+            console.log('Abriendo modal:', modal.id);
+            overlay.classList.add('active');
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            document.body.classList.add('modal-open');
         }
     }
 
     function closeAllModals() {
+        console.log('Cerrando todos los modales');
         const modals = document.querySelectorAll('.modal');
-        if (overlay) overlay.style.display = 'none';
+        
+        if (overlay) {
+            overlay.classList.remove('active');
+        }
+        
         modals.forEach(modal => {
-            if (modal) modal.style.display = 'none';
+            if (modal) modal.classList.remove('active');
         });
+        
         document.body.classList.remove('modal-open');
         document.body.style.overflow = 'auto';
     }
@@ -99,12 +107,14 @@ document.addEventListener('DOMContentLoaded', function() {
     // Event listeners para botones de modales
     if (addArticleButton) {
         addArticleButton.addEventListener('click', function() {
+            console.log('Clic en botón agregar artículo');
             openModal(modalArticle);
         });
     }
 
     if (addCategoryButton) {
         addCategoryButton.addEventListener('click', function() {
+            console.log('Clic en botón agregar categoría');
             openModal(modalCategory);
         });
     }
@@ -126,22 +136,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Event listener para el overlay
     if (overlay) {
-overlay.addEventListener('click', () => {
-    modalArticle.style.display = 'none';
-    modalCategory.style.display = 'none';
-    modalResource.style.display = 'none';
-            
-            // Verificar si modalEditArticle existe antes de intentar acceder a sus propiedades
-            const editModal = document.getElementById('modal-edit-article');
-            if (editModal) editModal.style.display = 'none';
-            
-            // Verificar si modalDeleteConfirmation existe antes de intentar acceder a sus propiedades
-            const deleteModal = document.getElementById('modal-delete-confirmation');
-            if (deleteModal) deleteModal.style.display = 'none';
-            
-            overlay.style.display = 'none';
-            document.body.style.overflow = 'auto';
-        });
+        overlay.addEventListener('click', closeAllModals);
     }
 
     // Event listener para enviar formulario
@@ -169,27 +164,29 @@ overlay.addEventListener('click', () => {
     if (closeEditModalButton) {
         closeEditModalButton.addEventListener('click', function() {
             if (modalEditArticle) {
-        modalEditArticle.style.display = 'none';
-                if (overlay) overlay.style.display = 'none';
-        document.body.classList.remove('modal-open');
+                modalEditArticle.classList.remove('active');
+                if (overlay) overlay.classList.remove('active');
+                document.body.classList.remove('modal-open');
+                document.body.style.overflow = 'auto';
             }
-    });
+        });
     }
     
     if (cancelEditButton) {
         cancelEditButton.addEventListener('click', function() {
             if (modalEditArticle) {
-        modalEditArticle.style.display = 'none';
-                if (overlay) overlay.style.display = 'none';
-        document.body.classList.remove('modal-open');
+                modalEditArticle.classList.remove('active');
+                if (overlay) overlay.classList.remove('active');
+                document.body.classList.remove('modal-open');
+                document.body.style.overflow = 'auto';
             }
-    });
+        });
     }
     
     if (submitEditButton && editForm) {
         submitEditButton.addEventListener('click', function() {
-        editForm.submit();
-    });
+            editForm.submit();
+        });
     }
 
     // Inicializar funcionalidad para editar categorías
@@ -197,7 +194,67 @@ overlay.addEventListener('click', () => {
     
     // Inicializar funcionalidad para cambiar roles
     initRoleChanging();
+
+    // Inicializar manejadores de eventos para modales de eliminación
+    initDeleteConfirmation();
 });
+
+// Función para manejar confirmación de eliminación
+function initDeleteConfirmation() {
+    const deleteButtons = document.querySelectorAll('.delete-button[data-id]');
+    const modalDeleteConfirmation = document.getElementById('modal-delete-confirmation');
+    const overlay = document.getElementById('overlay');
+    const cancelDeleteButton = document.getElementById('cancel-delete');
+    const closeDeleteModalButton = document.getElementById('close-delete-modal');
+    const confirmDeleteButton = document.getElementById('confirm-delete-button');
+    
+    deleteButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const postId = this.getAttribute('data-id');
+            const postTitle = this.closest('tr').querySelector('td:nth-child(2)').textContent;
+            
+            document.getElementById('post-delete-title').textContent = postTitle;
+            
+            // Guardar el ID para usarlo en la confirmación
+            confirmDeleteButton.setAttribute('data-id', postId);
+            
+            // Mostrar el modal
+            if (modalDeleteConfirmation && overlay) {
+                overlay.classList.add('active');
+                modalDeleteConfirmation.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+        });
+    });
+    
+    if (cancelDeleteButton) {
+        cancelDeleteButton.addEventListener('click', function() {
+            closeDeleteModal();
+        });
+    }
+    
+    if (closeDeleteModalButton) {
+        closeDeleteModalButton.addEventListener('click', function() {
+            closeDeleteModal();
+        });
+    }
+    
+    if (confirmDeleteButton) {
+        confirmDeleteButton.addEventListener('click', function() {
+            const postId = this.getAttribute('data-id');
+            // Aquí iría la lógica para eliminar el post
+            window.location.href = `eliminar_post.php?id=${postId}`;
+        });
+    }
+    
+    function closeDeleteModal() {
+        if (modalDeleteConfirmation && overlay) {
+            overlay.classList.remove('active');
+            modalDeleteConfirmation.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+    }
+}
 
 // Función para obtener datos del post
 function fetchPostData(postId) {
@@ -213,9 +270,10 @@ function fetchPostData(postId) {
             const modalEditArticle = document.getElementById('modal-edit-article');
             const overlay = document.getElementById('overlay');
             if (modalEditArticle && overlay) {
-            modalEditArticle.style.display = 'block';
-            overlay.style.display = 'block';
-            document.body.classList.add('modal-open');
+                overlay.classList.add('active');
+                modalEditArticle.classList.add('active');
+                document.body.classList.add('modal-open');
+                document.body.style.overflow = 'hidden';
             }
         })
         .catch(error => {
@@ -224,4 +282,234 @@ function fetchPostData(postId) {
         });
 }
 
-// ... existing code ...
+// Función para mostrar notificaciones
+function showNotification(message, type) {
+    const notification = document.getElementById('notificationModal');
+    
+    if (notification) {
+        notification.textContent = message;
+        notification.className = 'notification-modal';
+        notification.classList.add(type);
+        notification.style.display = 'block';
+        
+        setTimeout(function() {
+            notification.style.display = 'none';
+        }, 3000);
+    }
+}
+
+function initRoleChanging() {
+    console.log('Inicializando cambio de rol...');
+    
+    const changeRoleButtons = document.querySelectorAll('.change-role-button');
+    console.log('Botones encontrados:', changeRoleButtons.length);
+    
+    const modal = document.getElementById('modal-change-role');
+    const overlay = document.getElementById('overlay');
+    const closeButton = document.getElementById('close-change-role-modal');
+    const cancelButton = document.getElementById('cancel-change-role');
+    const confirmButton = document.getElementById('confirm-change-role-button');
+    const userIdInput = document.getElementById('change-role-user-id');
+    const roleSelect = document.getElementById('new-role');
+
+    if (!modal || !overlay || !closeButton || !cancelButton || !confirmButton || !userIdInput || !roleSelect) {
+        console.error('Elementos del modal no encontrados:', {
+            modal: !!modal,
+            overlay: !!overlay,
+            closeButton: !!closeButton,
+            cancelButton: !!cancelButton,
+            confirmButton: !!confirmButton,
+            userIdInput: !!userIdInput,
+            roleSelect: !!roleSelect
+        });
+        return;
+    }
+
+    // Remover event listeners existentes
+    const removeEventListeners = () => {
+        changeRoleButtons.forEach(button => {
+            button.replaceWith(button.cloneNode(true));
+        });
+        closeButton.replaceWith(closeButton.cloneNode(true));
+        cancelButton.replaceWith(cancelButton.cloneNode(true));
+        overlay.replaceWith(overlay.cloneNode(true));
+        confirmButton.replaceWith(confirmButton.cloneNode(true));
+    };
+
+    removeEventListeners();
+
+    // Obtener los elementos nuevamente después de clonarlos
+    const newChangeRoleButtons = document.querySelectorAll('.change-role-button');
+    const newCloseButton = document.getElementById('close-change-role-modal');
+    const newCancelButton = document.getElementById('cancel-change-role');
+    const newOverlay = document.getElementById('overlay');
+    const newConfirmButton = document.getElementById('confirm-change-role-button');
+
+    function openModal(userId, currentRole) {
+        console.log('Abriendo modal para usuario:', userId, 'rol actual:', currentRole);
+        userIdInput.value = userId;
+        roleSelect.value = currentRole.toLowerCase();
+        modal.classList.add('active');
+        overlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+        console.log('Cerrando modal...');
+        modal.classList.remove('active');
+        overlay.classList.remove('active');
+        document.body.style.overflow = '';
+        userIdInput.value = '';
+        roleSelect.value = '';
+    }
+
+    newChangeRoleButtons.forEach(button => {
+        button.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            const userId = button.dataset.userId;
+            const currentRole = button.dataset.currentRole;
+            openModal(userId, currentRole);
+        });
+    });
+
+    newCloseButton.addEventListener('click', closeModal);
+    newCancelButton.addEventListener('click', closeModal);
+    newOverlay.addEventListener('click', closeModal);
+
+    modal.addEventListener('click', (e) => {
+        e.stopPropagation();
+    });
+
+    newConfirmButton.addEventListener('click', async () => {
+        console.log('Confirmando cambio de rol...');
+        const formData = new FormData();
+        formData.append('id_usuario', userIdInput.value);
+        formData.append('rol', roleSelect.value);
+
+        try {
+            console.log('Enviando solicitud...');
+            const response = await fetch('cambiar_rol.php', {
+                method: 'POST',
+                body: formData
+            });
+
+            const data = await response.json();
+            console.log('Respuesta del servidor:', data);
+
+            if (data.success) {
+                showNotification('Rol actualizado exitosamente', 'success');
+                setTimeout(() => {
+                    window.location.reload();
+                }, 1500);
+            } else {
+                showNotification(data.message || 'Error al cambiar el rol', 'error');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            showNotification('Error al procesar la solicitud', 'error');
+        }
+
+        closeModal();
+    });
+}
+
+function initCategoryEditing() {
+    console.log('Inicializando edición de categorías...');
+    const editButtons = document.querySelectorAll('.edit-category-button');
+    const deleteButtons = document.querySelectorAll('.delete-category-button');
+    const modalEditCategory = document.getElementById('modal-edit-category');
+    const modalDeleteCategory = document.getElementById('modal-delete-category');
+    const overlay = document.getElementById('overlay');
+    
+    // Configuración para botones de edición de categorías
+    editButtons.forEach(button => {
+        button.addEventListener('click', async () => {
+            const categoryId = button.dataset.id;
+            console.log('Editando categoría:', categoryId);
+            
+            try {
+                const response = await fetch(`obtener_categoria.php?id=${categoryId}`);
+                const data = await response.json();
+                
+                if (data.success) {
+                    document.getElementById('edit-category-id').value = categoryId;
+                    document.getElementById('edit-category-nombre').value = data.categoria.nombre;
+                    document.getElementById('edit-category-descripcion').value = data.categoria.descripcion || '';
+                    
+                    if (modalEditCategory && overlay) {
+                        overlay.classList.add('active');
+                        modalEditCategory.classList.add('active');
+                        document.body.style.overflow = 'hidden';
+                    }
+                } else {
+                    showNotification('Error al cargar la categoría', 'error');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showNotification('Error al cargar la categoría', 'error');
+            }
+        });
+    });
+    
+    // Configuración para botones de eliminación de categorías
+    deleteButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const categoryId = button.dataset.id;
+            const categoryName = button.dataset.nombre;
+            
+            document.getElementById('category-delete-name').textContent = categoryName;
+            document.getElementById('confirm-delete-category-button').setAttribute('data-id', categoryId);
+            
+            if (modalDeleteCategory && overlay) {
+                overlay.classList.add('active');
+                modalDeleteCategory.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+        });
+    });
+    
+    // Configurar cierre de modales de categorías
+    const closeEditCategoryModalBtn = document.getElementById('close-edit-category-modal');
+    const cancelEditCategoryBtn = document.getElementById('cancel-edit-category');
+    const closeDeleteCategoryModalBtn = document.getElementById('close-delete-category-modal');
+    const cancelDeleteCategoryBtn = document.getElementById('cancel-delete-category');
+    
+    if (closeEditCategoryModalBtn) {
+        closeEditCategoryModalBtn.addEventListener('click', () => {
+            closeModal(modalEditCategory);
+        });
+    }
+    
+    if (cancelEditCategoryBtn) {
+        cancelEditCategoryBtn.addEventListener('click', () => {
+            closeModal(modalEditCategory);
+        });
+    }
+    
+    if (closeDeleteCategoryModalBtn) {
+        closeDeleteCategoryModalBtn.addEventListener('click', () => {
+            closeModal(modalDeleteCategory);
+        });
+    }
+    
+    if (cancelDeleteCategoryBtn) {
+        cancelDeleteCategoryBtn.addEventListener('click', () => {
+            closeModal(modalDeleteCategory);
+        });
+    }
+    
+    function closeModal(modal) {
+        if (modal && overlay) {
+            modal.classList.remove('active');
+            overlay.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+    }
+}
+
+// Asegurarse de que todas las funciones se inicialicen cuando el DOM esté listo
+document.addEventListener('DOMContentLoaded', () => {
+    console.log('DOM cargado, inicializando funciones...');
+    // Las inicializaciones principales ya están en el primer evento DOMContentLoaded
+});
