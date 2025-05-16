@@ -2,7 +2,7 @@
 session_start();
 
 // Conexión a la base de datos
-$conexion = new mysqli("localhost", "root", "123456789", "dbblog");
+$conexion = new mysqli("localhost", "root", "123456789", "blog");
 
 // Verifica que haya token en la URL
 if (!isset($_GET['token'])) {

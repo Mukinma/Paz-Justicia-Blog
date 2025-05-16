@@ -17,7 +17,7 @@ if (!isset($_SESSION['bloqueo_tiempo'])) {
 $server = "localhost";
 $usuario = "root";
 $pass = "123456789";
-$db = "dbblog";
+$db = "blog";
 
 //conexion
 $conexion = new mysqli($server, $usuario, $pass, $db);
