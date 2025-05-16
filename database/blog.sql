@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost
--- Tiempo de generación: 14-05-2025 a las 13:38:43
+-- Tiempo de generación: 16-05-2025 a las 14:27:01
 -- Versión del servidor: 8.0.17
 -- Versión de PHP: 7.3.10
 
@@ -21,6 +21,30 @@ SET time_zone = "+00:00";
 --
 -- Base de datos: `blog`
 --
+
+DELIMITER $$
+--
+-- Funciones
+--
+CREATE DEFINER=`root`@`localhost` FUNCTION `quitar_acentos` (`texto` VARCHAR(255)) RETURNS VARCHAR(255) CHARSET utf8 COLLATE utf8_spanish2_ci BEGIN
+            DECLARE resultado VARCHAR(255);
+            SET resultado = texto;
+            SET resultado = REPLACE(resultado, 'á', 'a');
+            SET resultado = REPLACE(resultado, 'é', 'e');
+            SET resultado = REPLACE(resultado, 'í', 'i');
+            SET resultado = REPLACE(resultado, 'ó', 'o');
+            SET resultado = REPLACE(resultado, 'ú', 'u');
+            SET resultado = REPLACE(resultado, 'Á', 'A');
+            SET resultado = REPLACE(resultado, 'É', 'E');
+            SET resultado = REPLACE(resultado, 'Í', 'I');
+            SET resultado = REPLACE(resultado, 'Ó', 'O');
+            SET resultado = REPLACE(resultado, 'Ú', 'U');
+            SET resultado = REPLACE(resultado, 'ñ', 'n');
+            SET resultado = REPLACE(resultado, 'Ñ', 'N');
+            RETURN resultado;
+        END$$
+
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -40,48 +64,16 @@ CREATE TABLE `categorias` (
 --
 
 INSERT INTO `categorias` (`id_categoria`, `nombre`, `slug`, `descripcion`) VALUES
-(1, 'Justicia y derechos', 'justicia-y-derechos', 'Artículos sobre leyes, justicia, y derechos humanos.'),
-(2, 'Cultura de paz', 'cultura-de-paz', 'Educación para la paz, mediación, diálogo y no violencia.'),
-(3, 'Instituciones sólidas', 'instituciones-solidas', 'Transparencia, gobiernos responsables, ONGs.'),
-(4, 'Participación ciudadana', 'participacion-ciudadana', 'Activismo, proyectos sociales, voz ciudadana.'),
-(5, 'Noticias y actualidad', 'noticias-y-actualidad', 'Últimos acontecimientos relacionados con el ODS 16.'),
-(6, 'Opinión', 'opinion', 'Análisis personales o críticas constructivas.'),
-(7, 'Educación cívica', 'educacion-civica', 'Información sobre democracia, constitución y ciudadanía.'),
-(8, 'Historias de impacto', 'historias-de-impacto', 'Relatos que inspiran y promueven el cambio social.'),
-(9, 'Recursos y herramientas', 'recursos-y-herramientas', 'Guías, documentos y enlaces útiles sobre ODS 16.');
+(10, 'Paz y conflictos', 'paz-y-conflictos', 'Cobertura de guerras, procesos de reconciliación y contextos de conflicto global.');
 
 --
 -- Disparadores `categorias`
 --
 DELIMITER $$
-
-CREATE FUNCTION quitar_acentos(texto VARCHAR(255)) 
-RETURNS VARCHAR(255)
-DETERMINISTIC
-BEGIN
-    DECLARE resultado VARCHAR(255);
-    SET resultado = texto;
-    
-    SET resultado = REPLACE(resultado, 'á', 'a');
-    SET resultado = REPLACE(resultado, 'é', 'e');
-    SET resultado = REPLACE(resultado, 'í', 'i');
-    SET resultado = REPLACE(resultado, 'ó', 'o');
-    SET resultado = REPLACE(resultado, 'ú', 'u');
-    SET resultado = REPLACE(resultado, 'Á', 'A');
-    SET resultado = REPLACE(resultado, 'É', 'E');
-    SET resultado = REPLACE(resultado, 'Í', 'I');
-    SET resultado = REPLACE(resultado, 'Ó', 'O');
-    SET resultado = REPLACE(resultado, 'Ú', 'U');
-    SET resultado = REPLACE(resultado, 'ñ', 'n');
-    SET resultado = REPLACE(resultado, 'Ñ', 'N');
-    
-    RETURN resultado;
-END$$
-
 CREATE TRIGGER `before_insert_categoria` BEFORE INSERT ON `categorias` FOR EACH ROW BEGIN
-  SET NEW.slug = LOWER(REPLACE(quitar_acentos(NEW.nombre), ' ', '-'));
-END$$
-
+            SET NEW.slug = LOWER(REPLACE(quitar_acentos(NEW.nombre), ' ', '-'));
+        END
+$$
 DELIMITER ;
 
 -- --------------------------------------------------------
@@ -103,16 +95,6 @@ CREATE TABLE `comentarios` (
   `user_agent` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Volcado de datos para la tabla `comentarios`
---
-
-INSERT INTO `comentarios` (`id_comentario`, `id_post`, `id_usuario`, `nombre_autor`, `email_autor`, `contenido`, `fecha_comentario`, `aprobado`, `ip_address`, `user_agent`) VALUES
-(1, 7, 2, NULL, NULL, 'Prueba 1', '2025-05-14 01:21:49', 1, NULL, NULL),
-(2, 7, 2, NULL, NULL, 'ingaturroña', '2025-05-14 01:22:01', 1, NULL, NULL),
-(3, 7, 2, NULL, NULL, 'si jala', '2025-05-14 01:22:10', 1, NULL, NULL),
-(4, 7, 2, NULL, NULL, 'XD', '2025-05-14 01:22:23', 1, NULL, NULL);
-
 -- --------------------------------------------------------
 
 --
@@ -128,14 +110,6 @@ CREATE TABLE `imagenes` (
   `id_usuario` int(11) NOT NULL,
   `tipo_imagen` enum('background','ilustrativa') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'ilustrativa'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Volcado de datos para la tabla `imagenes`
---
-
-INSERT INTO `imagenes` (`id_imagen`, `ruta`, `titulo`, `alt_text`, `fecha_subida`, `id_usuario`, `tipo_imagen`) VALUES
-(7, '../assets/68240907ba2b3.jpeg', 'Imagen ilustrativa para: LA GUERRA DE RUSIA Y UCRANIA', 'Imagen ilustrativa del post: LA GUERRA DE RUSIA Y UCRANIA', '2025-05-13 21:07:51', 2, 'ilustrativa'),
-(8, '../assets/68240907bc9d4.jpg', 'Imagen de fondo para: LA GUERRA DE RUSIA Y UCRANIA', 'Imagen de fondo del post: LA GUERRA DE RUSIA Y UCRANIA', '2025-05-13 21:07:51', 2, 'background');
 
 -- --------------------------------------------------------
 
@@ -159,13 +133,6 @@ CREATE TABLE `posts` (
   `visitas` int(11) NOT NULL DEFAULT '0',
   `referencia_url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Volcado de datos para la tabla `posts`
---
-
-INSERT INTO `posts` (`id_post`, `titulo`, `slug`, `resumen`, `contenido`, `id_categoria`, `id_imagen_destacada`, `id_imagen_background`, `id_usuario`, `fecha_publicacion`, `fecha_actualizacion`, `estado`, `visitas`, `referencia_url`) VALUES
-(7, 'LA GUERRA DE RUSIA Y UCRANIA', 'la-guerra-de-rusia-y-ucrania', 'En Rusia, protestar contra la guerra puede costarte hasta 15 años de prisión. La censura no solo silencia, también castiga.', 'La censura de las protestas\r\nDesde el inicio de la invasión a gran escala de Ucrania en febrero de 2022, el gobierno ruso ha intensificado su represión contra cualquier forma de disidencia, implementando leyes que criminalizan la protesta pacífica y la libertad de expresión. Estas medidas han resultado en la detención y encarcelamiento de miles de ciudadanos que se oponen a la guerra, según informes de Amnistía Internacional.\r\n\r\nLegislación para silenciar la disidencia\r\nPoco después de iniciada la guerra, Rusia introdujo leyes de censura que penalizan la difusión de \"información falsa\" y la \"desacreditación\" de las fuerzas armadas, con penas de hasta 15 años de prisión. Estas leyes han sido utilizadas para castigar a quienes expresan opiniones contrarias a la narrativa oficial sobre el conflicto en Ucrania.\r\n\r\nRepresalias más allá del encarcelamiento\r\nAdemás de las penas de prisión, las autoridades rusas han empleado otras tácticas para reprimir la disidencia: • Confiscación de propiedades: En 2024, se aprobó una ley que permite confiscar bienes de personas acusadas bajo las leyes de censura de guerra • Represión a menores: Niños y niñas han sido víctimas de persecución política debido a las opiniones de sus padres o por expresar su desacuerdo con la guerra • Negación de contacto familiar: A los detenidos se les ha negado sistemáticamente el contacto con sus familias, como en el caso del político de oposición Vladimir Kara-Murza, quien estuvo más de un año sin comunicación con sus seres queridos.\r\n\r\nAmnistía Internacional insta a la comunidad internacional a exigir la derogación de las leyes de censura de guerra en Rusia y la liberación inmediata de todas las personas encarceladas por expresar pacíficamente sus opiniones. La organización también anima a firmar peticiones y enviar mensajes de solidaridad a los presos de conciencia. La represión en Rusia ha alcanzado niveles alarmantes, equiparando las penas por protestar contra la guerra con las impuestas por delitos graves como el atraco a mano armada. Es fundamental que la comunidad internacional se solidarice con quienes defienden la paz y la libertad de expresión en Rusia.', 1, 7, 8, 2, '2025-05-14 03:07:51', NULL, 'publicado', 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -261,7 +228,8 @@ CREATE TABLE `usuarios` (
 --
 
 INSERT INTO `usuarios` (`id_usuario`, `name`, `email`, `pass`, `fecha_registro`, `ultimo_login`, `rol`, `activo`, `avatar`, `biografia`, `token_recuperacion`, `fecha_expiracion_token`, `intentos_login`, `bloqueado_hasta`) VALUES
-(2, 'Christopher Eugenio Nieves Martínez', 'cnieves0@ucol.mx', '$2y$10$A3VAT6BsMOQRrdCltWM69.wnhcvWZFoQzvFwQ1vBfOOT8lzWtuDSG', '2025-05-13 15:39:04', NULL, 'admin', 1, NULL, NULL, NULL, NULL, 0, NULL);
+(2, 'Christopher Eugenio Nieves Martínez', 'cnieves0@ucol.mx', '$2y$10$A3VAT6BsMOQRrdCltWM69.wnhcvWZFoQzvFwQ1vBfOOT8lzWtuDSG', '2025-05-13 15:39:04', '2025-05-15 17:03:50', 'admin', 1, 'assets/avatars/6826f8454b688.jpg', NULL, NULL, NULL, 0, NULL),
+(3, 'Prueba 1', 'prueba1@peaceinprogress.com', '$2y$10$mxknS64S8saF6ew38ZHH9.CDi5FROZCTmPE7CbwD5ElGnAOM72ZDW', '2025-05-15 01:58:45', '2025-05-15 13:57:36', 'editor', 1, NULL, NULL, NULL, NULL, 0, NULL);
 
 --
 -- Índices para tablas volcadas
@@ -364,7 +332,7 @@ ALTER TABLE `usuarios`
 -- AUTO_INCREMENT de la tabla `categorias`
 --
 ALTER TABLE `categorias`
-  MODIFY `id_categoria` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id_categoria` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT de la tabla `comentarios`
@@ -406,7 +374,7 @@ ALTER TABLE `tags`
 -- AUTO_INCREMENT de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- Restricciones para tablas volcadas
