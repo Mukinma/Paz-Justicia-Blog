@@ -191,11 +191,11 @@ document.addEventListener('DOMContentLoaded', function() {
                     categoryForm.reset();
                     // Recargar la página para mostrar la nueva categoría
                     window.location.reload();
-                } else {
+        } else {
                     showNotification(data.message || 'Error al crear la categoría', 'error');
-                }
+        }
             } catch (error) {
-                console.error('Error:', error);
+        console.error('Error:', error);
                 showNotification(error.message || 'Error al crear la categoría', 'error');
             }
         });
@@ -211,9 +211,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 // Hacer una petición para obtener los datos de la categoría
                 fetch(`obtener_categoria.php?id=${categoryId}`)
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
                             // Llenar el formulario con los datos
                             document.getElementById('edit-category-id').value = data.categoria.id_categoria;
                             document.getElementById('edit-category-nombre').value = data.categoria.nombre;
@@ -221,12 +221,12 @@ document.addEventListener('DOMContentLoaded', function() {
                             
                             // Mostrar el modal
                             openModal(modalEditCategory);
-                        } else {
+        } else {
                             showNotification(data.message || 'Error al cargar la categoría', 'error');
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
                         showNotification('Error al cargar la categoría', 'error');
                     });
             });
@@ -310,7 +310,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         showNotification(data.message, 'success');
                         closeAllModals();
                         window.location.reload();
-                    } else {
+    } else {
                         showNotification(data.message || 'Error al editar la categoría', 'error');
                     }
                 } catch (jsonError) {
@@ -334,16 +334,16 @@ document.addEventListener('DOMContentLoaded', function() {
             
             try {
                 const response = await fetch('eliminar_categoria.php', {
-                    method: 'POST',
+                method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({ id: categoryId })
-                });
-                
-                const data = await response.json();
-                
-                if (data.success) {
+            });
+
+            const data = await response.json();
+
+            if (data.success) {
                     showNotification(data.message, 'success');
                     closeAllModals();
                     window.location.reload();
@@ -413,7 +413,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Event listeners para confirmación de eliminación de artículos
     const deleteButtons = document.querySelectorAll('.delete-button');
     if (deleteButtons.length > 0) {
-        deleteButtons.forEach(button => {
+    deleteButtons.forEach(button => {
             button.addEventListener('click', function() {
                 const postId = this.dataset.id;
                 const postTitle = this.closest('tr').querySelector('td:nth-child(2)').textContent;
