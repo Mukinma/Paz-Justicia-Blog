@@ -14,20 +14,31 @@
 
 <body>
     <header>
-        <img src="assets/logo.png" class="logo" onclick="location.href='index.php'">
-
-        <div class="search-bar">
-            <input type="text" placeholder="Search...">
-            <span class="search-icon">🔍</span>
+        <div class="header-container">
+            <img src="assets/logo.png" class="logo" onclick="location.href='index.php'">
+            
+            <div class="profile-section">
+                <?php
+                session_start();
+                if (!isset($_SESSION['user_id'])) {
+                    echo '<a href="usuario/bien.php" class="login-btn">Iniciar Sesión</a>';
+                } else {
+                    echo '<div class="profile-dropdown">
+                            <button class="profile-btn">
+                                <i class="fas fa-user-circle"></i>
+                            </button>
+                            <div class="dropdown-content">
+                                <a href="usuario/perfil.php">Perfil</a>';
+                    if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin') {
+                        echo '<a href="admin/adminControl.php">Admin</a>';
+                    }
+                    echo '<a href="usuario/logout.php">Cerrar Sesión</a>
+                            </div>
+                          </div>';
+                }
+                ?>
+            </div>
         </div>
-
-        <nav>
-            <a href="">Home</a>
-            <a href="contact/contact.html">Contact</a>
-            <a href="">Info</a>
-            <a href="usuario/usuario.php" class="btn">Login</a>
-            <a href="admin/adminControl.php" class="btn">Admin control</a>
-        </nav>
     </header>
 
 
