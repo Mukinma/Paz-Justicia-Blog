@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PeaceInProgress</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #35688e;
+            line-height: 1.6;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        header {
+            width: 100%;
+            height: 60px;
+            padding: 40px;
+            box-sizing: border-box;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(8px);
+        }
+
+        header .logo {
+            height: 40px;
+            cursor: pointer;
+        }
+
+        .search-bar {
+            position: relative;
+            flex-grow: 1;
+            max-width: 500px;
+            margin-left: 30px;
+            display: flex;
+            align-items: center;
+            padding: 6px 12px;
+            border-radius: 20px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .search-bar input {
+            width: 100%;
+            color: #eee;
+            padding: 6px 36px 6px 12px;
+            border: none;
+            outline: none;
+            font-size: 14px;
+            background-color: transparent;
+            font-weight: 400;
+        }
+
+        .search-bar .search-icon {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            pointer-events: none;
+            font-size: 16px;
+            color: #555;
+        }
+
+
+        header nav {
+            display: flex;
+            gap: 30px;
+        }
+
+        header nav a {
+            color: #eee;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .hero-section {
+            position: relative;
+            height: 500px;
+            background: url('PAZ Y CONFLICTOS.jpg') no-repeat center center/cover;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            padding-left: 5%;
+        }
+
+        .hero-content {
+            background-color: #35688e;
+            padding: 50px;
+            max-width: 500px;
+            box-shadow: 0 20px 30px rgba(0, 0, 0, 0.298);
+        }
+
+        .hero-content small {
+            display: block;
+            font-size: 0.75rem;
+            color: #000000;
+            margin-bottom: 5px;
+        }
+
+        .hero-content h1 {
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+            color: #000000;
+        }
+
+        .hero-content p {
+            font-size: 0.9rem;
+            color: #0a0000;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 1.8rem;
+            margin: 50px 0 20px;
+            font-weight: bold;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            padding: 40px 20px;
+        }
+
+        .card {
+            display: block;
+            background-color: #94CEEB;
+            border-radius: 30px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .card img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover img {
+            transform: scale(1.05);
+        }
+
+        .card-content {
+            padding: 20px;
+        }
+
+        .card-content h3 {
+            transition: color 0.3s ease;
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+
+        .card:hover h3 {
+            color: #2d91c4;
+        }
+
+        .card-content small {
+            display: block;
+            font-size: 0.8rem;
+            color: #888;
+            margin-bottom: 8px;
+        }
+
+        .card-content p {
+            font-size: 0.95rem;
+            color: #555;
+        }
+
+        .ver-mas {
+            text-align: center;
+            margin: 30px 0 60px;
+        }
+
+        .ver-mas button {
+            padding: 10px 20px;
+            background-color: #111;
+            color: white;
+            border: none;
+            font-size: 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .ver-mas button:hover {
+            background-color: #333;
+        }
+
+        /*               FOOTER               */
+
+        .footer {
+            background-color: #024365;
+        }
+
+        .container-footer {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            padding: 2rem;
+        }
+
+        .menu-footer {
+            display: flex;
+            justify-items: space-between 300px;
+            grid-template-columns: repeat(3, 1fr) 30rem;
+            gap: 2rem;
+
+        }
+
+        .title-footer {
+            font-weight: 600;
+            font-size: 1.6rem;
+            text-transform: uppercase;
+        }
+
+        .contact-info,
+        .information,
+        .my-account,
+        .newsletter {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .contact-info ul,
+        .information ul,
+        .my-account ul {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .contact-info ul li,
+        .information ul li,
+        .my-account ul li {
+            list-style: none;
+            color: #fff;
+            font-size: 1.4rem;
+            font-weight: 300;
+        }
+
+        .information ul li a,
+        .my-account ul li a {
+            text-decoration: none;
+            color: #fff;
+            font-weight: 300;
+        }
+
+        .information ul li a:hover,
+        .my-account ul li a:hover {
+            color: var(--dark-color);
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .social-icons span {
+            border-radius: 50%;
+            width: 3rem;
+            height: 3rem;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .social-icons span i {
+            color: #fff;
+            font-size: 1.2rem;
+        }
+
+        .facebook {
+            background-color: #3b5998;
+        }
+
+        .twitter {
+            background-color: #00acee;
+        }
+
+        .youtube {
+            background-color: #c4302b;
+        }
+
+        .pinterest {
+            background-color: #c8232c;
+        }
+
+        .instagram {
+            background: linear-gradient(#405de6,
+                    #833ab4,
+                    #c13584,
+                    #e1306c,
+                    #fd1d1d,
+                    #f56040,
+                    #fcaf45);
+        }
+
+        .content p {
+            font-size: 1.4rem;
+            color: #fff;
+            font-weight: 300;
+        }
+
+        .content input {
+            outline: none;
+            background: none;
+            border: none;
+            border-bottom: 2px solid #d2b495;
+            cursor: pointer;
+            padding: 0.5rem 0 1.2rem;
+            color: var(--dark-color);
+            display: block;
+            margin-bottom: 3rem;
+            margin-top: 2rem;
+            width: 100%;
+            font-family: inherit;
+        }
+
+        .content input::-webkit-input-placeholder {
+            color: #eee;
+        }
+
+        .content button {
+            border: none;
+            background-color: #000;
+            color: #fff;
+            text-transform: uppercase;
+            padding: 1rem 3rem;
+            border-radius: 2rem;
+            font-size: 1.4rem;
+            font-family: inherit;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .content button:hover {
+            background-color: var(--background-color);
+            color: var(--primary-color);
+        }
+
+        .copyright {
+            display: flex;
+            justify-content: space-between;
+            padding-top: 2rem;
+
+            border-top: 1px solid #d2b495;
+        }
+
+        .copyright p {
+            font-weight: 400;
+            font-size: 1.6rem;
+        }
+
+        .logo-footer {
+            display: flex;
+            align-items: right;
+            justify-content: right;
+
+        }
+
+        .logo-footer img {
+            max-width: 100%;
+            height: auto;
+            object-fit: contain;
+            align-items: 0px;
+        }
+
+        .container-container-container-footer {
+            display: flex;
+            justify-content: space-between;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <img src="logo.png" class="logo" onclick="location.href='index.html'">
+
+        <div class="search-bar">
+            <input type="text" placeholder="Search...">
+            <span class="search-icon">🔍</span>
+        </div>
+
+        <nav>
+            <a href="">Home</a>
+            <a href="contact/contact.html">Contact</a>
+            <a href="">Info</a>
+            <a href="login/login.html" class="btn">Login</a>
+        </nav>
+    </header>
+
+
+    <!-- Hero principal -->
+    <section class="hero-section">
+        <div class="hero-content">
+            <small> Categoria • 3 articulos</small>
+            <h1>POLITICA Y GOBERNANZA</h1>
+            <p>Programas públicos, leyes, elecciones y políticas para la paz. Esta sección analiza el rol del Estado en
+                la construcción de sociedades más seguras y justas.
+            </p>
+        </div>
+    </section>
+
+    <!-- Título de sección -->
+    <h2 class="section-title">Articulos</h2>
+
+    <!-- Artículos -->
+    <section class="grid-container" id="articulos"></section>
+
+    <!-- Botón Ver más -->
+    <div class="ver-mas">
+        <button onclick="cargarMas()">Ver más artículos</button>
+    </div>
+
+    <script>
+        const articulos = [
+            { href: "articulo1.html", img: "img2.jpg", fecha: "Abril 18, 2025", autor: "Juan Pérez", titulo: "La guerra de rusia con ucrania", resumen: "En rusia la gente esta alterada pq blablablablbaba" },
+            { href: "articulo2.html", img: "img3.jpg", fecha: "Abril 5, 2025", autor: "María Gómez", titulo: "La guerra de rusia con ucrania", resumen: "A moderate incline runs towards the foot of Maybury Hill, and down this we clattered..." },
+            { href: "articulo3.html", img: "img4.jpg", fecha: "Abril 2, 2025", autor: "Luis Torres", titulo: "La guerra de rusia con ucrania", resumen: "Through two long weeks I wandered, stumbling through the nights guided only by the stars..." },
+            { href: "articulo4.html", img: "img5.jpg", fecha: "Mayo 13, 2025", autor: "Carla Ruiz", titulo: "La guerra de rusia con ucrania", resumen: "Una travesía que desafía la lógica y la razón en busca de respuestas..." },
+            { href: "articulo5.html", img: "img6.jpg", fecha: "Mayo 12, 2025", autor: "Pedro Ledesma", titulo: "La guerra de rusia con ucrania", resumen: "Los lagos antiguos revelan secretos escondidos bajo la superficie..." },
+            { href: "articulo6.html", img: "img7.jpg", fecha: "Mayo 10, 2025", autor: "Ana Ortega", titulo: "La guerra de rusia con ucrania", resumen: "Caminando entre ruinas, la historia cobra vida en cada piedra..." },
+            { href: "articulo7.html", img: "img8.jpg", fecha: "Mayo 8, 2025", autor: "Lucas Peña", titulo: "La guerra de rusia con ucrania", resumen: "Una expedición que revela más de lo esperado en el corazón del desierto..." },
+            { href: "articulo8.html", img: "img9.jpg", fecha: "Mayo 6, 2025", autor: "Sofía Blanco", titulo: "La guerra de rusia con ucrania", resumen: "Un manuscrito perdido pone en jaque la historia tal como la conocemos..." }
+        ];
+        const porPagina = 6;
+        let index = 0;
+
+        function cargarMas() {
+            const contenedor = document.getElementById("articulos");
+            const fin = index + porPagina;
+            const grupo = articulos.slice(index, fin);
+
+            grupo.forEach(articulo => {
+                const html = `
+          <a href="${articulo.href}" class="card">
+            <img src="${articulo.img}" alt="${articulo.titulo}">
+            <div class="card-content">
+              <small>${articulo.fecha} • por ${articulo.autor}</small>
+              <h3>${articulo.titulo}</h3>
+              <p>${articulo.resumen}</p>
+            </div>
+          </a>`;
+                contenedor.insertAdjacentHTML('beforeend', html);
+            });
+
+            index = fin;
+
+            if (index >= articulos.length) {
+                document.querySelector('.ver-mas').style.display = 'none';
+            }
+        }
+
+        window.onload = () => {
+            cargarMas();
+        };
+    </script>
+
+    <footer class="footer">
+        <div class="container container-footer">
+            <div class="container-container-container-footer">
+                <div class="menu-footer">
+                    <div class="contact-info">
+                        <p class="title-footer">Información de Contacto</p>
+                        <ul>
+                            <li>Teléfono: 314-149-5596</li>
+                            <li>EmaiL: PeaceInProgress.com</li>
+                        </ul>
+                        <div class="social-icons">
+                            <span class="facebook">
+                                <i class="fa-brands fa-facebook-f"></i>
+                            </span>
+                            <span class="twitter">
+                                <i class="fa-brands fa-twitter"></i>
+                            </span>
+                            <span class="instagram">
+                                <i class="fa-brands fa-instagram"></i>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="information">
+                        <p class="title-footer">Información</p>
+                        <ul>
+                            <li><a href="#">Acerca de Nosotros</a></li>
+                            <li><a href="#">Contactános</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="logo-footer">
+                    <img src="logo.png" alt="Logo Peace In Progress">
+                </div>
+            </div>
+
+            <div class="copyright">
+                <p>
+                    PEACE IN PROGRESS &copy; 2025
+            </div>
+        </div>
+    </footer>
+
+</body>
+
+</html>

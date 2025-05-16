@@ -4,6 +4,7 @@
     color: #0C3958;
 }
 
+<<<<<<< HEAD
 /* Secciones */
 .section-recientes,
 .section-populares {
@@ -36,6 +37,8 @@
     padding: 10px;
     width: fit-content;
 }
+=======
+>>>>>>> 17f400250494cd8031d05bf44b731ee3be4130dd
 .destacados-section h2 {
     font-size: 24px;
     font-weight: bold;

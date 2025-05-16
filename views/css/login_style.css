@@ -12,7 +12,7 @@ a {
 }
 
 body {
-    height: 100vh;
+    min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -21,26 +21,33 @@ body {
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
+    padding: 20px;
 }
 
 .container {
     position: relative;
-    width: 460px;
-    height: 640px;
+    width: 100%;
+    max-width: 400px;
+    height: 580px;
     border-radius: 12px;
-    padding: 20px 30px 120px;
+    padding: 20px 30px 100px;
     background: rgba(124, 188, 188, 0.8);
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
     overflow: hidden;
 }
 
+.signup-section {
+    width: 100%;
+    padding: 20px;
+}
+
 .login-section {
     position: absolute;
     left: 50%;
-    bottom: -88%;
+    bottom: -85%;
     transform: translateX(-50%);
-    width: calc(100% + 180px);
-    padding: 20px 140px;
+    width: calc(100% + 120px);
+    padding: 20px 100px;
     background: #d2e7e7;
     border-radius: 290px;
     height: 100%;
@@ -49,11 +56,12 @@ body {
 
 .login-section header,
 .signup-section header {
-    font-size: 30px;
+    font-size: clamp(24px, 5vw, 30px);
     text-align: center;
     color: #d2e7e7;
     font-weight: 600;
     cursor: pointer;
+    margin-bottom: 20px;
 }
 
 .login-section header {
@@ -62,10 +70,11 @@ body {
 }
 
 .social-buttons {
-    margin-top: 40px;
+    margin-top: 20px;
     display: flex;
     align-items: center;
     gap: 15px;
+    flex-wrap: wrap;
 }
 
 .social-buttons button {
@@ -106,6 +115,7 @@ body {
 
 .separator p {
     color: #d2e7e7;
+    white-space: nowrap;
 }
 
 .login-section .separator p {
@@ -128,6 +138,7 @@ form input {
     font-weight: 400;
     border-radius: 8px;
     background: #d2e7e7;
+    width: 100%;
 }
 
 .login-section input {
@@ -136,6 +147,7 @@ form input {
 
 form a {
     color: #333;
+    text-align: center;
 }
 
 .signup-section form a {
@@ -150,6 +162,7 @@ form .btn {
     font-size: 18px;
     font-weight: 500;
     cursor: pointer;
+    width: 100%;
 }
 
 .login-section .btn {
@@ -158,8 +171,9 @@ form .btn {
     border: none;
 }
 
+/* Animación del contenedor */
 .container.active .login-section {
-    bottom: -12%;
+    bottom: -15%;
     border-radius: 220px;
     box-shadow: 0 -5px 10px rgba(0, 0, 0, 0.1);
 }
@@ -170,20 +184,18 @@ form .btn {
 
 .container.active .signup-section header {
     opacity: 0.6;
-
-
 }
 
 .logo {
     position: fixed;
     bottom: 10px;
-    right: 3px;
-    z-index: 9999;
+    right: 10px;
     width: 150px;
     height: auto;
     z-index: 10000;
-    content: url('../../assets/logo.png');
+}
 
+<<<<<<< HEAD
 }
 
 @media (max-width: 480px) {
@@ -270,4 +282,29 @@ form .btn {
     color: #d2e7e7;
     }
 
+=======
+@media (max-width: 767px) {
+    .container {
+        padding: 15px;
+        height: auto;
+        min-height: 580px;
+    }
+
+    .login-section {
+        padding: 20px;
+        width: calc(100% + 60px);
+    }
+
+    .social-buttons button {
+        font-size: 14px;
+    }
+
+    form input {
+        font-size: 14px;
+    }
+
+    form .btn {
+        font-size: 16px;
+    }
+>>>>>>> df3061c6cb929aa511d57b21a96f7f00e5c203c3
 }

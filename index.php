@@ -14,12 +14,36 @@
 
 <body>
     <header>
-        <img src="assets/logo.png" class="logo" onclick="location.href='index.php'">
-
-        <div class="search-bar">
-            <input type="text" placeholder="Search...">
-            <span class="search-icon">🔍</span>
+        <div class="header-container">
+            <img src="assets/logo.png" class="logo" onclick="location.href='index.php'">
+            
+            <div class="profile-section">
+                <?php
+                session_start();
+                if (!isset($_SESSION['usuario'])) {
+                    echo '<a href="admin/usuario.php" class="login-btn">Iniciar Sesión</a>';
+                } else {
+                    echo '<div class="profile-dropdown">
+                            <button class="profile-btn">';
+                    if (!empty($_SESSION['avatar']) && file_exists($_SESSION['avatar'])) {
+                        echo '<img src="' . htmlspecialchars($_SESSION['avatar']) . '" alt="Foto de perfil">';
+                    } else {
+                        echo '<i class="fas fa-user-circle"></i>';
+                    }
+                    echo '</button>
+                            <div class="dropdown-content">
+                                <a href="admin/perfil.php"><i class="fas fa-user"></i> Perfil</a>';
+                    if (isset($_SESSION['role']) && ($_SESSION['role'] === 'admin' || $_SESSION['role'] === 'editor')) {
+                        echo '<a href="admin/adminControl.php"><i class="fas fa-cog"></i> Admin</a>';
+                    }
+                    echo '<a href="admin/logout.php"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a>
+                            </div>
+                          </div>';
+                }
+                ?>
+            </div>
         </div>
+<<<<<<< HEAD
 
         <nav>
             <a href="">Home</a>
@@ -28,8 +52,26 @@
             <a href="admin/usuario.php" class="btn">Login</a>
             <a href="admin/adminControl.php" class="btn">Admin control</a>
         </nav>
+=======
+>>>>>>> df3061c6cb929aa511d57b21a96f7f00e5c203c3
     </header>
 
+    <?php if (isset($_SESSION['error'])): ?>
+        <div class="error-message" id="errorMessage">
+            <?php 
+            echo $_SESSION['error'];
+            unset($_SESSION['error']);
+            ?>
+        </div>
+        <script>
+            setTimeout(() => {
+                const errorMessage = document.getElementById('errorMessage');
+                if (errorMessage) {
+                    errorMessage.remove();
+                }
+            }, 5000);
+        </script>
+    <?php endif; ?>
 
     <div class="carousel">
         <div class="list">
