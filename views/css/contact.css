@@ -67,6 +67,7 @@ header nav {
     gap: 30px;
 }
 
+<<<<<<< HEAD
 .traductor {
     background: none;
     border: 2px solid #eee;
@@ -82,6 +83,8 @@ header nav {
 }
 
 
+=======
+>>>>>>> 17f400250494cd8031d05bf44b731ee3be4130dd
 header nav a {
     color: #eee;
     text-decoration: none;

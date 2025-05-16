@@ -17,7 +17,11 @@ body {
     align-items: center;
     justify-content: center;
     background: #f0f0f0;
+<<<<<<< HEAD
     background-image: url('../../assets/fondopeace.jpg');
+=======
+    background-image: url('..assets/fondopeace.jpg');
+>>>>>>> 17f400250494cd8031d05bf44b731ee3be4130dd
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
