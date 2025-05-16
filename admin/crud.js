@@ -1,734 +1,437 @@
-// Botones agregar
-const addArticleButton = document.getElementById('article-add-button'); 
-const addCategoryButton = document.getElementById('category-add-button');
-const addResourceButton = document.getElementById('resource-add-button');
-
-const modalArticle = document.getElementById('modal-article');
-const modalCategory = document.getElementById('modal-category');
-const modalResource = document.getElementById('modal-resource');
-const modalDeleteConfirmation = document.getElementById('modal-delete-confirmation');
-const closeModalButton = document.getElementById('close-modal');
-
-const overlay = document.getElementById('overlay');
-
-const submitButton = document.getElementById('submit-button'); // Botón externo
-const form = document.getElementById('myForm1'); // Formulario
-
-// Botones de navegación
-const articlesButton = document.getElementById('articlesButton'); // Botón de artículos
-const categoriesButton = document.getElementById('categoriesButton'); // Botón de categorías
-const commentsButton = document.getElementById('commentsButton'); // Botón de comentarios
-const usersButton = document.getElementById('usersButton'); // Botón de usuarios
-const statisticsButton = document.getElementById('statisticsButton'); // Botón de estadísticas
-const resourcesButton = document.getElementById('resourcesButton'); // Botón de recursos
-
-// Secciones tablas
-const articles = document.getElementById('articles'); // Artículos
-const categories = document.getElementById('categories'); // Categorías
-const comments = document.getElementById('comments'); // Comentarios
-const users = document.getElementById('users'); // Usuarios
-const statistics = document.getElementById('statistics'); // Estadísticas
-const resources = document.getElementById('resources'); // Recursos
-
-// Show modal for adding article
-addArticleButton.addEventListener('click', () => {
-    modalArticle.style.display = 'block';
-    overlay.style.display = 'block';
-    document.body.classList.add('modal-open');
-});
-// Show modal for adding category
-addCategoryButton.addEventListener('click', () => {
-    modalCategory.style.display = 'block';
-    overlay.style.display = 'block';
-    document.body.classList.add('modal-open');
-});
-// Show modal for adding resource
-addResourceButton.addEventListener('click', () => {
-    modalResource.style.display = 'block';
-    overlay.style.display = 'block';
-    document.body.classList.add('modal-open');
-});
-// Close modal when clicking the close button
-closeModalButton.addEventListener('click', () => {
-    modalArticle.style.display = 'none';
-    modalCategory.style.display = 'none';
-    modalResource.style.display = 'none';
-    overlay.style.display = 'none';
-    document.body.classList.remove('modal-open');
-});
-// Close modal when clicking outside of it
-overlay.addEventListener('click', () => {
-    modalArticle.style.display = 'none';
-    modalCategory.style.display = 'none';
-    modalResource.style.display = 'none';
-    modalEditArticle.style.display = 'none';
-    modalDeleteConfirmation.style.display = 'none';
-    overlay.style.display = 'none';
-    document.body.classList.remove('modal-open');
-});
-
-// Show articles section
-articlesButton.addEventListener('click', () => {
-    articles.style.display = 'block';
-    categories.style.display = 'none';
-    comments.style.display = 'none';
-    users.style.display = 'none';
-    statistics.style.display = 'none';
-    resources.style.display = 'none';
-});
-
-// Show categories section
-categoriesButton.addEventListener('click', () => {
-    articles.style.display = 'none';
-    categories.style.display = 'block';
-    comments.style.display = 'none';
-    users.style.display = 'none';
-    statistics.style.display = 'none';
-    resources.style.display = 'none';
-});
-
-// Show comments section
-commentsButton.addEventListener('click', () => {
-    articles.style.display = 'none';
-    categories.style.display = 'none';
-    comments.style.display = 'block';
-    users.style.display = 'none';
-    statistics.style.display = 'none';
-    resources.style.display = 'none';
-});
-
-// Show users section
-usersButton.addEventListener('click', () => {
-    articles.style.display = 'none';
-    categories.style.display = 'none';
-    comments.style.display = 'none';
-    users.style.display = 'block';
-    statistics.style.display = 'none';
-    resources.style.display = 'none';
-});
-
-// Show statistics section
-statisticsButton.addEventListener('click', () => {
-    articles.style.display = 'none';
-    categories.style.display = 'none';
-    comments.style.display = 'none';
-    users.style.display = 'none';
-    statistics.style.display = 'block';
-    resources.style.display = 'none';
-});
-
-// Show resources section
-resourcesButton.addEventListener('click', () => {
-    articles.style.display = 'none';
-    categories.style.display = 'none';
-    comments.style.display = 'none';
-    users.style.display = 'none';
-    statistics.style.display = 'none';
-    resources.style.display = 'block';
-});
-
-// Submit form when clicking the external button
-submitButton.addEventListener('click', () => {
-    form.submit(); // Envía el formulario
-});
-
-// Edit post functionality
-const modalEditArticle = document.getElementById('modal-edit-article');
-const closeEditModalButton = document.getElementById('close-edit-modal');
-const cancelEditButton = document.getElementById('cancel-edit');
-const editForm = document.getElementById('editForm');
-const submitEditButton = document.getElementById('submit-edit-button');
-
-// Add event listeners to all edit buttons
+// Esperar a que el DOM esté completamente cargado
 document.addEventListener('DOMContentLoaded', function() {
-    const editButtons = document.querySelectorAll('.edit-button[data-id]');
-    
-    editButtons.forEach(button => {
-        button.addEventListener('click', function() {
-            const postId = this.getAttribute('data-id');
-            fetchPostData(postId);
-        });
-    });
-    
-    // Close modal when clicking the close button
-    closeEditModalButton.addEventListener('click', () => {
-        modalEditArticle.style.display = 'none';
-        overlay.style.display = 'none';
-        document.body.classList.remove('modal-open');
-    });
-    
-    // Close modal when clicking the cancel button
-    cancelEditButton.addEventListener('click', () => {
-        modalEditArticle.style.display = 'none';
-        overlay.style.display = 'none';
-        document.body.classList.remove('modal-open');
-    });
-    
-    // Submit edit form
-    submitEditButton.addEventListener('click', () => {
-        editForm.submit();
-    });
-});
-
-// Function to fetch post data
-function fetchPostData(postId) {
-    fetch(`editar_post.php?id=${postId}`)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
-        .then(data => {
-            populateEditForm(data);
-            modalEditArticle.style.display = 'block';
-            overlay.style.display = 'block';
-            document.body.classList.add('modal-open');
-        })
-        .catch(error => {
-            console.error('Error fetching post data:', error);
-            alert('Error loading post data. Please try again.');
-        });
-}
-
-// Function to populate the edit form with post data
-function populateEditForm(post) {
-    document.getElementById('edit-id').value = post.id_post;
-    document.getElementById('edit-titulo').value = post.titulo;
-    document.getElementById('edit-descripcion').value = post.resumen;
-    document.getElementById('edit-contenido').value = post.contenido;
-    document.getElementById('edit-categoria').value = post.id_categoria;
-    
-    // Handle image display if it exists
-    const imageContainer = document.getElementById('current-image-container');
-    if (post.imagen) {
-        imageContainer.innerHTML = `
-            <p>Current image:</p>
-            <img src="${post.imagen.ruta}" alt="${post.imagen.alt_text}" style="max-width:200px;">
-            <input type="hidden" name="current_image_id" value="${post.id_imagen_destacada}">
-        `;
-        imageContainer.style.display = 'block';
-    } else {
-        imageContainer.style.display = 'none';
+    // Función para verificar la existencia de un elemento
+    function getElement(id) {
+        const element = document.getElementById(id);
+        return element;
     }
-}
 
-// Post deletion functionality
-document.addEventListener('DOMContentLoaded', function() {
-    // Get all delete buttons with data-id attribute
-    const deleteButtons = document.querySelectorAll('.delete-button[data-id]');
-    const modalDeleteConfirmation = document.getElementById('modal-delete-confirmation');
-    const closeDeleteModalButton = document.getElementById('close-delete-modal');
-    const cancelDeleteButton = document.getElementById('cancel-delete');
-    const confirmDeleteButton = document.getElementById('confirm-delete-button');
-    const postDeleteTitle = document.getElementById('post-delete-title');
-    
-    let deletePostId = null;
-    let deleteButtonElement = null;
-    
-    deleteButtons.forEach(button => {
-        button.addEventListener('click', function() {
-            // Get post ID and title
-            deletePostId = this.getAttribute('data-id');
-            deleteButtonElement = this;
-            const postTitle = this.closest('tr').querySelector('td:nth-child(2)').textContent;
-            
-            // Show modal with post title
-            postDeleteTitle.textContent = postTitle;
-            modalDeleteConfirmation.style.display = 'block';
-            overlay.style.display = 'block';
-            document.body.classList.add('modal-open');
+    // Funciones para gestionar las vistas
+    function hideAllSections() {
+        const sections = document.querySelectorAll('.content-section');
+        sections.forEach(section => {
+            section.style.display = 'none';
         });
-    });
-    
-    // Close modal when clicking the close button
-    closeDeleteModalButton.addEventListener('click', () => {
-        modalDeleteConfirmation.style.display = 'none';
-        overlay.style.display = 'none';
-        document.body.classList.remove('modal-open');
-    });
-    
-    // Close modal when clicking the cancel button
-    cancelDeleteButton.addEventListener('click', () => {
-        modalDeleteConfirmation.style.display = 'none';
-        overlay.style.display = 'none';
-        document.body.classList.remove('modal-open');
-    });
-    
-    // Handle delete confirmation
-    confirmDeleteButton.addEventListener('click', () => {
-        if (deletePostId) {
-            deletePost(deletePostId, deleteButtonElement);
-            modalDeleteConfirmation.style.display = 'none';
-            overlay.style.display = 'none';
+    }
+
+    function showSection(sectionId) {
+        hideAllSections();
+        const section = document.getElementById(sectionId);
+        if (section) {
+            section.style.display = 'block';
         }
-    });
-});
+    }
 
-// Function to delete post
-function deletePost(postId, buttonElement) {
-    // Create form data for the request
-    const formData = new FormData();
-    formData.append('id', postId);
-    
-    // Send DELETE request
-    fetch('eliminar_post.php', {
-        method: 'POST',
-        body: formData
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            // Remove the row from the table on success with animation
-            const row = buttonElement.closest('tr');
-            row.style.transition = 'opacity 0.3s ease';
-            row.style.opacity = '0';
-            
-            setTimeout(() => {
-                row.remove();
-                // Show success notification
-                showNotification('Post eliminado correctamente', 'success');
-            }, 300);
-        } else {
-            // Show error notification
-            showNotification('Error al eliminar el post: ' + data.message, 'error');
-        }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        showNotification('Error al eliminar el post. Por favor, intente nuevamente.', 'error');
-    });
-}
+    // Inicializar los botones de navegación
+    const articlesButton = getElement('articlesButton');
+    const categoriesButton = getElement('categoriesButton');
+    const commentsButton = getElement('commentsButton');
+    const usersButton = getElement('usersButton');
 
-function showNotification(message, type = 'info') {
-    const notification = document.getElementById('notificationModal');
-    notification.textContent = message;
-    notification.className = `notification-modal ${type}`;
-    notification.style.display = 'block';
-
-    // Remover la clase modal-open del body después de que la notificación desaparezca
-    setTimeout(() => {
-        notification.style.display = 'none';
-        document.body.classList.remove('modal-open');
-    }, 3000);
-}
-
-function archivePost(postId, buttonElement) {
-    const row = buttonElement.closest('tr');
-    const title = row.querySelector('td:nth-child(2)').textContent;
-    const category = row.querySelector('td:nth-child(3)').textContent;
-    const author = row.querySelector('td:nth-child(5)').textContent;
-
-    fetch('archivar_post.php', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: 'id=' + postId
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            // Remover la fila con animación
-            row.style.transition = 'opacity 0.5s ease';
-            row.style.opacity = '0';
-            
-            setTimeout(() => {
-                row.remove();
-                
-                // Verificar si la tabla está vacía
-                const tbody = document.querySelector('#published-articles tbody');
-                if (tbody.children.length === 0) {
-                    tbody.innerHTML = `
-                        <tr>
-                            <td colspan="6" class="no-results">
-                                <div class="no-results-message">
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="no-results-icon">
-                                        <path fill="currentColor" d="M256 32c12.9 0 24.6 7.8 29.6 19.8s2.2 25.7-6.9 34.9L264 94.6l24.7 24.7c9.2 9.2 11.9 22.9 6.9 34.9S268.9 176 256 176s-24.6-7.8-29.6-19.8s-2.2-25.7 6.9-34.9L248 94.6l-24.7-24.7c-9.2-9.2-11.9-22.9-6.9-34.9S243.1 32 256 32zM160 256c17.7 0 32 14.3 32 32v96c0 17.7-14.3 32-32 32H96c-17.7 0-32-14.3-32-32V288c0-17.7 14.3-32 32-32h64zm128 0c17.7 0 32 14.3 32 32v96c0 17.7-14.3 32-32 32H224c-17.7 0-32-14.3-32-32V288c0-17.7 14.3-32 32-32h64z"/>
-                                    </svg>
-                                    <p>No hay artículos publicados</p>
-                                    <span>Los artículos que agregues aparecerán aquí</span>
-                                </div>
-                            </td>
-                        </tr>
-                    `;
-                }
-
-                // Agregar la fila a la tabla de archivados
-                const archivedTbody = document.querySelector('#archived-articles tbody');
-                // Limpiar el mensaje de "No hay artículos archivados" si existe
-                if (archivedTbody.querySelector('.no-results')) {
-                    archivedTbody.innerHTML = '';
-                }
-                const newRow = document.createElement('tr');
-                newRow.innerHTML = `
-                    <td><input type="checkbox"></td>
-                    <td>${title}</td>
-                    <td>${category}</td>
-                    <td>Archivado</td>
-                    <td>${author}</td>
-                    <td>
-                        <button class="view-button" data-id="${postId}">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><path fill="currentcolor" d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM144 256a144 144 0 1 1 288 0 144 144 0 1 1 -288 0zm144-64c0 35.3-28.7 64-64 64c-7.1 0-13.9-1.2-20.3-3.3c-5.5-1.8-11.9 1.6-11.7 7.4c.3 6.9 1.3 13.8 3.2 20.7c13.7 51.2 66.4 81.6 117.6 67.9s81.6-66.4 67.9-117.6c-11.1-41.5-47.8-69.4-88.6-71.1c-5.8-.2-9.2 6.1-7.4 11.7c2.1 6.4 3.3 13.2 3.3 20.3z"/></svg>
-                        </button>
-                        <button class="edit-button" data-id="${postId}">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentcolor" d="M362.7 19.3L314.3 67.7 444.3 197.7l48.4-48.4c25-25 25-65.5 0-90.5L453.3 19.3c-25-25-65.5-25-90.5 0zm-71 71L58.6 323.5c-10.4 10.4-18 23.3-22.2 37.4L1 481.2C-1.5 489.7 .8 498.8 7 505s15.3 8.5 23.7 6.1l120.3-35.4c14.1-4.2 27-11.8 37.4-22.2L421.7 220.3 291.7 90.3z"/></svg>
-                        </button>
-                        <button class="delete-button" data-id="${postId}">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="currentcolor" d="M135.2 17.7L128 32 32 32C14.3 32 0 46.3 0 64S14.3 96 32 96l384 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-96 0-7.2-14.3C307.4 6.8 296.3 0 284.2 0L163.8 0c-12.1 0-23.2 6.8-28.6 17.7zM416 128L32 128 53.2 467c1.6 25.3 22.6 45 47.9 45l245.8 0c25.3 0 46.3-19.7 47.9-45L416 128z"/></svg>
-                        </button>
-                        <button class="unarchive-button" data-id="${postId}">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentcolor" d="M32 32l448 0c17.7 0 32 14.3 32 32l0 32c0 17.7-14.3 32-32 32L32 128C14.3 128 0 113.7 0 96L0 64C0 46.3 14.3 32 32 32zm0 128l448 0 0 256c0 35.3-28.7 64-64 64L96 480c-35.3 0-64-28.7-64-64l0-256zm128 80c0 8.8 7.2 16 16 16l160 0c8.8 0 16-7.2 16-16s-7.2-16-16-16l-160 0c-8.8 0-16 7.2-16 16z"/></svg>
-                        </button>
-                    </td>
-                `;
-                archivedTbody.appendChild(newRow);
-                addButtonListeners(newRow);
-                
-                showNotification('Artículo archivado correctamente');
-            }, 500);
-        } else {
-            showNotification('Error al archivar el artículo');
-        }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        showNotification('Error al archivar el artículo');
-    });
-}
-
-function unarchivePost(postId, buttonElement) {
-    const row = buttonElement.closest('tr');
-    const title = row.querySelector('td:nth-child(2)').textContent;
-    const category = row.querySelector('td:nth-child(3)').textContent;
-    const author = row.querySelector('td:nth-child(5)').textContent;
-
-    fetch('desarchivar_post.php', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: 'id=' + postId
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            // Remover la fila con animación
-            row.style.transition = 'opacity 0.5s ease';
-            row.style.opacity = '0';
-            
-            setTimeout(() => {
-                row.remove();
-                
-                // Verificar si la tabla está vacía
-                const tbody = document.querySelector('#archived-articles tbody');
-                if (tbody.children.length === 0) {
-                    tbody.innerHTML = `
-                        <tr>
-                            <td colspan="6" class="no-results">
-                                <div class="no-results-message">
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="no-results-icon">
-                                        <path fill="currentColor" d="M256 32c12.9 0 24.6 7.8 29.6 19.8s2.2 25.7-6.9 34.9L264 94.6l24.7 24.7c9.2 9.2 11.9 22.9 6.9 34.9S268.9 176 256 176s-24.6-7.8-29.6-19.8s-2.2-25.7 6.9-34.9L248 94.6l-24.7-24.7c-9.2-9.2-11.9-22.9-6.9-34.9S243.1 32 256 32zM160 256c17.7 0 32 14.3 32 32v96c0 17.7-14.3 32-32 32H96c-17.7 0-32-14.3-32-32V288c0-17.7 14.3-32 32-32h64zm128 0c17.7 0 32 14.3 32 32v96c0 17.7-14.3 32-32 32H224c-17.7 0-32-14.3-32-32V288c0-17.7 14.3-32 32-32h64z"/>
-                                    </svg>
-                                    <p>No hay artículos archivados</p>
-                                    <span>Los artículos que archives aparecerán aquí</span>
-                                </div>
-                            </td>
-                        </tr>
-                    `;
-                }
-
-                // Agregar la fila a la tabla de publicados
-                const publishedTbody = document.querySelector('#published-articles tbody');
-                const newRow = document.createElement('tr');
-                newRow.innerHTML = `
-                    <td><input type="checkbox"></td>
-                    <td>${title}</td>
-                    <td>${category}</td>
-                    <td>Publicado</td>
-                    <td>${author}</td>
-                    <td>
-                        <button class="view-button" data-id="${postId}">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><path fill="currentcolor" d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM144 256a144 144 0 1 1 288 0 144 144 0 1 1 -288 0zm144-64c0 35.3-28.7 64-64 64c-7.1 0-13.9-1.2-20.3-3.3c-5.5-1.8-11.9 1.6-11.7 7.4c.3 6.9 1.3 13.8 3.2 20.7c13.7 51.2 66.4 81.6 117.6 67.9s81.6-66.4 67.9-117.6c-11.1-41.5-47.8-69.4-88.6-71.1c-5.8-.2-9.2 6.1-7.4 11.7c2.1 6.4 3.3 13.2 3.3 20.3z"/></svg>
-                        </button>
-                        <button class="edit-button" data-id="${postId}">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentcolor" d="M362.7 19.3L314.3 67.7 444.3 197.7l48.4-48.4c25-25 25-65.5 0-90.5L453.3 19.3c-25-25-65.5-25-90.5 0zm-71 71L58.6 323.5c-10.4 10.4-18 23.3-22.2 37.4L1 481.2C-1.5 489.7 .8 498.8 7 505s15.3 8.5 23.7 6.1l120.3-35.4c14.1-4.2 27-11.8 37.4-22.2L421.7 220.3 291.7 90.3z"/></svg>
-                        </button>
-                        <button class="delete-button" data-id="${postId}">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="currentcolor" d="M135.2 17.7L128 32 32 32C14.3 32 0 46.3 0 64S14.3 96 32 96l384 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-96 0-7.2-14.3C307.4 6.8 296.3 0 284.2 0L163.8 0c-12.1 0-23.2 6.8-28.6 17.7zM416 128L32 128 53.2 467c1.6 25.3 22.6 45 47.9 45l245.8 0c25.3 0 46.3-19.7 47.9-45L416 128z"/></svg>
-                        </button>
-                        <button class="archive-button" data-id="${postId}">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentcolor" d="M32 32l448 0c17.7 0 32 14.3 32 32l0 32c0 17.7-14.3 32-32 32L32 128C14.3 128 0 113.7 0 96L0 64C0 46.3 14.3 32 32 32zm0 128l448 0 0 256c0 35.3-28.7 64-64 64L96 480c-35.3 0-64-28.7-64-64l0-256zm128 80c0 8.8 7.2 16 16 16l160 0c8.8 0 16-7.2 16-16s-7.2-16-16-16l-160 0c-8.8 0-16 7.2-16 16z"/></svg>
-                        </button>
-                    </td>
-                `;
-                publishedTbody.appendChild(newRow);
-                addButtonListeners(newRow);
-                
-                showNotification('Artículo desarchivado correctamente');
-            }, 500);
-        } else {
-            showNotification('Error al desarchivar el artículo');
-        }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        showNotification('Error al desarchivar el artículo');
-    });
-}
-
-// Función para agregar event listeners a los botones
-function addButtonListeners(row) {
-    // Agregar event listener al botón de vista
-    const viewButton = row.querySelector('.view-button');
-    if (viewButton) {
-        viewButton.addEventListener('click', function() {
-            const postId = this.getAttribute('data-id');
-            window.location.href = `../views/post.php?id=${postId}`;
+    // Agregar event listeners a los botones de navegación
+    if (articlesButton) {
+        articlesButton.addEventListener('click', function() {
+            showSection('articles');
         });
     }
-    
-    // Agregar event listener al botón de editar
-    const editButton = row.querySelector('.edit-button');
-    if (editButton) {
-        editButton.addEventListener('click', function() {
-            const postId = this.getAttribute('data-id');
-            openEditModal(postId);
+
+    if (categoriesButton) {
+        categoriesButton.addEventListener('click', function() {
+            showSection('categories');
         });
     }
-    
-    // Agregar event listener al botón de eliminar
-    const deleteButton = row.querySelector('.delete-button');
-    if (deleteButton) {
-        deleteButton.addEventListener('click', function() {
-            const postId = this.getAttribute('data-id');
-            const postTitle = this.closest('tr').querySelector('td:nth-child(2)').textContent;
-            
-            document.getElementById('post-delete-title').textContent = postTitle;
-            modalDeleteConfirmation.style.display = 'block';
-            overlay.style.display = 'block';
-            document.body.classList.add('modal-open');
-            
-            // Guardar el ID del post y el botón para usarlos en la confirmación
-            window.deletePostId = postId;
-            window.deleteButtonElement = this;
+
+    if (commentsButton) {
+        commentsButton.addEventListener('click', function() {
+            showSection('comments');
         });
     }
-    
-    // Agregar event listener al botón de archivar
-    const archiveButton = row.querySelector('.archive-button');
-    if (archiveButton) {
-        archiveButton.addEventListener('click', function() {
-            const postId = this.getAttribute('data-id');
-            archivePost(postId, this);
+
+    if (usersButton) {
+        usersButton.addEventListener('click', function() {
+            showSection('users');
         });
     }
-    
-    // Agregar event listener al botón de desarchivar
-    const unarchiveButton = row.querySelector('.unarchive-button');
-    if (unarchiveButton) {
-        unarchiveButton.addEventListener('click', function() {
-            const postId = this.getAttribute('data-id');
-            unarchivePost(postId, this);
-        });
-    }
-}
 
-// Funcionalidad para mostrar artículos publicados/archivados
-document.addEventListener('DOMContentLoaded', function() {
-    const showPublishedButton = document.getElementById('showPublished');
-    const showArchivedButton = document.getElementById('showArchived');
-    const publishedArticles = document.getElementById('published-articles');
-    const archivedArticles = document.getElementById('archived-articles');
+    // Mostrar la sección de artículos por defecto
+    showSection('articles');
 
-    // Establecer el botón de publicados como activo por defecto
-    showPublishedButton.classList.add('active');
-
-    showPublishedButton.addEventListener('click', function() {
-        publishedArticles.style.display = 'block';
-        archivedArticles.style.display = 'none';
-        showPublishedButton.classList.add('active');
-        showArchivedButton.classList.remove('active');
-    });
-
-    showArchivedButton.addEventListener('click', function() {
-        publishedArticles.style.display = 'none';
-        archivedArticles.style.display = 'block';
-        showArchivedButton.classList.add('active');
-        showPublishedButton.classList.remove('active');
-    });
-});
-
-// Agregar event listeners iniciales cuando se carga la página
-document.addEventListener('DOMContentLoaded', function() {
-    // Event listeners para botones de archivar
-    const archiveButtons = document.querySelectorAll('.archive-button[data-id]');
-    archiveButtons.forEach(button => {
-        button.addEventListener('click', function() {
-            const postId = this.getAttribute('data-id');
-            archivePost(postId, this);
-        });
-    });
-
-    // Event listeners para botones de desarchivar
-    const unarchiveButtons = document.querySelectorAll('.unarchive-button[data-id]');
-    unarchiveButtons.forEach(button => {
-        button.addEventListener('click', function() {
-            const postId = this.getAttribute('data-id');
-            unarchivePost(postId, this);
-        });
-    });
-
-    // Event listeners para botones de editar
-    const editButtons = document.querySelectorAll('.edit-button[data-id]');
-    editButtons.forEach(button => {
-        button.addEventListener('click', function() {
-            const postId = this.getAttribute('data-id');
-            fetchPostData(postId);
-        });
-    });
-
-    // Event listeners para botones de eliminar
-    const deleteButtons = document.querySelectorAll('.delete-button[data-id]');
-    deleteButtons.forEach(button => {
-        button.addEventListener('click', function() {
-            const postId = this.getAttribute('data-id');
-            const postTitle = this.closest('tr').querySelector('td:nth-child(2)').textContent;
-            
-            document.getElementById('post-delete-title').textContent = postTitle;
-            modalDeleteConfirmation.style.display = 'block';
-            overlay.style.display = 'block';
-            document.body.classList.add('modal-open');
-            
-            // Guardar el ID del post y el botón para usarlos en la confirmación
-            window.deletePostId = postId;
-            window.deleteButtonElement = this;
-        });
-    });
-});
-
-// Función para manejar la vista previa de imágenes
-function handleImagePreview(input, previewId) {
-    const preview = document.getElementById(previewId);
-    const file = input.files[0];
-    
-    if (file) {
-        const reader = new FileReader();
-        
-        reader.onload = function(e) {
-            preview.src = e.target.result;
-            preview.style.display = 'block';
-            preview.classList.add('active');
-        }
-        
-        reader.readAsDataURL(file);
-    } else {
-        preview.src = '';
-        preview.style.display = 'none';
-        preview.classList.remove('active');
-    }
-}
-
-// Agregar event listeners para los campos de imagen
-document.addEventListener('DOMContentLoaded', function() {
-    const imagenIlustrativa = document.getElementById('imagen_ilustrativa');
-    const imagenBackground = document.getElementById('imagen_background');
-    
-    if (imagenIlustrativa) {
-        imagenIlustrativa.addEventListener('change', function() {
-            handleImagePreview(this, 'preview_ilustrativa');
-        });
-    }
-    
-    if (imagenBackground) {
-        imagenBackground.addEventListener('change', function() {
-            handleImagePreview(this, 'preview_background');
-        });
-    }
-});
-
-// Función para manejar la eliminación de posts
-function handleDeletePost(postId) {
-    const modal = document.getElementById('modal-delete-confirmation');
+    // Variables para modales
     const overlay = document.getElementById('overlay');
-    const postTitle = document.getElementById('post-delete-title');
-    const confirmButton = document.getElementById('confirm-delete-button');
-    const cancelButton = document.getElementById('cancel-delete');
-    const closeButton = document.getElementById('close-delete-modal');
+    const modalArticle = document.getElementById('modal-article');
+    const modalCategory = document.getElementById('modal-category');
+    const modalResource = document.getElementById('modal-resource');
+    const modalEditArticle = document.getElementById('modal-edit-article');
+    const modalDeleteConfirmation = document.getElementById('modal-delete-confirmation');
+    const modalEditCategory = document.getElementById('modal-edit-category');
+    const modalDeleteCategory = document.getElementById('modal-delete-category');
 
-    // Obtener el título del post
-    const postRow = document.querySelector(`tr[data-id="${postId}"]`);
-    if (postRow) {
-        const titleCell = postRow.querySelector('td:nth-child(2)');
-        postTitle.textContent = titleCell.textContent;
+    // Botones para abrir modales
+    const addArticleButton = document.getElementById('article-add-button');
+    const addCategoryButton = document.getElementById('category-add-button');
+    
+    // Botones para editar/eliminar categorías
+    const editCategoryButtons = document.querySelectorAll('.edit-category-button');
+    const deleteCategoryButtons = document.querySelectorAll('.delete-category-button');
+    
+    // Botones para cerrar modales
+    const closeButtons = document.querySelectorAll('.close-button');
+    const cancelButtons = document.querySelectorAll('.cancel-article');
+    
+    // Botones para formularios
+    const submitButton = document.getElementById('submit-button');
+    const submitCategoryButton = document.getElementById('submit-category-button');
+    const submitEditCategoryButton = document.getElementById('submit-edit-category-button');
+    const confirmDeleteCategoryButton = document.getElementById('confirm-delete-category-button');
+    
+    // Formularios
+    const form = document.getElementById('myForm1');
+    const categoryForm = document.getElementById('categoryForm');
+    const editCategoryForm = document.getElementById('editCategoryForm');
+
+    console.log("DOM cargado, elementos encontrados:", {
+        overlay: !!overlay,
+        modalEditCategory: !!modalEditCategory,
+        modalDeleteCategory: !!modalDeleteCategory,
+        editCategoryButtons: editCategoryButtons.length,
+        deleteCategoryButtons: deleteCategoryButtons.length
+    });
+
+    // Funciones para gestionar modales
+    function openModal(modal) {
+        if (overlay && modal) {
+            console.log('Abriendo modal:', modal.id);
+            overlay.classList.add('active');
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
     }
 
-    // Mostrar el modal
-    modal.style.display = 'flex';
-    overlay.style.display = 'block';
+    function closeAllModals() {
+        console.log('Cerrando todos los modales');
+        const modals = document.querySelectorAll('.modal');
+        
+        if (overlay) {
+            overlay.classList.remove('active');
+        }
+        
+        modals.forEach(modal => {
+            if (modal) modal.classList.remove('active');
+        });
+        
+        document.body.style.overflow = 'auto';
+    }
 
-    // Función para cerrar el modal
-    const closeModal = () => {
-        modal.style.display = 'none';
-        overlay.style.display = 'none';
-    };
+    // Event listeners para botones de modales
+    if (addArticleButton) {
+        addArticleButton.addEventListener('click', function() {
+            openModal(modalArticle);
+        });
+    }
 
-    // Event listeners para cerrar el modal
-    cancelButton.onclick = closeModal;
-    closeButton.onclick = closeModal;
-    overlay.onclick = closeModal;
+    if (addCategoryButton) {
+        addCategoryButton.addEventListener('click', function() {
+            openModal(modalCategory);
+        });
+    }
 
-    // Manejar la confirmación de eliminación
-    confirmButton.onclick = async () => {
-        try {
-            const formData = new FormData();
-            formData.append('id', postId);
+    // Event listeners para cerrar modales
+    closeButtons.forEach(button => {
+        button.addEventListener('click', closeAllModals);
+    });
 
-            const response = await fetch('eliminar_post.php', {
-                method: 'POST',
-                body: formData
-            });
+    cancelButtons.forEach(button => {
+        button.addEventListener('click', closeAllModals);
+    });
 
-            const data = await response.json();
+    // Event listener para el overlay
+    if (overlay) {
+        overlay.addEventListener('click', closeAllModals);
+    }
 
-            if (data.success) {
-                // Mostrar notificación de éxito
-                showNotification('Post eliminado correctamente', 'success');
-                // Eliminar la fila de la tabla
-                if (postRow) {
-                    postRow.remove();
-                }
-                // Cerrar el modal
-                closeModal();
-            } else {
-                throw new Error(data.message);
+    // Event listener para enviar formulario de artículo
+    if (submitButton && form) {
+        submitButton.addEventListener('click', function() {
+            form.submit();
+        });
+    }
+
+    // Event listener para el formulario de categorías
+    if (submitCategoryButton && categoryForm) {
+        submitCategoryButton.addEventListener('click', async function(e) {
+            e.preventDefault();
+            
+            // Validar el formulario
+            const nombre = categoryForm.querySelector('#nombre').value.trim();
+            const descripcion = categoryForm.querySelector('#descripcion').value.trim();
+            
+            if (!nombre) {
+                showNotification('El nombre de la categoría es requerido', 'error');
+                return;
             }
-        } catch (error) {
-            showNotification('Error al eliminar el post: ' + error.message, 'error');
+            
+            try {
+                const formData = new FormData(categoryForm);
+                const response = await fetch('insertar_categoria.php', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.message || 'Error al crear la categoría');
+                }
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    showNotification(data.message, 'success');
+                    closeAllModals();
+                    // Limpiar el formulario
+                    categoryForm.reset();
+                    // Recargar la página para mostrar la nueva categoría
+                    window.location.reload();
+                } else {
+                    showNotification(data.message || 'Error al crear la categoría', 'error');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showNotification(error.message || 'Error al crear la categoría', 'error');
+            }
+        });
+    }
+
+    // Inicializar botones de editar categorías
+    if (editCategoryButtons.length > 0) {
+        console.log('Configurando botones de edición de categorías:', editCategoryButtons.length);
+        editCategoryButtons.forEach(button => {
+            button.addEventListener('click', function(e) {
+                console.log('Botón editar categoría clickeado:', this.dataset.id);
+                const categoryId = this.dataset.id;
+                
+                // Hacer una petición para obtener los datos de la categoría
+                fetch(`obtener_categoria.php?id=${categoryId}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            // Llenar el formulario con los datos
+                            document.getElementById('edit-category-id').value = data.categoria.id_categoria;
+                            document.getElementById('edit-category-nombre').value = data.categoria.nombre;
+                            document.getElementById('edit-category-descripcion').value = data.categoria.descripcion || '';
+                            
+                            // Mostrar el modal
+                            openModal(modalEditCategory);
+                        } else {
+                            showNotification(data.message || 'Error al cargar la categoría', 'error');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        showNotification('Error al cargar la categoría', 'error');
+                    });
+            });
+        });
+    }
+
+    // Inicializar botones de eliminar categorías
+    if (deleteCategoryButtons.length > 0) {
+        console.log('Configurando botones de eliminación de categorías:', deleteCategoryButtons.length);
+        deleteCategoryButtons.forEach(button => {
+            button.addEventListener('click', function(e) {
+                console.log('Botón eliminar categoría clickeado:', this.dataset.id);
+                const categoryId = this.dataset.id;
+                const categoryName = this.dataset.nombre;
+                
+                // Llenar el modal con los datos
+                document.getElementById('category-delete-name').textContent = categoryName;
+                confirmDeleteCategoryButton.setAttribute('data-id', categoryId);
+                
+                // Mostrar el modal
+                openModal(modalDeleteCategory);
+            });
+        });
+    }
+
+    // Event listener para el formulario de edición de categorías
+    if (submitEditCategoryButton && editCategoryForm) {
+        submitEditCategoryButton.addEventListener('click', async function(e) {
+            e.preventDefault();
+            console.log('Clic en guardar cambios de categoría');
+            
+            try {
+                // Verificar que el formulario tenga los datos requeridos
+                const id = editCategoryForm.querySelector('#edit-category-id').value;
+                const nombre = editCategoryForm.querySelector('#edit-category-nombre').value;
+                
+                if (!id || !nombre) {
+                    console.error('Faltan datos requeridos:', { id, nombre });
+                    showNotification('Faltan datos requeridos', 'error');
+                    return;
+                }
+                
+                console.log('Datos a enviar:', { 
+                    id, 
+                    nombre, 
+                    descripcion: editCategoryForm.querySelector('#edit-category-descripcion').value 
+                });
+                
+                // Crear FormData (esto conserva los nombres de los campos del formulario)
+                const formData = new FormData(editCategoryForm);
+                
+                // Enviar la solicitud con modo de depuración
+                const response = await fetch('editar_categoria.php', {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        // No agregar Content-Type para FormData, el navegador lo establece automáticamente
+                    }
+                });
+                
+                console.log('Estado de la respuesta:', response.status, response.statusText);
+                
+                // Si la respuesta no es exitosa, lanzar un error
+                if (!response.ok) {
+                    // Intentar leer el texto de la respuesta
+                    const errorText = await response.text();
+                    console.error('Respuesta del servidor (no JSON):', errorText);
+                    throw new Error(`Error HTTP ${response.status}: ${response.statusText}`);
+                }
+                
+                // Verificar que la respuesta sea JSON válido
+                let responseText = '';
+                try {
+                    responseText = await response.text();
+                    console.log('Respuesta del servidor (texto):', responseText);
+                    
+                    const data = JSON.parse(responseText);
+                    console.log('Respuesta del servidor (JSON):', data);
+                    
+                    if (data.success) {
+                        showNotification(data.message, 'success');
+                        closeAllModals();
+                        window.location.reload();
+                    } else {
+                        showNotification(data.message || 'Error al editar la categoría', 'error');
+                    }
+                } catch (jsonError) {
+                    console.error('Error al analizar JSON:', jsonError);
+                    console.error('Texto recibido del servidor:', responseText);
+                    showNotification('Error al procesar la respuesta del servidor', 'error');
+                }
+            } catch (error) {
+                console.error('Error en la solicitud AJAX:', error);
+                showNotification('Error al editar la categoría: ' + error.message, 'error');
+            }
+        });
+    }
+
+    // Event listener para confirmar eliminación de categoría
+    if (confirmDeleteCategoryButton) {
+        confirmDeleteCategoryButton.addEventListener('click', async function(e) {
+            e.preventDefault();
+            const categoryId = this.getAttribute('data-id');
+            console.log('Confirmando eliminación de categoría:', categoryId);
+            
+            try {
+                const response = await fetch('eliminar_categoria.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ id: categoryId })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    showNotification(data.message, 'success');
+                    closeAllModals();
+                    window.location.reload();
+                } else {
+                    showNotification(data.message || 'Error al eliminar la categoría', 'error');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showNotification('Error al eliminar la categoría', 'error');
+            }
+        });
+    }
+
+    // Función para mostrar notificaciones
+    window.showNotification = function(message, type = 'success') {
+        const notificationModal = document.getElementById('notificationModal');
+        
+        if (notificationModal) {
+            notificationModal.textContent = message;
+            notificationModal.className = 'notification-modal';
+            notificationModal.classList.add(type);
+            notificationModal.style.display = 'block';
+            
+            setTimeout(() => {
+                notificationModal.style.display = 'none';
+            }, 3000);
+        } else {
+            alert(message);
         }
     };
-}
 
-// Agregar event listeners a los botones de eliminar
-document.addEventListener('DOMContentLoaded', () => {
+    // Inicializar funcionalidad de editar artículos
+    const editButtons = document.querySelectorAll('.edit-button');
+    if (editButtons.length > 0) {
+        editButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const postId = this.dataset.id;
+                fetch(`editar_post.php?id=${postId}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        // Rellenar el formulario con los datos
+                        document.getElementById('edit-id').value = data.post.id_post;
+                        document.getElementById('edit-titulo').value = data.post.titulo;
+                        document.getElementById('edit-descripcion').value = data.post.resumen;
+                        document.getElementById('edit-contenido').value = data.post.contenido;
+                        document.getElementById('edit-categoria').value = data.post.id_categoria;
+                        
+                        // Mostrar la imagen actual si existe
+                        if (data.post.imagen_destacada) {
+                            document.getElementById('current-image').src = data.post.imagen_destacada;
+                            document.getElementById('current-image-container').style.display = 'block';
+                        } else {
+                            document.getElementById('current-image-container').style.display = 'none';
+                        }
+                        
+                        // Abrir el modal
+                        openModal(modalEditArticle);
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        showNotification('Error al cargar los datos del post', 'error');
+                    });
+            });
+        });
+    }
+
+    // Event listeners para confirmación de eliminación de artículos
     const deleteButtons = document.querySelectorAll('.delete-button');
-    deleteButtons.forEach(button => {
-        button.addEventListener('click', () => {
-            const postId = button.getAttribute('data-id');
-            if (postId) {
-                handleDeletePost(postId);
-            }
+    if (deleteButtons.length > 0) {
+        deleteButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const postId = this.dataset.id;
+                const postTitle = this.closest('tr').querySelector('td:nth-child(2)').textContent;
+                
+                document.getElementById('post-delete-title').textContent = postTitle;
+                document.getElementById('confirm-delete-button').setAttribute('data-id', postId);
+                
+                openModal(modalDeleteConfirmation);
+            });
         });
-    });
-});
+    }
 
-// Agregar event listeners para los botones de vista
-document.addEventListener('DOMContentLoaded', function() {
-    const viewButtons = document.querySelectorAll('.view-button[data-id]');
-    viewButtons.forEach(button => {
-        button.addEventListener('click', function() {
+    // Event listener para confirmar eliminación de artículo
+    const confirmDeleteButton = document.getElementById('confirm-delete-button');
+    if (confirmDeleteButton) {
+        confirmDeleteButton.addEventListener('click', function() {
             const postId = this.getAttribute('data-id');
-            window.location.href = `../views/post.php?id=${postId}`;
+            window.location.href = `eliminar_post.php?id=${postId}`;
         });
-    });
+    }
 });

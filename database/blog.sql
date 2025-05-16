@@ -54,10 +54,34 @@ INSERT INTO `categorias` (`id_categoria`, `nombre`, `slug`, `descripcion`) VALUE
 -- Disparadores `categorias`
 --
 DELIMITER $$
+
+CREATE FUNCTION quitar_acentos(texto VARCHAR(255)) 
+RETURNS VARCHAR(255)
+DETERMINISTIC
+BEGIN
+    DECLARE resultado VARCHAR(255);
+    SET resultado = texto;
+    
+    SET resultado = REPLACE(resultado, 'á', 'a');
+    SET resultado = REPLACE(resultado, 'é', 'e');
+    SET resultado = REPLACE(resultado, 'í', 'i');
+    SET resultado = REPLACE(resultado, 'ó', 'o');
+    SET resultado = REPLACE(resultado, 'ú', 'u');
+    SET resultado = REPLACE(resultado, 'Á', 'A');
+    SET resultado = REPLACE(resultado, 'É', 'E');
+    SET resultado = REPLACE(resultado, 'Í', 'I');
+    SET resultado = REPLACE(resultado, 'Ó', 'O');
+    SET resultado = REPLACE(resultado, 'Ú', 'U');
+    SET resultado = REPLACE(resultado, 'ñ', 'n');
+    SET resultado = REPLACE(resultado, 'Ñ', 'N');
+    
+    RETURN resultado;
+END$$
+
 CREATE TRIGGER `before_insert_categoria` BEFORE INSERT ON `categorias` FOR EACH ROW BEGIN
   SET NEW.slug = LOWER(REPLACE(quitar_acentos(NEW.nombre), ' ', '-'));
-END
-$$
+END$$
+
 DELIMITER ;
 
 -- --------------------------------------------------------

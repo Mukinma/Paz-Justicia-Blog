@@ -40,17 +40,22 @@ if(isset($_POST['register'])){//al precionar el botton login hace lo sig..
     if ($resultado->num_rows > 0) {
         $mensaje_error = "El correo ya está registrado. Intenta con otro.";
     } else {
-    $sql = "INSERT INTO usuarios (name, email, pass) VALUES ('$nombre', '$email', '$pass')";
+        $sql = "INSERT INTO usuarios (name, email, pass) VALUES ('$nombre', '$email', '$pass')";
         if ($conexion->query($sql) === TRUE){
-        echo "<script>window.location.href='../index.php';</script>";
-    } else {
-        $mensaje_error = "Error al registrar: " . $conexion->error;
+            // Después de registrar, iniciamos sesión automáticamente
+            $_SESSION['user_id'] = $conexion->insert_id;
+            $_SESSION['usuario'] = $nombre;
+            $_SESSION['email'] = $email;
+            $_SESSION['avatar'] = null; // Inicializar avatar como null para nuevos usuarios
+            header("Location: ../index.php");
+            exit();
+        } else {
+            $mensaje_error = "Error al registrar: " . $conexion->error;
+        }
     }
-}
 }
 
 if(isset($_POST['login'])) {
-
     // Verificar si está bloqueado
     if ($_SESSION['intentos'] >= 3) {
         if (!$_SESSION['bloqueo_tiempo']) {
@@ -73,24 +78,31 @@ if(isset($_POST['login'])) {
         $email = $_POST['email'];
         $pass = $_POST['pass'];
 
-        $sql = "SELECT * FROM usuarios WHERE email = '$email'";
-        $resultado = $conexion->query($sql);
+        $sql = "SELECT id_usuario, name, email, pass, rol, avatar FROM usuarios WHERE email = ?";
+        $stmt = $conexion->prepare($sql);
+        $stmt->bind_param("s", $email);
+        $stmt->execute();
+        $resultado = $stmt->get_result();
 
         if($resultado->num_rows > 0){
             $usuario = $resultado->fetch_assoc();
 
             if(password_verify($pass, $usuario['pass'])){
+                $_SESSION['user_id'] = $usuario['id_usuario'];
                 $_SESSION['usuario'] = $usuario['name'];
-                $_SESSION['intentos'] = 0; // reinicia intentos exitosamente
-                echo "<script>window.location.href='../index.php';</script>";
+                $_SESSION['email'] = $usuario['email'];
+                $_SESSION['role'] = $usuario['rol'];
+                $_SESSION['avatar'] = $usuario['avatar'];
+                $_SESSION['intentos'] = 0;
+                header("Location: ../index.php");
+                exit();
             } else {
                 $_SESSION['intentos']++;
-                    $mensaje_error_login = "Contraseña incorrecta. Intento: " . $_SESSION['intentos'] . " de 3";
-
+                $mensaje_error_login = "Contraseña incorrecta. Intento: " . $_SESSION['intentos'] . " de 3";
             }
         } else {
             $_SESSION['intentos']++;
-                $mensaje_error_login = "Correo no registrado. Intento: " . $_SESSION['intentos'] . " de 3";
+            $mensaje_error_login = "Correo no registrado. Intento: " . $_SESSION['intentos'] . " de 3";
         }
     }
 }
@@ -177,7 +189,6 @@ if(isset($_POST['login'])) {
                 <div class="line"></div>
             </div>
             <form method="POST" action="">
-                <input type="text" name="name" placeholder= "Full name" required>
                 <input type="email" name="email" placeholder="Email address" required>
                 <input type="password" name="pass" placeholder="Password" required>
                 <a href="#">Olvide la contraseña?</a>
