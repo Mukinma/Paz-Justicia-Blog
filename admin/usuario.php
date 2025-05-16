@@ -17,7 +17,7 @@ if (!isset($_SESSION['bloqueo_tiempo'])) {
 $server = "localhost";
 $usuario = "root";
 $pass = "123456789";
-$db = "blog";
+$db = "dbblog";
 
 //conexion
 $conexion = new mysqli($server, $usuario, $pass, $db);
@@ -133,7 +133,6 @@ if(isset($_POST['login'])) {
                 <input type="text" name="name" placeholder="Full name" required>
                 <input type="email" name="email" placeholder="Email address" required>
                 <input type="password" name="pass" placeholder="Password" required>
-                <a href="#">Olvide la contraseña?</a>
                 <button type="submit" name="register" class="btn">Registrar</button>
             </form>
         </div>
@@ -180,7 +179,7 @@ if(isset($_POST['login'])) {
                 <input type="text" name="name" placeholder= "Full name" required>
                 <input type="email" name="email" placeholder="Email address" required>
                 <input type="password" name="pass" placeholder="Password" required>
-                <a href="#">Olvide la contraseña?</a>
+                <a href="send_reset_email.php">Olvide la contraseña?</a>
                 <button type="submit" name='login' class="btn">Iniciar session</button>
             </form>
         </div>
