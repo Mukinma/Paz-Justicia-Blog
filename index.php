@@ -43,6 +43,17 @@
                 ?>
             </div>
         </div>
+<<<<<<< HEAD
+=======
+
+        <nav>
+            <a href="">Home</a>
+            <a href="contact/contact.html">Contact</a>
+            <a href="">Info</a>
+            <a href="admin/usuario.php" class="btn">Login</a>
+            <a href="admin/adminControl.php" class="btn">Admin control</a>
+        </nav>
+>>>>>>> Karol
     </header>
 
     <?php if (isset($_SESSION['error'])): ?>
@@ -259,7 +270,7 @@
 
             <div class="categoria-card">
                 <div class="icono">
-                    <img src="ICONOJUSTICIA.png" alt="Justicia y Derechos Humanos">
+                    <img src="image/ICONOJUSTICIA.png" alt="Justicia y Derechos Humanos">
                 </div>
                 <h3 class="titulo">Justicia y Derechos Humanos</h3>
                 <p class="descripcion">Acceso a la justicia, abusos de poder, sistema penitenciario..</p>
@@ -268,7 +279,7 @@
 
             <div class="categoria-card">
                 <div class="icono">
-                    <img src="ICONOPAZ.png" alt="Paz y Conflictos">
+                    <img src="image/ICONOPAZ.png" alt="Paz y Conflictos">
                 </div>
                 <h3 class="titulo">Paz y Conflictos</h3>
                 <p class="descripcion">Cobertura de guerras, procesos de reconciliación y contextos de conflicto global.
@@ -278,7 +289,7 @@
 
             <div class="categoria-card">
                 <div class="icono">
-                    <img src="ICONODIVERSIDAD.png" alt="Igualdad y Diversidad">
+                    <img src="image/ICONODIVERSIDAD.png" alt="Igualdad y Diversidad">
                 </div>
                 <h3 class="titulo">Igualdad y Diversidad</h3>
                 <p class="descripcion">Causas y luchas por una sociedad más tolerante e inclusiva.</p>
@@ -287,7 +298,7 @@
 
             <div class="categoria-card">
                 <div class="icono">
-                    <img src="ICONOPARTICIPACION.png" alt="Participación Ciudadana">
+                    <img src="image/ICONOPARTICIPACION.png" alt="Participación Ciudadana">
                 </div>
                 <h3 class="titulo">Participación Ciudadana</h3>
                 <p class="descripcion">Activismo, protestas pacíficas y organizaciones que protegen.</p>
@@ -296,7 +307,7 @@
 
             <div class="categoria-card">
                 <div class="icono">
-                    <img src="ICONOCORRUPCION.png" alt="Corrupción y Transparencia">
+                    <img src="image/ICONOCORRUPCION.png" alt="Corrupción y Transparencia">
                 </div>
                 <h3 class="titulo">Corrupción y Transparencia</h3>
                 <p class="descripcion">Investigaciones sobre corrupción y reformas por un sistema justo.</p>
@@ -305,7 +316,7 @@
 
             <div class="categoria-card">
                 <div class="icono">
-                    <img src="ICONOPOLITICA.png" alt="Politica y gobernanza">
+                    <img src="image/ICONOPOLITICA.png" alt="Politica y gobernanza">
                 </div>
                 <h3 class="titulo">Politica y gobernanza</h3>
                 <p class="descripcion">Cobertura de politica, programas y acciones del gobierno para fortalecer la paz y
@@ -334,7 +345,7 @@
 
         </div>
         <div class="experience-image">
-            <img src="formulario2.png" alt="Persona escribiendo experiencia">
+            <img src="image/formulario2.png" alt="Persona escribiendo experiencia">
         </div>
     </section>
 
