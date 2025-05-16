@@ -607,6 +607,69 @@ try {
             opacity: 1;
             visibility: visible;
         }
+
+        @media (max-width: 450px) {
+            .main-content {
+            position: relative;
+            top:30px;
+            left: 10px;
+            flex: 9;
+            background: #35688e;
+            padding: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            color: #fff;
+            z-index: 2;
+            max-width: 800px;
+            width: 90%;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .main-content h2 {
+            font-family: Georgia, serif;
+            font-size: 2em;
+            margin-bottom: 20px;
+            color: #ffffff;
+        }
+
+        .main-content p {
+            font-size: 1.1em;
+            line-height: 1.6;
+            color: #e0e0e0;
+            margin-bottom: 20px;
+            text-align: justify;
+        }
+        .sidebar {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            padding-top: 20px;
+            position: relative;
+            left: 10px;
+
+        }
+
+        .container-footer {
+            
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            padding: 2rem;
+        }
+
+        .menu-footer {
+            display: flex;
+            flex-direction: column;
+            justify-items: space-between 300px;
+            grid-template-columns: repeat(3, 1fr) 30rem;
+            gap: 2rem;
+
+        }
+
+
+    }
+
     </style>
 </head>
 
