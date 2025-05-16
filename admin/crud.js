@@ -56,26 +56,46 @@ document.addEventListener('DOMContentLoaded', function() {
     // Mostrar la sección de artículos por defecto
     showSection('articles');
 
-    // Inicializar elementos para modales
-    const overlay = getElement('overlay');
-    const modalArticle = getElement('modal-article');
-    const modalCategory = getElement('modal-category');
-    const modalResource = getElement('modal-resource');
-    const modalEditArticle = getElement('modal-edit-article');
-    const modalDeleteConfirmation = getElement('modal-delete-confirmation');
+    // Variables para modales
+    const overlay = document.getElementById('overlay');
+    const modalArticle = document.getElementById('modal-article');
+    const modalCategory = document.getElementById('modal-category');
+    const modalResource = document.getElementById('modal-resource');
+    const modalEditArticle = document.getElementById('modal-edit-article');
+    const modalDeleteConfirmation = document.getElementById('modal-delete-confirmation');
+    const modalEditCategory = document.getElementById('modal-edit-category');
+    const modalDeleteCategory = document.getElementById('modal-delete-category');
 
     // Botones para abrir modales
-    const addArticleButton = getElement('article-add-button');
-    const addCategoryButton = getElement('category-add-button');
-    const addResourceButton = getElement('resource-add-button');
+    const addArticleButton = document.getElementById('article-add-button');
+    const addCategoryButton = document.getElementById('category-add-button');
+    
+    // Botones para editar/eliminar categorías
+    const editCategoryButtons = document.querySelectorAll('.edit-category-button');
+    const deleteCategoryButtons = document.querySelectorAll('.delete-category-button');
     
     // Botones para cerrar modales
-    const closeModalButtons = document.querySelectorAll('.close-button');
+    const closeButtons = document.querySelectorAll('.close-button');
     const cancelButtons = document.querySelectorAll('.cancel-article');
     
-    // Botón para enviar formulario
-    const submitButton = getElement('submit-button');
-    const form = getElement('myForm1');
+    // Botones para formularios
+    const submitButton = document.getElementById('submit-button');
+    const submitCategoryButton = document.getElementById('submit-category-button');
+    const submitEditCategoryButton = document.getElementById('submit-edit-category-button');
+    const confirmDeleteCategoryButton = document.getElementById('confirm-delete-category-button');
+    
+    // Formularios
+    const form = document.getElementById('myForm1');
+    const categoryForm = document.getElementById('categoryForm');
+    const editCategoryForm = document.getElementById('editCategoryForm');
+
+    console.log("DOM cargado, elementos encontrados:", {
+        overlay: !!overlay,
+        modalEditCategory: !!modalEditCategory,
+        modalDeleteCategory: !!modalDeleteCategory,
+        editCategoryButtons: editCategoryButtons.length,
+        deleteCategoryButtons: deleteCategoryButtons.length
+    });
 
     // Funciones para gestionar modales
     function openModal(modal) {
@@ -84,7 +104,6 @@ document.addEventListener('DOMContentLoaded', function() {
             overlay.classList.add('active');
             modal.classList.add('active');
             document.body.style.overflow = 'hidden';
-            document.body.classList.add('modal-open');
         }
     }
 
@@ -100,33 +119,24 @@ document.addEventListener('DOMContentLoaded', function() {
             if (modal) modal.classList.remove('active');
         });
         
-        document.body.classList.remove('modal-open');
         document.body.style.overflow = 'auto';
     }
 
     // Event listeners para botones de modales
     if (addArticleButton) {
         addArticleButton.addEventListener('click', function() {
-            console.log('Clic en botón agregar artículo');
             openModal(modalArticle);
         });
     }
 
     if (addCategoryButton) {
         addCategoryButton.addEventListener('click', function() {
-            console.log('Clic en botón agregar categoría');
             openModal(modalCategory);
         });
     }
 
-    if (addResourceButton) {
-        addResourceButton.addEventListener('click', function() {
-            openModal(modalResource);
-        });
-    }
-
     // Event listeners para cerrar modales
-    closeModalButtons.forEach(button => {
+    closeButtons.forEach(button => {
         button.addEventListener('click', closeAllModals);
     });
 
@@ -139,377 +149,289 @@ document.addEventListener('DOMContentLoaded', function() {
         overlay.addEventListener('click', closeAllModals);
     }
 
-    // Event listener para enviar formulario
+    // Event listener para enviar formulario de artículo
     if (submitButton && form) {
         submitButton.addEventListener('click', function() {
             form.submit();
         });
     }
 
-    // Inicializar funcionalidad de editar artículos
-    const closeEditModalButton = getElement('close-edit-modal');
-    const cancelEditButton = getElement('cancel-edit');
-    const editForm = getElement('editForm');
-    const submitEditButton = getElement('submit-edit-button');
-
-    // Event listeners para botones de edición
-    const editButtons = document.querySelectorAll('.edit-button[data-id]');
-    editButtons.forEach(button => {
-        button.addEventListener('click', function() {
-            const postId = this.getAttribute('data-id');
-            fetchPostData(postId);
-        });
-    });
-    
-    if (closeEditModalButton) {
-        closeEditModalButton.addEventListener('click', function() {
-            if (modalEditArticle) {
-                modalEditArticle.classList.remove('active');
-                if (overlay) overlay.classList.remove('active');
-                document.body.classList.remove('modal-open');
-                document.body.style.overflow = 'auto';
-            }
-        });
-    }
-    
-    if (cancelEditButton) {
-        cancelEditButton.addEventListener('click', function() {
-            if (modalEditArticle) {
-                modalEditArticle.classList.remove('active');
-                if (overlay) overlay.classList.remove('active');
-                document.body.classList.remove('modal-open');
-                document.body.style.overflow = 'auto';
-            }
-        });
-    }
-    
-    if (submitEditButton && editForm) {
-        submitEditButton.addEventListener('click', function() {
-            editForm.submit();
-        });
-    }
-
-    // Inicializar funcionalidad para editar categorías
-    initCategoryEditing();
-    
-    // Inicializar funcionalidad para cambiar roles
-    initRoleChanging();
-
-    // Inicializar manejadores de eventos para modales de eliminación
-    initDeleteConfirmation();
-});
-
-// Función para manejar confirmación de eliminación
-function initDeleteConfirmation() {
-    const deleteButtons = document.querySelectorAll('.delete-button[data-id]');
-    const modalDeleteConfirmation = document.getElementById('modal-delete-confirmation');
-    const overlay = document.getElementById('overlay');
-    const cancelDeleteButton = document.getElementById('cancel-delete');
-    const closeDeleteModalButton = document.getElementById('close-delete-modal');
-    const confirmDeleteButton = document.getElementById('confirm-delete-button');
-    
-    deleteButtons.forEach(button => {
-        button.addEventListener('click', function() {
-            const postId = this.getAttribute('data-id');
-            const postTitle = this.closest('tr').querySelector('td:nth-child(2)').textContent;
-            
-            document.getElementById('post-delete-title').textContent = postTitle;
-            
-            // Guardar el ID para usarlo en la confirmación
-            confirmDeleteButton.setAttribute('data-id', postId);
-            
-            // Mostrar el modal
-            if (modalDeleteConfirmation && overlay) {
-                overlay.classList.add('active');
-                modalDeleteConfirmation.classList.add('active');
-                document.body.style.overflow = 'hidden';
-            }
-        });
-    });
-    
-    if (cancelDeleteButton) {
-        cancelDeleteButton.addEventListener('click', function() {
-            closeDeleteModal();
-        });
-    }
-    
-    if (closeDeleteModalButton) {
-        closeDeleteModalButton.addEventListener('click', function() {
-            closeDeleteModal();
-        });
-    }
-    
-    if (confirmDeleteButton) {
-        confirmDeleteButton.addEventListener('click', function() {
-            const postId = this.getAttribute('data-id');
-            // Aquí iría la lógica para eliminar el post
-            window.location.href = `eliminar_post.php?id=${postId}`;
-        });
-    }
-    
-    function closeDeleteModal() {
-        if (modalDeleteConfirmation && overlay) {
-            overlay.classList.remove('active');
-            modalDeleteConfirmation.classList.remove('active');
-            document.body.style.overflow = 'auto';
-        }
-    }
-}
-
-// Función para obtener datos del post
-function fetchPostData(postId) {
-    fetch(`editar_post.php?id=${postId}`)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
-        .then(data => {
-            populateEditForm(data);
-            const modalEditArticle = document.getElementById('modal-edit-article');
-            const overlay = document.getElementById('overlay');
-            if (modalEditArticle && overlay) {
-                overlay.classList.add('active');
-                modalEditArticle.classList.add('active');
-                document.body.classList.add('modal-open');
-                document.body.style.overflow = 'hidden';
-            }
-        })
-        .catch(error => {
-            console.error('Error fetching post data:', error);
-            showNotification('Error al cargar los datos del post. Por favor, intente de nuevo.', 'error');
-        });
-}
-
-// Función para mostrar notificaciones
-function showNotification(message, type) {
-    const notification = document.getElementById('notificationModal');
-    
-    if (notification) {
-        notification.textContent = message;
-        notification.className = 'notification-modal';
-        notification.classList.add(type);
-        notification.style.display = 'block';
-        
-        setTimeout(function() {
-            notification.style.display = 'none';
-        }, 3000);
-    }
-}
-
-function initRoleChanging() {
-    console.log('Inicializando cambio de rol...');
-    
-    const changeRoleButtons = document.querySelectorAll('.change-role-button');
-    console.log('Botones encontrados:', changeRoleButtons.length);
-    
-    const modal = document.getElementById('modal-change-role');
-    const overlay = document.getElementById('overlay');
-    const closeButton = document.getElementById('close-change-role-modal');
-    const cancelButton = document.getElementById('cancel-change-role');
-    const confirmButton = document.getElementById('confirm-change-role-button');
-    const userIdInput = document.getElementById('change-role-user-id');
-    const roleSelect = document.getElementById('new-role');
-
-    if (!modal || !overlay || !closeButton || !cancelButton || !confirmButton || !userIdInput || !roleSelect) {
-        console.error('Elementos del modal no encontrados:', {
-            modal: !!modal,
-            overlay: !!overlay,
-            closeButton: !!closeButton,
-            cancelButton: !!cancelButton,
-            confirmButton: !!confirmButton,
-            userIdInput: !!userIdInput,
-            roleSelect: !!roleSelect
-        });
-        return;
-    }
-
-    // Remover event listeners existentes
-    const removeEventListeners = () => {
-        changeRoleButtons.forEach(button => {
-            button.replaceWith(button.cloneNode(true));
-        });
-        closeButton.replaceWith(closeButton.cloneNode(true));
-        cancelButton.replaceWith(cancelButton.cloneNode(true));
-        overlay.replaceWith(overlay.cloneNode(true));
-        confirmButton.replaceWith(confirmButton.cloneNode(true));
-    };
-
-    removeEventListeners();
-
-    // Obtener los elementos nuevamente después de clonarlos
-    const newChangeRoleButtons = document.querySelectorAll('.change-role-button');
-    const newCloseButton = document.getElementById('close-change-role-modal');
-    const newCancelButton = document.getElementById('cancel-change-role');
-    const newOverlay = document.getElementById('overlay');
-    const newConfirmButton = document.getElementById('confirm-change-role-button');
-
-    function openModal(userId, currentRole) {
-        console.log('Abriendo modal para usuario:', userId, 'rol actual:', currentRole);
-        userIdInput.value = userId;
-        roleSelect.value = currentRole.toLowerCase();
-        modal.classList.add('active');
-        overlay.classList.add('active');
-        document.body.style.overflow = 'hidden';
-    }
-
-    function closeModal() {
-        console.log('Cerrando modal...');
-        modal.classList.remove('active');
-        overlay.classList.remove('active');
-        document.body.style.overflow = '';
-        userIdInput.value = '';
-        roleSelect.value = '';
-    }
-
-    newChangeRoleButtons.forEach(button => {
-        button.addEventListener('click', (e) => {
+    // Event listener para el formulario de categorías
+    if (submitCategoryButton && categoryForm) {
+        submitCategoryButton.addEventListener('click', async function(e) {
             e.preventDefault();
-            e.stopPropagation();
-            const userId = button.dataset.userId;
-            const currentRole = button.dataset.currentRole;
-            openModal(userId, currentRole);
-        });
-    });
-
-    newCloseButton.addEventListener('click', closeModal);
-    newCancelButton.addEventListener('click', closeModal);
-    newOverlay.addEventListener('click', closeModal);
-
-    modal.addEventListener('click', (e) => {
-        e.stopPropagation();
-    });
-
-    newConfirmButton.addEventListener('click', async () => {
-        console.log('Confirmando cambio de rol...');
-        const formData = new FormData();
-        formData.append('id_usuario', userIdInput.value);
-        formData.append('rol', roleSelect.value);
-
-        try {
-            console.log('Enviando solicitud...');
-            const response = await fetch('cambiar_rol.php', {
-                method: 'POST',
-                body: formData
-            });
-
-            const data = await response.json();
-            console.log('Respuesta del servidor:', data);
-
-            if (data.success) {
-                showNotification('Rol actualizado exitosamente', 'success');
-                setTimeout(() => {
-                    window.location.reload();
-                }, 1500);
-            } else {
-                showNotification(data.message || 'Error al cambiar el rol', 'error');
+            
+            // Validar el formulario
+            const nombre = categoryForm.querySelector('#nombre').value.trim();
+            const descripcion = categoryForm.querySelector('#descripcion').value.trim();
+            
+            if (!nombre) {
+                showNotification('El nombre de la categoría es requerido', 'error');
+                return;
             }
-        } catch (error) {
-            console.error('Error:', error);
-            showNotification('Error al procesar la solicitud', 'error');
-        }
-
-        closeModal();
-    });
-}
-
-function initCategoryEditing() {
-    console.log('Inicializando edición de categorías...');
-    const editButtons = document.querySelectorAll('.edit-category-button');
-    const deleteButtons = document.querySelectorAll('.delete-category-button');
-    const modalEditCategory = document.getElementById('modal-edit-category');
-    const modalDeleteCategory = document.getElementById('modal-delete-category');
-    const overlay = document.getElementById('overlay');
-    
-    // Configuración para botones de edición de categorías
-    editButtons.forEach(button => {
-        button.addEventListener('click', async () => {
-            const categoryId = button.dataset.id;
-            console.log('Editando categoría:', categoryId);
             
             try {
-                const response = await fetch(`obtener_categoria.php?id=${categoryId}`);
+                const formData = new FormData(categoryForm);
+                const response = await fetch('insertar_categoria.php', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.message || 'Error al crear la categoría');
+                }
+                
                 const data = await response.json();
                 
                 if (data.success) {
-                    document.getElementById('edit-category-id').value = categoryId;
-                    document.getElementById('edit-category-nombre').value = data.categoria.nombre;
-                    document.getElementById('edit-category-descripcion').value = data.categoria.descripcion || '';
-                    
-                    if (modalEditCategory && overlay) {
-                        overlay.classList.add('active');
-                        modalEditCategory.classList.add('active');
-                        document.body.style.overflow = 'hidden';
-                    }
+                    showNotification(data.message, 'success');
+                    closeAllModals();
+                    // Limpiar el formulario
+                    categoryForm.reset();
+                    // Recargar la página para mostrar la nueva categoría
+                    window.location.reload();
                 } else {
-                    showNotification('Error al cargar la categoría', 'error');
+                    showNotification(data.message || 'Error al crear la categoría', 'error');
                 }
             } catch (error) {
                 console.error('Error:', error);
-                showNotification('Error al cargar la categoría', 'error');
+                showNotification(error.message || 'Error al crear la categoría', 'error');
             }
         });
-    });
-    
-    // Configuración para botones de eliminación de categorías
-    deleteButtons.forEach(button => {
-        button.addEventListener('click', () => {
-            const categoryId = button.dataset.id;
-            const categoryName = button.dataset.nombre;
-            
-            document.getElementById('category-delete-name').textContent = categoryName;
-            document.getElementById('confirm-delete-category-button').setAttribute('data-id', categoryId);
-            
-            if (modalDeleteCategory && overlay) {
-                overlay.classList.add('active');
-                modalDeleteCategory.classList.add('active');
-                document.body.style.overflow = 'hidden';
-            }
-        });
-    });
-    
-    // Configurar cierre de modales de categorías
-    const closeEditCategoryModalBtn = document.getElementById('close-edit-category-modal');
-    const cancelEditCategoryBtn = document.getElementById('cancel-edit-category');
-    const closeDeleteCategoryModalBtn = document.getElementById('close-delete-category-modal');
-    const cancelDeleteCategoryBtn = document.getElementById('cancel-delete-category');
-    
-    if (closeEditCategoryModalBtn) {
-        closeEditCategoryModalBtn.addEventListener('click', () => {
-            closeModal(modalEditCategory);
-        });
     }
-    
-    if (cancelEditCategoryBtn) {
-        cancelEditCategoryBtn.addEventListener('click', () => {
-            closeModal(modalEditCategory);
-        });
-    }
-    
-    if (closeDeleteCategoryModalBtn) {
-        closeDeleteCategoryModalBtn.addEventListener('click', () => {
-            closeModal(modalDeleteCategory);
-        });
-    }
-    
-    if (cancelDeleteCategoryBtn) {
-        cancelDeleteCategoryBtn.addEventListener('click', () => {
-            closeModal(modalDeleteCategory);
-        });
-    }
-    
-    function closeModal(modal) {
-        if (modal && overlay) {
-            modal.classList.remove('active');
-            overlay.classList.remove('active');
-            document.body.style.overflow = 'auto';
-        }
-    }
-}
 
-// Asegurarse de que todas las funciones se inicialicen cuando el DOM esté listo
-document.addEventListener('DOMContentLoaded', () => {
-    console.log('DOM cargado, inicializando funciones...');
-    // Las inicializaciones principales ya están en el primer evento DOMContentLoaded
+    // Inicializar botones de editar categorías
+    if (editCategoryButtons.length > 0) {
+        console.log('Configurando botones de edición de categorías:', editCategoryButtons.length);
+        editCategoryButtons.forEach(button => {
+            button.addEventListener('click', function(e) {
+                console.log('Botón editar categoría clickeado:', this.dataset.id);
+                const categoryId = this.dataset.id;
+                
+                // Hacer una petición para obtener los datos de la categoría
+                fetch(`obtener_categoria.php?id=${categoryId}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            // Llenar el formulario con los datos
+                            document.getElementById('edit-category-id').value = data.categoria.id_categoria;
+                            document.getElementById('edit-category-nombre').value = data.categoria.nombre;
+                            document.getElementById('edit-category-descripcion').value = data.categoria.descripcion || '';
+                            
+                            // Mostrar el modal
+                            openModal(modalEditCategory);
+                        } else {
+                            showNotification(data.message || 'Error al cargar la categoría', 'error');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        showNotification('Error al cargar la categoría', 'error');
+                    });
+            });
+        });
+    }
+
+    // Inicializar botones de eliminar categorías
+    if (deleteCategoryButtons.length > 0) {
+        console.log('Configurando botones de eliminación de categorías:', deleteCategoryButtons.length);
+        deleteCategoryButtons.forEach(button => {
+            button.addEventListener('click', function(e) {
+                console.log('Botón eliminar categoría clickeado:', this.dataset.id);
+                const categoryId = this.dataset.id;
+                const categoryName = this.dataset.nombre;
+                
+                // Llenar el modal con los datos
+                document.getElementById('category-delete-name').textContent = categoryName;
+                confirmDeleteCategoryButton.setAttribute('data-id', categoryId);
+                
+                // Mostrar el modal
+                openModal(modalDeleteCategory);
+            });
+        });
+    }
+
+    // Event listener para el formulario de edición de categorías
+    if (submitEditCategoryButton && editCategoryForm) {
+        submitEditCategoryButton.addEventListener('click', async function(e) {
+            e.preventDefault();
+            console.log('Clic en guardar cambios de categoría');
+            
+            try {
+                // Verificar que el formulario tenga los datos requeridos
+                const id = editCategoryForm.querySelector('#edit-category-id').value;
+                const nombre = editCategoryForm.querySelector('#edit-category-nombre').value;
+                
+                if (!id || !nombre) {
+                    console.error('Faltan datos requeridos:', { id, nombre });
+                    showNotification('Faltan datos requeridos', 'error');
+                    return;
+                }
+                
+                console.log('Datos a enviar:', { 
+                    id, 
+                    nombre, 
+                    descripcion: editCategoryForm.querySelector('#edit-category-descripcion').value 
+                });
+                
+                // Crear FormData (esto conserva los nombres de los campos del formulario)
+                const formData = new FormData(editCategoryForm);
+                
+                // Enviar la solicitud con modo de depuración
+                const response = await fetch('editar_categoria.php', {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        // No agregar Content-Type para FormData, el navegador lo establece automáticamente
+                    }
+                });
+                
+                console.log('Estado de la respuesta:', response.status, response.statusText);
+                
+                // Si la respuesta no es exitosa, lanzar un error
+                if (!response.ok) {
+                    // Intentar leer el texto de la respuesta
+                    const errorText = await response.text();
+                    console.error('Respuesta del servidor (no JSON):', errorText);
+                    throw new Error(`Error HTTP ${response.status}: ${response.statusText}`);
+                }
+                
+                // Verificar que la respuesta sea JSON válido
+                let responseText = '';
+                try {
+                    responseText = await response.text();
+                    console.log('Respuesta del servidor (texto):', responseText);
+                    
+                    const data = JSON.parse(responseText);
+                    console.log('Respuesta del servidor (JSON):', data);
+                    
+                    if (data.success) {
+                        showNotification(data.message, 'success');
+                        closeAllModals();
+                        window.location.reload();
+                    } else {
+                        showNotification(data.message || 'Error al editar la categoría', 'error');
+                    }
+                } catch (jsonError) {
+                    console.error('Error al analizar JSON:', jsonError);
+                    console.error('Texto recibido del servidor:', responseText);
+                    showNotification('Error al procesar la respuesta del servidor', 'error');
+                }
+            } catch (error) {
+                console.error('Error en la solicitud AJAX:', error);
+                showNotification('Error al editar la categoría: ' + error.message, 'error');
+            }
+        });
+    }
+
+    // Event listener para confirmar eliminación de categoría
+    if (confirmDeleteCategoryButton) {
+        confirmDeleteCategoryButton.addEventListener('click', async function(e) {
+            e.preventDefault();
+            const categoryId = this.getAttribute('data-id');
+            console.log('Confirmando eliminación de categoría:', categoryId);
+            
+            try {
+                const response = await fetch('eliminar_categoria.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ id: categoryId })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    showNotification(data.message, 'success');
+                    closeAllModals();
+                    window.location.reload();
+                } else {
+                    showNotification(data.message || 'Error al eliminar la categoría', 'error');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showNotification('Error al eliminar la categoría', 'error');
+            }
+        });
+    }
+
+    // Función para mostrar notificaciones
+    window.showNotification = function(message, type = 'success') {
+        const notificationModal = document.getElementById('notificationModal');
+        
+        if (notificationModal) {
+            notificationModal.textContent = message;
+            notificationModal.className = 'notification-modal';
+            notificationModal.classList.add(type);
+            notificationModal.style.display = 'block';
+            
+            setTimeout(() => {
+                notificationModal.style.display = 'none';
+            }, 3000);
+        } else {
+            alert(message);
+        }
+    };
+
+    // Inicializar funcionalidad de editar artículos
+    const editButtons = document.querySelectorAll('.edit-button');
+    if (editButtons.length > 0) {
+        editButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const postId = this.dataset.id;
+                fetch(`editar_post.php?id=${postId}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        // Rellenar el formulario con los datos
+                        document.getElementById('edit-id').value = data.post.id_post;
+                        document.getElementById('edit-titulo').value = data.post.titulo;
+                        document.getElementById('edit-descripcion').value = data.post.resumen;
+                        document.getElementById('edit-contenido').value = data.post.contenido;
+                        document.getElementById('edit-categoria').value = data.post.id_categoria;
+                        
+                        // Mostrar la imagen actual si existe
+                        if (data.post.imagen_destacada) {
+                            document.getElementById('current-image').src = data.post.imagen_destacada;
+                            document.getElementById('current-image-container').style.display = 'block';
+                        } else {
+                            document.getElementById('current-image-container').style.display = 'none';
+                        }
+                        
+                        // Abrir el modal
+                        openModal(modalEditArticle);
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        showNotification('Error al cargar los datos del post', 'error');
+                    });
+            });
+        });
+    }
+
+    // Event listeners para confirmación de eliminación de artículos
+    const deleteButtons = document.querySelectorAll('.delete-button');
+    if (deleteButtons.length > 0) {
+        deleteButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const postId = this.dataset.id;
+                const postTitle = this.closest('tr').querySelector('td:nth-child(2)').textContent;
+                
+                document.getElementById('post-delete-title').textContent = postTitle;
+                document.getElementById('confirm-delete-button').setAttribute('data-id', postId);
+                
+                openModal(modalDeleteConfirmation);
+            });
+        });
+    }
+
+    // Event listener para confirmar eliminación de artículo
+    const confirmDeleteButton = document.getElementById('confirm-delete-button');
+    if (confirmDeleteButton) {
+        confirmDeleteButton.addEventListener('click', function() {
+            const postId = this.getAttribute('data-id');
+            window.location.href = `eliminar_post.php?id=${postId}`;
+        });
+    }
 });

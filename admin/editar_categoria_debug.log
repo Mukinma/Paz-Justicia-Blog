@@ -1,0 +1,292 @@
+[2025-05-16 11:27:00] Recibida solicitud editar_categoria.php
+[2025-05-16 11:27:00] Datos POST:
+{
+    "id": "10",
+    "nombre": "Paz y conflictos",
+    "descripcion": "Cobertura de guerras, procesos de reconciliaci\u00f3n y contextos de conflicto global"
+}
+[2025-05-16 11:27:00] Sesión:
+{
+    "intentos": 0,
+    "bloqueo_tiempo": null,
+    "user_id": 2,
+    "usuario": "Christopher Eugenio Nieves Mart\u00ednez",
+    "email": "cnieves0@ucol.mx",
+    "role": "admin",
+    "avatar": "assets\/avatars\/6826f8454b688.jpg"
+}
+[2025-05-16 11:27:00] Procesando solicitud POST
+[2025-05-16 11:27:00] Datos recibidos
+{
+    "id": "10",
+    "nombre": "Paz y conflictos",
+    "descripcion": "Cobertura de guerras, procesos de reconciliaci\u00f3n y contextos de conflicto global"
+}
+[2025-05-16 11:27:00] Validación exitosa
+[2025-05-16 11:27:00] La categoría existe
+[2025-05-16 11:27:00] Slug generado
+{
+    "slug": "paz-y-conflictos"
+}
+[2025-05-16 11:27:00] Iniciada transacción
+[2025-05-16 11:27:00] Transacción confirmada
+[2025-05-16 11:27:00] Categoría actualizada
+{
+    "id_categoria": 10,
+    "nombre": "Paz y conflictos",
+    "slug": "paz-y-conflictos",
+    "descripcion": "Cobertura de guerras, procesos de reconciliaci\u00f3n y contextos de conflicto global"
+}
+[2025-05-16 11:27:12] Recibida solicitud editar_categoria.php
+[2025-05-16 11:27:12] Datos POST:
+{
+    "id": "10",
+    "nombre": "Paz y conflictos",
+    "descripcion": "Cobertura de guerras, procesos de reconciliaci\u00f3n y contextos de conflicto global."
+}
+[2025-05-16 11:27:12] Sesión:
+{
+    "intentos": 0,
+    "bloqueo_tiempo": null,
+    "user_id": 2,
+    "usuario": "Christopher Eugenio Nieves Mart\u00ednez",
+    "email": "cnieves0@ucol.mx",
+    "role": "admin",
+    "avatar": "assets\/avatars\/6826f8454b688.jpg"
+}
+[2025-05-16 11:27:12] Procesando solicitud POST
+[2025-05-16 11:27:12] Datos recibidos
+{
+    "id": "10",
+    "nombre": "Paz y conflictos",
+    "descripcion": "Cobertura de guerras, procesos de reconciliaci\u00f3n y contextos de conflicto global."
+}
+[2025-05-16 11:27:12] Validación exitosa
+[2025-05-16 11:27:12] La categoría existe
+[2025-05-16 11:27:12] Slug generado
+{
+    "slug": "paz-y-conflictos"
+}
+[2025-05-16 11:27:12] Iniciada transacción
+[2025-05-16 11:27:12] Transacción confirmada
+[2025-05-16 11:27:12] Categoría actualizada
+{
+    "id_categoria": 10,
+    "nombre": "Paz y conflictos",
+    "slug": "paz-y-conflictos",
+    "descripcion": "Cobertura de guerras, procesos de reconciliaci\u00f3n y contextos de conflicto global."
+}
+[2025-05-16 11:27:21] Recibida solicitud editar_categoria.php
+[2025-05-16 11:27:21] Datos POST:
+{
+    "id": "10",
+    "nombre": "Paz y conflictos",
+    "descripcion": "Cobertura de guerras, procesos de reconciliaci\u00f3n y contextos de conflicto global."
+}
+[2025-05-16 11:27:21] Sesión:
+{
+    "intentos": 0,
+    "bloqueo_tiempo": null,
+    "user_id": 2,
+    "usuario": "Christopher Eugenio Nieves Mart\u00ednez",
+    "email": "cnieves0@ucol.mx",
+    "role": "admin",
+    "avatar": "assets\/avatars\/6826f8454b688.jpg"
+}
+[2025-05-16 11:27:21] Procesando solicitud POST
+[2025-05-16 11:27:21] Datos recibidos
+{
+    "id": "10",
+    "nombre": "Paz y conflictos",
+    "descripcion": "Cobertura de guerras, procesos de reconciliaci\u00f3n y contextos de conflicto global."
+}
+[2025-05-16 11:27:21] Validación exitosa
+[2025-05-16 11:27:21] La categoría existe
+[2025-05-16 11:27:21] Slug generado
+{
+    "slug": "paz-y-conflictos"
+}
+[2025-05-16 11:27:21] Iniciada transacción
+[2025-05-16 11:27:21] Transacción confirmada
+[2025-05-16 11:27:21] Categoría actualizada
+{
+    "id_categoria": 10,
+    "nombre": "Paz y conflictos",
+    "slug": "paz-y-conflictos",
+    "descripcion": "Cobertura de guerras, procesos de reconciliaci\u00f3n y contextos de conflicto global."
+}
+[2025-05-16 11:27:28] Recibida solicitud editar_categoria.php
+[2025-05-16 11:27:28] Datos POST:
+{
+    "id": "10",
+    "nombre": "Paz y conflictos",
+    "descripcion": "Cobertura de guerras, procesos de reconciliaci\u00f3n y contextos de conflicto global"
+}
+[2025-05-16 11:27:28] Sesión:
+{
+    "intentos": 0,
+    "bloqueo_tiempo": null,
+    "user_id": 2,
+    "usuario": "Christopher Eugenio Nieves Mart\u00ednez",
+    "email": "cnieves0@ucol.mx",
+    "role": "admin",
+    "avatar": "assets\/avatars\/6826f8454b688.jpg"
+}
+[2025-05-16 11:27:28] Procesando solicitud POST
+[2025-05-16 11:27:28] Datos recibidos
+{
+    "id": "10",
+    "nombre": "Paz y conflictos",
+    "descripcion": "Cobertura de guerras, procesos de reconciliaci\u00f3n y contextos de conflicto global"
+}
+[2025-05-16 11:27:28] Validación exitosa
+[2025-05-16 11:27:28] La categoría existe
+[2025-05-16 11:27:28] Slug generado
+{
+    "slug": "paz-y-conflictos"
+}
+[2025-05-16 11:27:28] Iniciada transacción
+[2025-05-16 11:27:28] Transacción confirmada
+[2025-05-16 11:27:28] Categoría actualizada
+{
+    "id_categoria": 10,
+    "nombre": "Paz y conflictos",
+    "slug": "paz-y-conflictos",
+    "descripcion": "Cobertura de guerras, procesos de reconciliaci\u00f3n y contextos de conflicto global"
+}
+[2025-05-16 11:27:40] Recibida solicitud editar_categoria.php
+[2025-05-16 11:27:40] Datos POST:
+{
+    "id": "10",
+    "nombre": "Paz y conflictos",
+    "descripcion": "Cobertura de guerras, procesos de reconciliaci\u00f3n y contextos de conflicto global."
+}
+[2025-05-16 11:27:40] Sesión:
+{
+    "intentos": 0,
+    "bloqueo_tiempo": null,
+    "user_id": 2,
+    "usuario": "Christopher Eugenio Nieves Mart\u00ednez",
+    "email": "cnieves0@ucol.mx",
+    "role": "admin",
+    "avatar": "assets\/avatars\/6826f8454b688.jpg"
+}
+[2025-05-16 11:27:40] Procesando solicitud POST
+[2025-05-16 11:27:40] Datos recibidos
+{
+    "id": "10",
+    "nombre": "Paz y conflictos",
+    "descripcion": "Cobertura de guerras, procesos de reconciliaci\u00f3n y contextos de conflicto global."
+}
+[2025-05-16 11:27:40] Validación exitosa
+[2025-05-16 11:27:40] La categoría existe
+[2025-05-16 11:27:40] Slug generado
+{
+    "slug": "paz-y-conflictos"
+}
+[2025-05-16 11:27:40] Iniciada transacción
+[2025-05-16 11:27:40] Transacción confirmada
+[2025-05-16 11:27:40] Categoría actualizada
+{
+    "id_categoria": 10,
+    "nombre": "Paz y conflictos",
+    "slug": "paz-y-conflictos",
+    "descripcion": "Cobertura de guerras, procesos de reconciliaci\u00f3n y contextos de conflicto global."
+}
+[2025-05-16 11:31:21] Recibida solicitud editar_categoria.php
+[2025-05-16 11:31:21] Datos POST:
+{
+    "id": "12",
+    "nombre": "Prueba categor\u00eda 2.1",
+    "descripcion": "Prueba categor\u00eda 2"
+}
+[2025-05-16 11:31:21] Sesión:
+{
+    "intentos": 0,
+    "bloqueo_tiempo": null,
+    "user_id": 2,
+    "usuario": "Christopher Eugenio Nieves Mart\u00ednez",
+    "email": "cnieves0@ucol.mx",
+    "role": "admin",
+    "avatar": "assets\/avatars\/6826f8454b688.jpg"
+}
+[2025-05-16 11:31:21] Procesando solicitud POST
+[2025-05-16 11:31:21] Datos recibidos
+{
+    "id": "12",
+    "nombre": "Prueba categor\u00eda 2.1",
+    "descripcion": "Prueba categor\u00eda 2"
+}
+[2025-05-16 11:31:21] Validación fallida
+{
+    "valid": false,
+    "message": "El nombre solo puede contener letras, n\u00fameros, espacios, guiones y guiones bajos"
+}
+[2025-05-16 11:31:32] Recibida solicitud editar_categoria.php
+[2025-05-16 11:31:32] Datos POST:
+{
+    "id": "12",
+    "nombre": "Prueba categor\u00eda 2.1",
+    "descripcion": "Prueba categor\u00eda 2"
+}
+[2025-05-16 11:31:32] Sesión:
+{
+    "intentos": 0,
+    "bloqueo_tiempo": null,
+    "user_id": 2,
+    "usuario": "Christopher Eugenio Nieves Mart\u00ednez",
+    "email": "cnieves0@ucol.mx",
+    "role": "admin",
+    "avatar": "assets\/avatars\/6826f8454b688.jpg"
+}
+[2025-05-16 11:31:32] Procesando solicitud POST
+[2025-05-16 11:31:32] Datos recibidos
+{
+    "id": "12",
+    "nombre": "Prueba categor\u00eda 2.1",
+    "descripcion": "Prueba categor\u00eda 2"
+}
+[2025-05-16 11:31:32] Validación fallida
+{
+    "valid": false,
+    "message": "El nombre solo puede contener letras, n\u00fameros, espacios, guiones y guiones bajos"
+}
+[2025-05-16 11:31:39] Recibida solicitud editar_categoria.php
+[2025-05-16 11:31:39] Datos POST:
+{
+    "id": "12",
+    "nombre": "Prueba categor\u00eda 2 1",
+    "descripcion": "Prueba categor\u00eda 2"
+}
+[2025-05-16 11:31:39] Sesión:
+{
+    "intentos": 0,
+    "bloqueo_tiempo": null,
+    "user_id": 2,
+    "usuario": "Christopher Eugenio Nieves Mart\u00ednez",
+    "email": "cnieves0@ucol.mx",
+    "role": "admin",
+    "avatar": "assets\/avatars\/6826f8454b688.jpg"
+}
+[2025-05-16 11:31:39] Procesando solicitud POST
+[2025-05-16 11:31:39] Datos recibidos
+{
+    "id": "12",
+    "nombre": "Prueba categor\u00eda 2 1",
+    "descripcion": "Prueba categor\u00eda 2"
+}
+[2025-05-16 11:31:39] Validación exitosa
+[2025-05-16 11:31:39] La categoría existe
+[2025-05-16 11:31:39] Slug generado
+{
+    "slug": "prueba-categoria-2-1"
+}
+[2025-05-16 11:31:39] Iniciada transacción
+[2025-05-16 11:31:39] Transacción confirmada
+[2025-05-16 11:31:39] Categoría actualizada
+{
+    "id_categoria": 12,
+    "nombre": "Prueba categor\u00eda 2 1",
+    "slug": "prueba-categoria-2-1",
+    "descripcion": "Prueba categor\u00eda 2"
+}
