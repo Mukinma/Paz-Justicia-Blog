@@ -378,9 +378,8 @@ header nav a {
 .carousel .list .item .content {
     position: absolute;
     top: 50%;
-    width: 100%;
+    width: 70%;
     max-width: 1200px;
-    left: 50%;
     padding: 0 30px;
     transform: translateY(-50%) translateX(-30px);
     opacity: 0;
