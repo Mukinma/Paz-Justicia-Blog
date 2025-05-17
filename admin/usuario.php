@@ -110,12 +110,15 @@ if(isset($_POST['login'])) {
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
     <link rel="icon" href="../assets/minilogo.png">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Inicia sesión o regístrate en nuestro sistema para acceder a todo el contenido exclusivo">
+    <meta name="keywords" content="login, registro, inicio sesión, cuenta usuario">
+    <title>Acceso al sistema | PIP Blog</title>
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="../views/css/login_style.css">
     <script src="../js/app.js"></script>
@@ -138,19 +141,19 @@ if(isset($_POST['login'])) {
             </div>
             <div class="separator">
                 <div class="line"></div>
-                <p>Or</p>
+                <p>O</p>
                 <div class="line"></div>
             </div>
             <form method="POST" action="">
-                <input type="text" name="name" placeholder="Full name" required>
-                <input type="email" name="email" placeholder="Email address" required>
-                <input type="password" name="pass" placeholder="Password" required>
+                <input type="text" name="name" placeholder="Nombre completo" required>
+                <input type="email" name="email" placeholder="Correo electrónico" required>
+                <input type="password" name="pass" placeholder="Contraseña" required>
                 <button type="submit" name="register" class="btn">Registrar</button>
             </form>
         </div>
 
         <div class="login-section">
-            <header>Iniciar Session</header>
+            <header>Iniciar Sesión</header>
             <?php if (!empty($mensaje_error_login)) : ?>
     <div style="background-color: #ffe0e0; color: red; text-align: center; padding: 10px; border-radius: 5px; margin-bottom: 10px;">
         <?php echo $mensaje_error_login; ?>
@@ -184,14 +187,14 @@ if(isset($_POST['login'])) {
             </div>
             <div class="separator">
                 <div class="line"></div>
-                <p>Or</p>
+                <p>O</p>
                 <div class="line"></div>
             </div>
             <form method="POST" action="">
-                <input type="email" name="email" placeholder="Email address" required>
-                <input type="password" name="pass" placeholder="Password" required>
-                <a href="send_reset_email.php">Olvide la contraseña?</a>
-                <button type="submit" name='login' class="btn">Iniciar session</button>
+                <input type="email" name="email" placeholder="Correo electrónico" required>
+                <input type="password" name="pass" placeholder="Contraseña" required>
+                <a href="send_reset_email.php">¿Olvidé la contraseña?</a>
+                <button type="submit" name='login' class="btn">Iniciar sesión</button>
             </form>
         </div>
 
