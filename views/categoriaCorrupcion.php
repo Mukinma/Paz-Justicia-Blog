@@ -39,7 +39,7 @@
                     }
                     echo '<a href="../admin/logout.php"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a>
                             </div>
-                          </div>';
+                        </div>';
                 }
                 ?>
             </div>
@@ -138,7 +138,7 @@
                         <p class="title-footer">Información de Contacto</p>
                         <ul>
                             <li>Teléfono: 314-149-5596</li>
-                            <li>EmaiL: PeaceInProgress.com</li>
+                            <li>EmaiL: PeaceInProgres1@gmail.com</li>
                         </ul>
                         <div class="social-icons">
                             <span class="facebook">
@@ -156,8 +156,8 @@
                     <div class="information">
                         <p class="title-footer">Información</p>
                         <ul>
-                            <li><a href="#">Acerca de Nosotros</a></li>
-                            <li><a href="#">Contactános</a></li>
+                            <li><a href="about.html">Acerca de Nosotros</a></li>
+                            <li><a href="contact.html">Contactános</a></li>
                         </ul>
                     </div>
                 </div>

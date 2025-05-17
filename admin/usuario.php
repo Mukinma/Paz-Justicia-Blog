@@ -145,7 +145,6 @@ if(isset($_POST['login'])) {
                 <input type="text" name="name" placeholder="Full name" required>
                 <input type="email" name="email" placeholder="Email address" required>
                 <input type="password" name="pass" placeholder="Password" required>
-                <a href="#">Olvide la contraseña?</a>
                 <button type="submit" name="register" class="btn">Registrar</button>
             </form>
         </div>
@@ -191,7 +190,7 @@ if(isset($_POST['login'])) {
             <form method="POST" action="">
                 <input type="email" name="email" placeholder="Email address" required>
                 <input type="password" name="pass" placeholder="Password" required>
-                <a href="#">Olvide la contraseña?</a>
+                <a href="send_reset_email.php">Olvide la contraseña?</a>
                 <button type="submit" name='login' class="btn">Iniciar session</button>
             </form>
         </div>
