@@ -301,322 +301,414 @@ header nav a {
 }
 
 .carousel {
-    height: 100vh;
-    width: 100vw;
-    overflow: hidden;
     position: relative;
-    margin-top: 0;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+    /* Fondo de respaldo para prevenir pantallas negras */
+    background-color: #000;
+    z-index: 1;
+    /* Mejoras de rendimiento */
+    contain: layout size paint;
+    will-change: transform;
+    transform-style: preserve-3d;
+    backface-visibility: hidden;
+    transform: translateZ(0);
 }
 
-.carousel .list .item {
+/* Contenedor de slides con optimizaciones de rendimiento */
+.carousel .list {
+    position: absolute;
     width: 100%;
     height: 100%;
-    position: absolute;
-    inset: 0 0 0 0;
+    z-index: 1;
+    /* Optimizaciones de rendimiento */
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    perspective: 1000px;
+    will-change: contents;
 }
 
+/* Optimizar cada slide individual */
+.carousel .list .item {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    visibility: hidden;
+    /* Transición suavizada */
+    transition: 
+        opacity 0.8s cubic-bezier(0.33, 1, 0.68, 1),
+        visibility 0.01s linear 0.4s,
+        transform 0.8s cubic-bezier(0.33, 1, 0.68, 1);
+    /* Optimizaciones de rendimiento */
+    backface-visibility: hidden;
+    transform: translateZ(0);
+    will-change: opacity, visibility, transform;
+    /* Asegurar que la imagen de fondo no desaparezca */
+    background-color: #000;
+}
+
+/* Slide activo con mayor especificidad para evitar conflictos */
+.carousel .list .item.active {
+    opacity: 1;
+    visibility: visible;
+    z-index: 5 !important;
+    transition:
+        opacity 0.8s cubic-bezier(0.33, 1, 0.68, 1),
+        visibility 0s linear 0s,
+        transform 0.8s cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+/* Optimizar imágenes para evitar flashes de contenido */
 .carousel .list .item img {
+    position: absolute;
     width: 100%;
     height: 100%;
     object-fit: cover;
+    filter: brightness(0.6);
+    z-index: -1;
+    /* Optimizaciones de rendimiento */
+    backface-visibility: hidden;
+    transform: translateZ(0);
+    will-change: filter;
+    transition: filter 0.8s ease;
 }
 
+/* Contenido con transiciones optimizadas */
 .carousel .list .item .content {
     position: absolute;
-    top: 25%;
-    width: 1140px;
-    max-width: 80%;
-    left: 50%;
-    transform: translateX(-50%);
-    padding-right: 30%;
-    box-sizing: border-box;
-    color: #fff;
-    text-shadow: 0 5px 10px #0004;
-}
-
-.carousel .list .item .author {
-    font-weight: bold;
-    letter-spacing: 10px;
-}
-
-.carousel .list .item .title,
-.carousel .list .item .topic {
-    font-size: 5em;
-    font-weight: bold;
-    line-height: 1.3em;
-}
-
-.carousel .list .item .topic {
-    color: #fffffff7;
-}
-
-.carousel .list .item .buttons {
-    display: grid;
-    grid-template-columns: repeat(2, 130px);
-    grid-template-rows: 40px;
-    gap: 5px;
-    margin-top: 20px;
-}
-
-.carousel .list .item .buttons button {
-    border: none;
-    background-color: #eee;
-    letter-spacing: 3px;
-    font-family: Poppins;
-    font-weight: 500;
-}
-
-.carousel .list .item .buttons button:nth-child(2) {
-    background-color: transparent;
-    border: 1px solid #fff;
-    color: #eee;
-}
-
-/* thumbail */
-.thumbnail {
-    position: absolute;
-    bottom: 50px;
-    left: 50%;
-    width: max-content;
-    z-index: 100;
-    display: flex;
-    gap: 20px;
-}
-
-.thumbnail .item {
-    width: 150px;
-    height: 220px;
-    flex-shrink: 0;
-    position: relative;
-}
-
-.thumbnail .item img {
+    top: 50%;
     width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 20px;
-}
-
-.thumbnail .item .content {
-    color: #fff;
-    position: absolute;
-    bottom: 10px;
-    left: 10px;
-    right: 10px;
-}
-
-.thumbnail .item .content .title {
-    font-weight: 500;
-}
-
-.thumbnail .item .content .description {
-    font-weight: 300;
-}
-
-/* arrows */
-.arrows {
-    position: absolute;
-    top: 80%;
-    right: 52%;
-    z-index: 100;
-    width: 300px;
-    max-width: 30%;
-    display: flex;
-    gap: 10px;
-    align-items: center;
-}
-
-.arrows button {
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    background-color: #eee4;
-    border: none;
-    color: #fff;
-    font-family: monospace;
-    font-weight: bold;
-    transition: .1s;
-}
-
-.arrows button:hover {
-    background-color: #fff;
-    color: #000;
-}
-
-/* animation */
-.carousel .list .item:nth-child(1) {
-    z-index: 1;
-}
-
-/* animation text in first item */
-
-.carousel .list .item:nth-child(1) .content .author,
-.carousel .list .item:nth-child(1) .content .title,
-.carousel .list .item:nth-child(1) .content .topic,
-.carousel .list .item:nth-child(1) .content .des,
-.carousel .list .item:nth-child(1) .content .buttons {
-    transform: translateY(50px);
-    filter: blur(20px);
-    opacity: 0;
-    animation: showContent .5s 1s linear 1 forwards;
-}
-
-@keyframes showContent {
-    to {
-        transform: translateY(0px);
-        filter: blur(0px);
-        opacity: 1;
-    }
-}
-
-.carousel .list .item:nth-child(1) .content .title {
-    animation-delay: 1.2s !important;
-}
-
-.carousel .list .item:nth-child(1) .content .topic {
-    animation-delay: 1.4s !important;
-}
-
-.carousel .list .item:nth-child(1) .content .des {
-    animation-delay: 1.6s !important;
-}
-
-.carousel .list .item:nth-child(1) .content .buttons {
-    animation-delay: 1.8s !important;
-}
-
-/* create animation when next click */
-.carousel.next .list .item:nth-child(1) img {
-    width: 150px;
-    height: 220px;
-    position: absolute;
-    bottom: 50px;
+    max-width: 1200px;
     left: 50%;
-    border-radius: 30px;
-    animation: showImage .5s linear 1 forwards;
+    padding: 0 30px;
+    transform: translateY(-50%) translateX(-30px);
+    opacity: 0;
+    z-index: 10;
+    transition: 
+        opacity 0.5s ease,
+        transform 0.5s cubic-bezier(0.33, 1, 0.68, 1);
+    will-change: opacity, transform;
 }
 
-@keyframes showImage {
-    to {
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        border-radius: 0;
-    }
+/* Contenido activo */
+.carousel .list .item.active .content {
+    opacity: 1;
+    transform: translateY(-50%) translateX(0);
 }
 
-.carousel.next .thumbnail .item:nth-last-child(1) {
-    overflow: hidden;
-    animation: showThumbnail .5s linear 1 forwards;
-}
-
-.carousel.prev .list .item img {
-    z-index: 100;
-}
-
-@keyframes showThumbnail {
-    from {
-        width: 0;
-        opacity: 0;
-    }
-}
-
-.carousel.next .thumbnail {
-    animation: effectNext .5s linear 1 forwards;
-}
-
-@keyframes effectNext {
-    from {
-        transform: translateX(150px);
-    }
-}
-
-/* running time */
-
+/* Barra de tiempo como indicador visual */
 .carousel .time {
     position: absolute;
     z-index: 1000;
-    width: 0%;
-    height: 3px;
+    height: 4px;
     background-color: #63b6f5;
     left: 0;
     top: 0;
+    width: 0%;
+    box-shadow: 0 0 8px rgba(99, 182, 245, 0.7);
+    transition: width linear;
+    will-change: width;
 }
 
-.carousel.next .time,
-.carousel.prev .time {
-    animation: runningTime 3s linear 1 forwards;
+/* Asegurar visibilidad durante el preload (estado inicial) */
+.carousel.carousel-initialized {
+    transition: background-color 0.5s ease;
 }
 
-@keyframes runningTime {
-    from {
-        width: 100%
+.carousel.carousel-initialized .list .item.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.carousel.carousel-initialized .list .item.active img {
+    filter: brightness(0.6);
+}
+
+/* Mejoras para las transiciones */
+.carousel.transitioning .list .item.active .content {
+    transition-duration: 0.5s;
+}
+
+/* Evitar parpadeos en slides no activos */
+.carousel .list .item:not(.active) .content {
+    pointer-events: none;
+    visibility: hidden;
+    opacity: 0;
+}
+
+/* Animaciones para entrada y salida con keyframes */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes fadeOut {
+    from { opacity: 1; }
+    to { opacity: 0; }
+}
+
+/* Ajustes para vista móvil */
+@media screen and (max-width: 768px) {
+    .carousel .list .item .content {
+        top: 40%;
     }
-
-    to {
-        width: 0
-    }
 }
 
-
-/* prev click */
-
-.carousel.prev .list .item:nth-child(2) {
+.carousel .thumbnail {
+    position: absolute;
+    right: -70px;
+    top: 50%;
+    transform: translateY(-50%);
     z-index: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* Reduce el espacio entre miniaturas */
+    transition: all 0.5s ease;
+    height: 75vh; /* Limitar la altura para que quepan 4 items */
+    overflow: hidden; /* Ocultar cualquier overflow */
+    padding: 10px 0;
+    justify-content: center;
 }
 
-.carousel.prev .list .item:nth-child(2) img {
-    animation: outFrame 0.5s linear 1 forwards;
+.carousel:hover .thumbnail {
+    right: 20px;
+}
+
+.carousel .thumbnail .item {
+    width: 180px;
+    height: 100px;
+    flex-shrink: 0;
+    position: relative;
+    border-radius: 10px;
+    overflow: hidden;
+    transition: all 0.5s cubic-bezier(0.2, 1, 0.3, 1);
+    cursor: pointer;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    opacity: 0.5;
+    transform: scale(0.9) translateX(30px);
+}
+
+.carousel .thumbnail .item.active {
+    display: none; /* Ocultar la miniatura activa - no es necesaria */
+}
+
+.carousel .thumbnail .item:hover {
+    opacity: 0.8;
+    transform: scale(0.95) translateX(10px);
+}
+
+.carousel .thumbnail .item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.carousel .thumbnail .item .content {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: flex-end;
+    padding: 10px;
+    background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
+}
+
+.carousel .thumbnail .item .content .title {
+    color: white;
+    font-size: 0.8em;
+    line-height: 1.2;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+
+.carousel .arrows {
+    position: absolute;
+    bottom: 5%;
+    left: 10%;
+    z-index: 3; /* Asegurar que estén por encima de las miniaturas */
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+.carousel .arrows button {
+    background: rgba(0, 0, 0, 0.6);
+    border: 2px solid rgba(255, 255, 255, 0.7);
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    font-size: 1.4em;
+    color: #fff;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+}
+
+.carousel .arrows button:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: white;
+    transform: scale(1.1);
+}
+
+.carousel .arrows button:active {
+    transform: scale(1);
+}
+
+.carousel::after {
+    content: '';
     position: absolute;
     bottom: 0;
     left: 0;
-}
-
-@keyframes outFrame {
-    to {
-        width: 150px;
-        height: 220px;
-        bottom: 50px;
-        left: 50%;
-        border-radius: 20px;
-    }
-}
-
-.carousel.prev .thumbnail .item:nth-child(1) {
-    overflow: hidden;
-    opacity: 0;
-    animation: showThumbnail .10s linear 1 forwards;
-}
-
-.carousel.next .arrows button,
-.carousel.prev .arrows button {
+    width: 100%;
+    height: 35%;
+    background: linear-gradient(to top, rgba(0,0,0,0.6), transparent);
+    z-index: 1;
     pointer-events: none;
 }
 
-.carousel.prev .list .item:nth-child(2) .content .author,
-.carousel.prev .list .item:nth-child(2) .content .title,
-.carousel.prev .list .item:nth-child(2) .content .topic,
-.carousel.prev .list .item:nth-child(2) .content .des,
-.carousel.prev .list .item:nth-child(2) .content .buttons {
-    animation: contentOut 1.5s linear 1 forwards !important;
-}
-
-@keyframes contentOut {
-    to {
-        transform: translateY(-150px);
-        filter: blur(20px);
-        opacity: 0;
-    }
-}
-
-@media screen and (max-width: 678px) {
+/* Estilos responsivos */
+@media screen and (max-width: 1200px) {
     .carousel .list .item .content {
-        padding-right: 0;
+        width: 60%;
     }
+    
+    .carousel .thumbnail {
+        height: 65vh;
+        right: -100px;
+    }
+    
+    .carousel:hover .thumbnail {
+        right: 15px;
+    }
+    
+    .carousel .thumbnail .item {
+        width: 160px;
+        height: 90px;
+    }
+}
 
+@media screen and (max-width: 992px) {
+    .carousel .list .item .content {
+        width: 60%;
+        padding: 25px;
+    }
+    
     .carousel .list .item .content .title {
-        font-size: 30px;
+        font-size: 2.2em;
+    }
+    
+    .carousel .list .item .content .buttons button {
+        padding: 12px 25px;
+    }
+    
+    .carousel .thumbnail .item {
+        width: 150px;
+        height: 85px;
+    }
+    
+    .carousel .arrows {
+        left: 5%;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .carousel .list .item .content {
+        width: 80%;
+        padding: 20px;
+    }
+    
+    .carousel .list .item .content .title {
+        font-size: 1.8em;
+    }
+    
+    .carousel .list .item .content .des {
+        font-size: 1em;
+        font-weight: 300;
+        line-height: 1.5;
+        margin: 15px 0 20px 0;
+        color: rgba(255, 255, 255, 0.9);
+        display: -webkit-box;
+        -webkit-line-clamp: 5;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+    
+    .carousel .list .item .content .buttons button {
+        padding: 10px 20px;
+        font-size: 0.9em;
+    }
+    
+    .carousel .thumbnail {
+        height: 60vh;
+        right: -110px;
+    }
+    
+    .carousel:hover .thumbnail {
+        right: 10px;
+    }
+    
+    .carousel .thumbnail .item {
+        width: 140px;
+        height: 80px;
+    }
+    
+    .carousel .arrows button {
+        width: 40px;
+        height: 40px;
+        font-size: 1em;
+    }
+}
+
+@media screen and (max-width: 576px) {
+    .carousel {
+        height: 95vh; /* Ligeramente más pequeño para evitar desbordamiento */
+    }
+    
+    .carousel .list .item .content {
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 85%;
+        padding: 20px;
+    }
+    
+    .carousel .list .item.active .content {
+        transform: translate(-50%, -50%);
+    }
+    
+    .carousel .thumbnail {
+        bottom: 10%;
+        right: 0;
+        left: 0;
+        top: auto;
+        transform: none;
+        flex-direction: row;
+        justify-content: center;
+        gap: 10px;
+        height: auto;
+        padding: 0 15px;
+    }
+    
+    .carousel:hover .thumbnail {
+        bottom: 10%;
+    }
+    
+    .carousel .thumbnail .item {
+        width: calc(25% - 8px);
+        height: 60px;
+        transform: none;
+    }
+    
+    .carousel .arrows {
+        bottom: 20%;
+        left: 50%;
+        transform: translateX(-50%);
     }
 }
 
@@ -663,18 +755,21 @@ header nav a {
 .see-more-button {
     display: inline-block;
     padding: 10px 20px;
-    background-color: #eee;
+    background-color: #7cbcbc;
     color: #000;
     font-weight: 500;
     border-radius: 4px;
-    text-align: center;
     text-decoration: none;
-    transition: background 0.3s;
+    transition: all 0.3s ease;
+    font-size: 0.95rem;
+    border: none;
+    cursor: pointer;
+    text-align: center;
 }
 
 .see-more-button:hover {
-    background-color: #94CEEB;
-    color: #fff;
+    background-color: #d2e7e7;
+    transform: translateY(-2px);
 }
 
 .login-button {
@@ -997,4 +1092,536 @@ header nav a {
     gap: 10px;
     align-items: center;
     }
+}
+
+/* Estilos de la cabecera principal */
+.main-header {
+    background-color: rgba(0, 0, 0, 0.7);
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(8px);
+}
+
+.header-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.4rem 5%;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.logo-container img {
+    height: 38px;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.logo-container img:hover {
+    transform: scale(1.05);
+}
+
+.main-nav {
+    display: flex;
+    align-items: center;
+}
+
+.nav-menu {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.nav-menu li {
+    position: relative;
+    margin: 0 0.6rem;
+}
+
+.nav-menu a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 0.95rem;
+    font-weight: 500;
+    padding: 0.4rem 0.7rem;
+    transition: color 0.3s ease;
+    display: block;
+}
+
+.nav-menu a:hover {
+    color: #7cbcbc;
+}
+
+.dropdown-toggle {
+    display: flex;
+    align-items: center;
+}
+
+.dropdown-toggle i {
+    margin-left: 5px;
+    font-size: 0.8rem;
+    transition: transform 0.3s ease;
+}
+
+.dropdown:hover .dropdown-toggle i {
+    transform: rotate(180deg);
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: calc(100% + 0.3rem);
+    left: 0;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(10px);
+    min-width: 220px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    padding: 0.6rem 0;
+    border-radius: 0.5rem;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: all 0.3s ease;
+    z-index: 1001;
+    list-style: none;
+}
+
+.dropdown:hover .dropdown-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.dropdown-menu li {
+    margin: 0;
+    width: 100%;
+}
+
+.dropdown-menu a {
+    padding: 0.5rem 1.5rem;
+    color: #e0e0e0;
+    font-weight: 400;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.dropdown-menu a:hover {
+    background-color: rgba(124, 188, 188, 0.2);
+    color: #fff;
+}
+
+.profile-section {
+    display: flex;
+    align-items: center;
+}
+
+.login-btn {
+    background-color: #7cbcbc;
+    color: #000;
+    padding: 0.4rem 1rem;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    font-size: 0.9rem;
+}
+
+.login-btn:hover {
+    background-color: #d2e7e7;
+    transform: translateY(-2px);
+}
+
+.profile-dropdown {
+    position: relative;
+}
+
+.profile-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.profile-btn img, .profile-btn i {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    object-fit: cover;
+    color: #fff;
+    font-size: 1.6rem;
+    transition: transform 0.3s ease;
+}
+
+.profile-btn:hover img, .profile-btn:hover i {
+    transform: scale(1.1);
+}
+
+.dropdown-content {
+    position: absolute;
+    right: 0;
+    top: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(10px);
+    min-width: 180px;
+    border-radius: 0.5rem;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    padding: 0.6rem 0;
+    z-index: 1002;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: all 0.3s ease;
+}
+
+.profile-dropdown:hover .dropdown-content {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(5px);
+}
+
+.dropdown-content a {
+    color: #e0e0e0;
+    padding: 0.5rem 1.5rem;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    transition: all 0.2s ease;
+}
+
+.dropdown-content a:hover {
+    background-color: rgba(124, 188, 188, 0.2);
+    color: #fff;
+}
+
+.dropdown-content a i {
+    margin-right: 10px;
+    font-size: 1rem;
+}
+
+.mobile-menu-toggle {
+    display: none;
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+/* Estilos para scroll */
+.main-header.scrolled {
+    background-color: rgba(0, 0, 0, 0.9);
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Media Queries */
+@media screen and (max-width: 992px) {
+    .mobile-menu-toggle {
+        display: block;
+    }
+    
+    .main-nav {
+        position: fixed;
+        top: 60px;
+        left: 0;
+        width: 100%;
+        background-color: rgba(0, 0, 0, 0.95);
+        backdrop-filter: blur(10px);
+        height: 0;
+        overflow: hidden;
+        transition: height 0.4s ease;
+    }
+    
+    .main-nav.active {
+        height: calc(100vh - 60px);
+        overflow-y: auto;
+    }
+    
+    .nav-menu {
+        flex-direction: column;
+        width: 100%;
+        padding: 1.5rem 0;
+    }
+    
+    .nav-menu li {
+        width: 100%;
+        margin: 0;
+    }
+    
+    .nav-menu a {
+        padding: 0.8rem 2rem;
+        font-size: 1.1rem;
+    }
+    
+    .dropdown-menu {
+        position: static;
+        background: transparent;
+        box-shadow: none;
+        min-width: 100%;
+        opacity: 1;
+        visibility: visible;
+        transform: none;
+        height: 0;
+        overflow: hidden;
+        transition: height 0.3s ease;
+        display: none;
+    }
+    
+    .dropdown.active .dropdown-menu {
+        height: auto;
+        display: block;
+        padding-left: 2rem;
+    }
+    
+    .dropdown-menu a {
+        padding: 0.6rem 2rem;
+    }
+    
+    .dropdown-toggle i {
+        transition: transform 0.3s ease;
+    }
+    
+    .dropdown.active .dropdown-toggle i {
+        transform: rotate(180deg);
+    }
+    
+    .carousel {
+        margin-top: 60px;
+    }
+}
+
+@media screen and (max-width: 576px) {
+    .header-container {
+        padding: 0.4rem 1rem;
+    }
+    
+    .logo-container img {
+        height: 34px;
+    }
+    
+    .login-btn {
+        padding: 0.4rem 0.9rem;
+        font-size: 0.85rem;
+    }
+    
+    .profile-btn img, .profile-btn i {
+        width: 32px;
+        height: 32px;
+        font-size: 1.5rem;
+    }
+}
+
+/* Estilos adicionales para el carousel */
+.carousel .list .item {
+    transition: opacity 0.5s ease;
+}
+
+.carousel .list .item.active,
+.thumbnail .item.active {
+    opacity: 1;
+    z-index: 1;
+}
+
+.carousel .time {
+    position: absolute;
+    z-index: 1000;
+    height: 4px;
+    background: linear-gradient(to right, #3a7bd5, #63b6f5);
+    left: 0;
+    top: 0;
+    width: 0%;
+    box-shadow: 0 0 10px rgba(99, 182, 245, 0.8);
+    transition: width linear;
+    border-top-right-radius: 2px;
+    border-bottom-right-radius: 2px;
+}
+
+.carousel .thumbnail .item {
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.carousel .thumbnail .item:hover {
+    transform: scale(1.05);
+}
+
+.carousel .thumbnail .item.active {
+    transform: scale(1.08);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    border: 2px solid #63b6f5;
+}
+
+.carousel .arrows button {
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Animaciones para las transiciones del carousel */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes fadeOut {
+    from { opacity: 1; }
+    to { opacity: 0; }
+}
+
+.carousel.next .list .item[style*="z-index: 1"],
+.carousel.prev .list .item[style*="z-index: 1"] {
+    animation: fadeIn 0.5s forwards;
+}
+
+.carousel.next .thumbnail .item.active,
+.carousel.prev .thumbnail .item.active {
+    border-color: #63b6f5;
+}
+
+/* Media queries para mejorar la responsividad */
+@media screen and (max-width: 768px) {
+    .carousel .list .item .content {
+        padding-right: 10%;
+        top: 12%;
+        max-height: 75vh;
+    }
+
+    .carousel .list .item[style*="z-index: 1"] .content {
+        left: 45%;
+        padding-right: 20%;
+    }
+
+    .carousel .list .item .title,
+    .carousel .list .item .topic {
+        font-size: 2.2em;
+    }
+
+    .carousel .list .item .des {
+        font-size: 1em;
+        max-height: 5em;
+    }
+
+    .carousel .thumbnail {
+        bottom: 30px;
+    }
+
+    .carousel .thumbnail .item {
+        width: 120px;
+        height: 180px;
+    }
+}
+
+@media screen and (max-width: 576px) {
+    .carousel .list .item .content {
+        top: 8%;
+        max-height: 80vh;
+    }
+
+    .carousel .list .item[style*="z-index: 1"] .content {
+        left: 48%;
+        padding-right: 15%;
+    }
+
+    .carousel .list .item .title,
+    .carousel .list .item .topic {
+        font-size: 1.8em;
+    }
+
+    .carousel .list .item .des {
+        font-size: 0.9em;
+        max-height: 4.5em;
+    }
+
+    .see-more-button {
+        padding: 8px 16px;
+        font-size: 0.85rem;
+    }
+
+    .carousel .thumbnail .item {
+        width: 90px;
+        height: 140px;
+    }
+
+    .carousel .thumbnail .item .content .title {
+        font-size: 0.8em;
+    }
+
+    .carousel .thumbnail .item .content .description {
+        font-size: 0.7em;
+    }
+}
+
+.carousel.transitioning .list .item.active .content {
+    animation: fadeInContent 0.8s ease forwards;
+}
+
+@keyframes fadeInContent {
+    from {
+        opacity: 0;
+        transform: translateY(-50%) translateX(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(-50%) translateX(0);
+    }
+}
+
+/* Evitar que el contenido inactivo sea visible */
+.carousel .list .item:not(.active) .content {
+    display: none;
+}
+
+/* Estado inicial optimizado para evitar parpadeos y pantallas negras */
+.carousel.carousel-initialized {
+    transition: background-color 0.5s ease;
+}
+
+.carousel.carousel-initialized .list .item.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.carousel.carousel-initialized .list .item.active img {
+    filter: brightness(0.6); /* Filtro inicial más brillante para la carga */
+}
+
+/* Asegurar que la barra de tiempo aparezca suavemente */
+.carousel.carousel-initialized .time {
+    transition: width 0.5s ease-in; /* Transición suave al inicio */
+}
+
+/* Evitar que el contenido inactivo sea visible pero manteniendo su espacio en el DOM */
+.carousel .list .item:not(.active) .content {
+    pointer-events: none;
+    visibility: hidden;
+}
+
+/* Estilos para métricas de popularidad */
+.carousel .list .item .content .metrics {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 15px;
+    color: rgba(255, 255, 255, 0.85);
+    font-size: 0.9em;
+}
+
+.carousel .list .item .content .metrics span {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.carousel .list .item .content .metrics .views i {
+    color: #63b6f5;
+}
+
+.carousel .list .item .content .metrics .likes i {
+    color: #f1683a;
+}
+
+.carousel .list .item .content .buttons button {
+    padding: 12px 25px;
 }

@@ -13,9 +13,29 @@
 </head>
 
 <body>
-    <header>
+    <header class="main-header">
         <div class="header-container">
-            <img src="assets/logo.png" class="logo" onclick="location.href='index.php'">
+            <div class="logo-container">
+                <img src="assets/logo.png" class="logo" alt="Peace in Progress">
+            </div>
+            
+            <nav class="main-nav">
+                <ul class="nav-menu">
+                    <li><a href="views/about.php">Sobre Nosotros</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle">Categorías <i class="fas fa-chevron-down"></i></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="views/categoriaCorrupcion.php">Corrupción y Transparencia</a></li>
+                            <li><a href="views/categoriaIgualdad.php">Igualdad y Diversidad</a></li>
+                            <li><a href="views/categoriaJusticia.php">Justicia y Derechos Humanos</a></li>
+                            <li><a href="views/categoriaParticipacion.php">Participación Ciudadana</a></li>
+                            <li><a href="views/categoriaPaz.php">Paz y Conflictos</a></li>
+                            <li><a href="views/categoriaPolitica.php">Política y Gobernanza</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="views/contact.php">Contacto</a></li>
+                </ul>
+            </nav>
             
             <div class="profile-section">
                 <?php
@@ -41,10 +61,12 @@
                           </div>';
                 }
                 ?>
-                <a href="views/about.html">sobre nosotros</a>
             </div>
+            
+            <button class="mobile-menu-toggle">
+                <i class="fas fa-bars"></i>
+            </button>
         </div>
-
     </header>
 
     <?php if (isset($_SESSION['error'])): ?>
@@ -66,121 +88,165 @@
 
     <div class="carousel">
         <div class="list">
-            <div class="item">
-                <img src="image/img1.jpg" />
+            <?php
+            require_once 'config/db.php';
+            
+            // Variable para debug
+            $debugImagenes = false; // Cambiar a true para ver información de depuración
+            
+            // Consulta mejorada para obtener los 5 posts más populares/tendencia
+            // Combinando visitas y likes para determinar popularidad
+            $sql = "SELECT p.id_post, p.titulo, p.resumen, p.fecha_publicacion, p.slug, 
+                           i1.ruta AS imagen_destacada, i2.ruta AS imagen_background, 
+                           c.nombre AS categoria, u.name AS autor,
+                           p.visitas, 
+                           (SELECT COUNT(*) FROM post_likes pl WHERE pl.id_post = p.id_post) AS likes,
+                           (p.visitas * 0.7 + (SELECT COUNT(*) FROM post_likes pl WHERE pl.id_post = p.id_post) * 0.3) AS popularidad
+                    FROM posts p
+                    LEFT JOIN imagenes i1 ON p.id_imagen_destacada = i1.id_imagen
+                    LEFT JOIN imagenes i2 ON p.id_imagen_background = i2.id_imagen
+                    LEFT JOIN categorias c ON p.id_categoria = c.id_categoria
+                    LEFT JOIN usuarios u ON p.id_usuario = u.id_usuario
+                    WHERE p.estado = 'publicado'
+                    ORDER BY popularidad DESC, p.fecha_publicacion DESC
+                    LIMIT 5";
+            
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute();
+            $posts = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            
+            // Si no hay posts, mostrar mensaje
+            if (empty($posts)) {
+                echo '<div class="no-posts">No hay posts destacados disponibles</div>';
+            } else {
+                // Mostrar cada post en el carousel
+                foreach ($posts as $index => $post) {
+                    // Determinar si es el primer item (activo por defecto)
+                    $activeClass = ($index === 0) ? 'active' : '';
+                    
+                    // Formatear fecha
+                    $fecha = new DateTime($post['fecha_publicacion']);
+                    $fechaFormateada = $fecha->format('d \d\e F \d\e Y');
+                    
+                    // Construir URL de la imagen (con verificación)
+                    $imagenURL = !empty($post['imagen_background']) ? $post['imagen_background'] : 
+                                (!empty($post['imagen_destacada']) ? $post['imagen_destacada'] : 'assets/default-post.jpg');
+                    
+                    // Corregir la ruta de la imagen si comienza con ../
+                    if (strpos($imagenURL, '../') === 0) {
+                        $imagenURL = substr($imagenURL, 3); // Eliminar el prefijo '../'
+                    }
+                    
+                    // Verificar si el archivo de imagen existe
+                    $rutaCompleta = __DIR__ . '/' . $imagenURL;
+                    $imagenExiste = file_exists($rutaCompleta);
+                    
+                    if ($debugImagenes) {
+                        echo "<!-- DEBUG: ID Post: {$post['id_post']} -->\n";
+                        echo "<!-- DEBUG: Ruta original: {$post['imagen_background']} o {$post['imagen_destacada']} -->\n";
+                        echo "<!-- DEBUG: Ruta final: {$imagenURL} -->\n";
+                        echo "<!-- DEBUG: Ruta completa: {$rutaCompleta} -->\n";
+                        echo "<!-- DEBUG: Imagen existe: " . ($imagenExiste ? 'SÍ' : 'NO') . " -->\n";
+                    }
+                    
+                    // Si la imagen no existe, usar imagen por defecto
+                    if (!$imagenExiste) {
+                        // Verificar si existe la imagen por defecto
+                        $defaultImage = 'assets/image-placeholder.png';
+                        if (file_exists(__DIR__ . '/' . $defaultImage)) {
+                            $imagenURL = $defaultImage;
+                        } else {
+                            // Si ni siquiera existe la imagen predeterminada, usar el logo
+                            $imagenURL = 'assets/logo.png';
+                        }
+                    }
+                    
+                    // Recortar descripción para cards pequeñas
+                    $descripcionCorta = strlen($post['resumen']) > 120 ? 
+                                      substr($post['resumen'], 0, 120) . '...' : 
+                                      $post['resumen'];
+            ?>
+            <div class="item <?php echo $activeClass; ?>" data-id="<?php echo $post['id_post']; ?>">
+                <img src="<?php echo htmlspecialchars($imagenURL); ?>" alt="<?php echo htmlspecialchars($post['titulo']); ?>">
                 <div class="content">
-                    <div class="title">LA CENSURA</div>
-                    <div class="topic">DE LAS PROTESTAS</div>
-                    <div class="des">
-                        En Rusia, la gente sigue protestando contra la guerra </br> de Ucrania. Sin embargo, las autoridades
-                        rusas están decididas </br> a acabar con las protestas por completo...
+                    <div class="topic"><?php echo htmlspecialchars($post['categoria']); ?></div>
+                    <div class="title"><?php echo htmlspecialchars($post['titulo']); ?></div>
+                    <div class="author">Por <?php echo htmlspecialchars($post['autor']); ?> | <?php echo $fechaFormateada; ?></div>
+                    <div class="des"><?php echo htmlspecialchars($post['resumen']); ?></div>
+                    <div class="metrics">
+                        <span class="views"><i class="fas fa-eye"></i> <?php echo $post['visitas']; ?></span>
+                        <span class="likes"><i class="fas fa-heart"></i> <?php echo $post['likes']; ?></span>
                     </div>
                     <div class="buttons">
-                        <a href="articulo1.html" class="see-more-button">Ver mas</a>
+                        <button onclick="window.location.href='views/post.php?id=<?php echo $post['id_post']; ?>'">Leer Artículo</button>
+                        <button onclick="window.location.href='views/categorias.php?categoria=<?php echo urlencode($post['categoria']); ?>'">Más en <?php echo htmlspecialchars($post['categoria']); ?></button>
                     </div>
                 </div>
             </div>
-            <div class="item">
-                <img src="image/img2.jpg">
-                <div class="content">
-                    <div class="title">LA IGLESIA</div>
-                    <div class="topic"></div>
-                    <div class="des">
-                        En un contexto de creciente violencia que afecta de manera alarmante a los jóvenes de México, la
-                        Iglesia Católica ha emitido un mensaje de solidaridad y acción, invitando a los agentes de
-                        pastoral de adolescentes y jóvenes a unirse en la tarea urgente de construir la paz en el país.
-                    </div>
-                    <div class="buttons">
-                        <a href="articulo2.html" class="see-more-button">Ver mas</a>
-                    </div>
-                </div>
-            </div>
-            <div class="item">
-                <img src="image/img3.jpg">
-                <div class="content">
-                    <div class="title">MARCHA </div>
-                    <div class="topic">DE PAZ</div>
-                    <div class="des">
-                        Culiacán, Sinaloa, ha sido escenario de dos manifestaciones en menos de 72 horas.
-                        La primera, ocurrida hace dos días, culminó con la irrupción de manifestantes en el Palacio de
-                        Gobierno. La segunda, este domingo, reunió a miles de personas que exigieron justicia por las
-                        victimas.
-                    </div>
-                    <div class="buttons">
-                        <a href="articulo3.html" class="see-more-button">Ver mas</a>
-                    </div>
-                </div>
-            </div>
-            <div class="item">
-                <img src="image/img4.jpg">
-                <div class="content">
-                    <div class="title">PLAN DE </div>
-                    <div class="topic">SEGURIDAD</div>
-                    <div class="des">
-                        "No va a regresar la guerra contra el narco", advirtió Sheinbaum en conferencia de prensa.
-                        "Nosotros vamos a usar prevención y atención a las causas (…) Los delitos de alto impacto van a
-                        disminuir porque hay una estrategia y se va a cumplir"..."
-                    </div>
-                    <div class="buttons">
-                        <a href="articulo4.html" class="see-more-button">SEE MORE</a>
-                    </div>
-                </div>
-            </div>
+            <?php
+                } // fin foreach
+            } // fin else
+            ?>
         </div>
-        <!-- list thumnail -->
+        
         <div class="thumbnail">
-            <div class="item">
-                <img src="image/img1.jpg">
+            <?php
+            if (!empty($posts)) {
+                foreach ($posts as $index => $post) {
+                    $activeClass = ($index === 0) ? 'active' : '';
+                    $imagenURL = !empty($post['imagen_destacada']) ? $post['imagen_destacada'] : 'assets/default-thumbnail.jpg';
+                    
+                    // Corregir la ruta de la imagen si comienza con ../
+                    if (strpos($imagenURL, '../') === 0) {
+                        $imagenURL = substr($imagenURL, 3); // Eliminar el prefijo '../'
+                    }
+                    
+                    // Verificar si el archivo de imagen existe
+                    $rutaCompleta = __DIR__ . '/' . $imagenURL;
+                    $imagenExiste = file_exists($rutaCompleta);
+                    
+                    if ($debugImagenes) {
+                        echo "<!-- DEBUG THUMB: ID Post: {$post['id_post']} -->\n";
+                        echo "<!-- DEBUG THUMB: Ruta original: {$post['imagen_destacada']} -->\n";
+                        echo "<!-- DEBUG THUMB: Ruta final: {$imagenURL} -->\n";
+                        echo "<!-- DEBUG THUMB: Ruta completa: {$rutaCompleta} -->\n";
+                        echo "<!-- DEBUG THUMB: Imagen existe: " . ($imagenExiste ? 'SÍ' : 'NO') . " -->\n";
+                    }
+                    
+                    // Si la imagen no existe, usar imagen por defecto
+                    if (!$imagenExiste) {
+                        // Verificar si existe la imagen por defecto
+                        $defaultImage = 'assets/image-placeholder.png';
+                        if (file_exists(__DIR__ . '/' . $defaultImage)) {
+                            $imagenURL = $defaultImage;
+                        } else {
+                            // Si ni siquiera existe la imagen predeterminada, usar el logo
+                            $imagenURL = 'assets/logo.png';
+                        }
+                    }
+                    
+                    // Recortar título y descripción para las miniaturas
+                    $tituloCorto = strlen($post['titulo']) > 50 ? substr($post['titulo'], 0, 50) . '...' : $post['titulo'];
+                    $descripcionMiniatura = strlen($post['resumen']) > 80 ? substr($post['resumen'], 0, 80) . '...' : $post['resumen'];
+            ?>
+            <div class="item <?php echo $activeClass; ?>" data-id="<?php echo $post['id_post']; ?>">
+                <img src="<?php echo htmlspecialchars($imagenURL); ?>" alt="Miniatura">
                 <div class="content">
-                    <div class="title">
-                        LA CENSURA
-                    </div>
-                    <div class="description">
-                        de las protestas contra la guerra
-                    </div>
+                    <div class="title"><?php echo htmlspecialchars($tituloCorto); ?></div>
+                    <div class="description"><?php echo htmlspecialchars($descripcionMiniatura); ?></div>
                 </div>
             </div>
-            <div class="item">
-                <img src="image/img2.jpg">
-                <div class="content">
-                    <div class="title">
-                        LA IGLESIA
-                    </div>
-                    <div class="description">
-                        urge a contruir la paz ante ola de violencia
-                    </div>
-                </div>
-            </div>
-            <div class="item">
-                <img src="image/img3.jpg">
-                <div class="content">
-                    <div class="title">
-                        MARCHA DE PAZ
-                    </div>
-                    <div class="description">
-                        en Sinaloa por los ciudadanos
-                    </div>
-                </div>
-            </div>
-            <div class="item">
-                <img src="image/img4.jpg">
-                <div class="content">
-                    <div class="title">
-                        PLAN DE SEGURIDAD
-                    </div>
-                    <div class="description">
-                        Anunció Claudia Sheinbaum
-                    </div>
-                </div>
-            </div>
+            <?php
+                } // fin foreach
+            } // fin if
+            ?>
         </div>
-        <!-- next prev -->
-
+        
         <div class="arrows">
-            <button id="prev">&lt;</button>
-            <button id="next">&gt;</button>
+            <button id="prev"><i class="fas fa-chevron-left"></i></button>
+            <button id="next"><i class="fas fa-chevron-right"></i></button>
         </div>
-        <!-- time running -->
+        
         <div class="time"></div>
     </div>
 
@@ -341,6 +407,10 @@
     </section>
 
 
+    <script src="js/app.js"></script>
+    <script src="js/header.js"></script>
+
+    <!-- Scripts del carousel -->
     <script src="js/noticia-script.js"></script>
 
     <footer class="footer">
@@ -385,7 +455,30 @@
             </div>
         </div>
     </footer>
-    <script src="js/app.js"></script>
+
+    <!-- Script para menú móvil -->
+    <script>
+        // Código para el menú móvil existente
+        document.addEventListener('DOMContentLoaded', function() {
+            const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
+            const mainNav = document.querySelector('.main-nav');
+            
+            if (mobileMenuToggle && mainNav) {
+                mobileMenuToggle.addEventListener('click', function() {
+                    mainNav.classList.toggle('active');
+                });
+            }
+            
+            // Dropdown en móvil
+            const dropdownToggles = document.querySelectorAll('.dropdown-toggle');
+            dropdownToggles.forEach(toggle => {
+                toggle.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    this.closest('.dropdown').classList.toggle('active');
+                });
+            });
+        });
+    </script>
 </body>
 
 </html>

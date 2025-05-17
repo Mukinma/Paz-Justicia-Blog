@@ -10,6 +10,331 @@
         integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" 
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="icon" href="../assets/minilogo.png">
+    <style>
+        /* Estilos para el nuevo header */
+        header {
+            background-color: rgba(0, 0, 0, 0.7);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(8px);
+        }
+        
+        .header-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.4rem 5%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .logo {
+            height: 38px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+        
+        .logo:hover {
+            transform: scale(1.05);
+        }
+        
+        .main-nav {
+            display: flex;
+            align-items: center;
+        }
+        
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .nav-menu li {
+            position: relative;
+            margin: 0 0.6rem;
+        }
+        
+        .nav-menu a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 500;
+            padding: 0.4rem 0.7rem;
+            transition: color 0.3s ease;
+            display: block;
+        }
+        
+        .nav-menu a:hover {
+            color: #7cbcbc;
+        }
+        
+        .dropdown-toggle {
+            display: flex;
+            align-items: center;
+        }
+        
+        .dropdown-toggle i {
+            margin-left: 5px;
+            font-size: 0.8rem;
+            transition: transform 0.3s ease;
+        }
+        
+        .dropdown:hover .dropdown-toggle i {
+            transform: rotate(180deg);
+        }
+        
+        .dropdown-menu {
+            position: absolute;
+            top: calc(100% + 0.3rem);
+            left: 0;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(10px);
+            min-width: 220px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            padding: 0.6rem 0;
+            border-radius: 0.5rem;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(10px);
+            transition: all 0.3s ease;
+            z-index: 1001;
+        }
+        
+        .dropdown:hover .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+        
+        .dropdown-menu li {
+            margin: 0;
+            width: 100%;
+        }
+        
+        .dropdown-menu a {
+            padding: 0.5rem 1.5rem;
+            color: #e0e0e0;
+            font-weight: 400;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        
+        .dropdown-menu a:hover {
+            background-color: rgba(124, 188, 188, 0.2);
+            color: #fff;
+        }
+        
+        .profile-section {
+            display: flex;
+            align-items: center;
+        }
+        
+        .login-btn {
+            background-color: #7cbcbc;
+            color: #000;
+            padding: 0.4rem 1rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+        
+        .login-btn:hover {
+            background-color: #d2e7e7;
+            transform: translateY(-2px);
+        }
+        
+        .profile-dropdown {
+            position: relative;
+        }
+        
+        .profile-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .profile-btn img, .profile-btn i {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            object-fit: cover;
+            color: #fff;
+            font-size: 1.6rem;
+            transition: transform 0.3s ease;
+        }
+        
+        .profile-btn:hover img, .profile-btn:hover i {
+            transform: scale(1.1);
+        }
+        
+        .dropdown-content {
+            position: absolute;
+            right: 0;
+            top: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(10px);
+            min-width: 180px;
+            border-radius: 0.5rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            padding: 0.6rem 0;
+            z-index: 1002;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(10px);
+            transition: all 0.3s ease;
+        }
+        
+        .profile-dropdown:hover .dropdown-content {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(5px);
+        }
+        
+        .dropdown-content a {
+            color: #e0e0e0;
+            padding: 0.5rem 1.5rem;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            transition: all 0.2s ease;
+        }
+        
+        .dropdown-content a:hover {
+            background-color: rgba(124, 188, 188, 0.2);
+            color: #fff;
+        }
+        
+        .dropdown-content a i {
+            margin-right: 10px;
+            font-size: 1rem;
+        }
+        
+        .mobile-menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        
+        header.scrolled {
+            background-color: rgba(0, 0, 0, 0.9);
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+        }
+        
+        /* Ajuste para que el contenido principal no sea tapado por el header fijo */
+        .hero-section {
+            margin-top: 60px;
+        }
+        
+        /* Media Queries */
+        @media screen and (max-width: 992px) {
+            .mobile-menu-toggle {
+                display: block;
+            }
+            
+            .main-nav {
+                position: fixed;
+                top: 60px;
+                left: 0;
+                width: 100%;
+                background-color: rgba(0, 0, 0, 0.95);
+                backdrop-filter: blur(10px);
+                height: 0;
+                overflow: hidden;
+                transition: height 0.4s ease;
+            }
+            
+            .main-nav.active {
+                height: calc(100vh - 60px);
+                overflow-y: auto;
+            }
+            
+            .nav-menu {
+                flex-direction: column;
+                width: 100%;
+                padding: 1.5rem 0;
+            }
+            
+            .nav-menu li {
+                width: 100%;
+                margin: 0;
+            }
+            
+            .nav-menu a {
+                padding: 0.8rem 2rem;
+                font-size: 1.1rem;
+            }
+            
+            .dropdown-menu {
+                position: static;
+                background: transparent;
+                box-shadow: none;
+                min-width: 100%;
+                opacity: 1;
+                visibility: visible;
+                transform: none;
+                height: 0;
+                overflow: hidden;
+                transition: height 0.3s ease;
+                display: none;
+            }
+            
+            .dropdown.active .dropdown-menu {
+                height: auto;
+                display: block;
+                padding-left: 2rem;
+            }
+            
+            .dropdown-menu a {
+                padding: 0.6rem 2rem;
+            }
+            
+            .dropdown-toggle i {
+                transition: transform 0.3s ease;
+            }
+            
+            .dropdown.active .dropdown-toggle i {
+                transform: rotate(180deg);
+            }
+            
+            .hero-section {
+                margin-top: 56px;
+            }
+        }
+        
+        @media screen and (max-width: 576px) {
+            .header-container {
+                padding: 0.4rem 1rem;
+            }
+            
+            .logo {
+                height: 34px;
+            }
+            
+            .login-btn {
+                padding: 0.4rem 0.9rem;
+                font-size: 0.85rem;
+            }
+            
+            .profile-btn img, .profile-btn i {
+                width: 32px;
+                height: 32px;
+                font-size: 1.5rem;
+            }
+        }
+    </style>
 </head>
 
 <body>
@@ -17,6 +342,24 @@
     <header>
         <div class="header-container">
             <img src="../assets/logo.png" class="logo" onclick="location.href='../index.php'">
+            
+            <nav class="main-nav">
+                <ul class="nav-menu">
+                    <li><a href="about.php">Sobre Nosotros</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle">Categorías <i class="fas fa-chevron-down"></i></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="categoriaCorrupcion.php">Corrupción y Transparencia</a></li>
+                            <li><a href="categoriaIgualdad.php">Igualdad y Diversidad</a></li>
+                            <li><a href="categoriaJusticia.php">Justicia y Derechos Humanos</a></li>
+                            <li><a href="categoriaParticipacion.php">Participación Ciudadana</a></li>
+                            <li><a href="categoriaPaz.php">Paz y Conflictos</a></li>
+                            <li><a href="categoriaPolitica.php">Política y Gobernanza</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="contact.php">Contacto</a></li>
+                </ul>
+            </nav>
             
             <div class="profile-section">
                 <?php
@@ -43,6 +386,10 @@
                 }
                 ?>
             </div>
+            
+            <button class="mobile-menu-toggle">
+                <i class="fas fa-bars"></i>
+            </button>
         </div>
     </header>
 
@@ -127,6 +474,42 @@
 
         window.onload = () => {
             cargarMas();
+            
+            // Control de menú móvil
+            const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
+            const mainNav = document.querySelector('.main-nav');
+            
+            if (mobileMenuToggle) {
+                mobileMenuToggle.addEventListener('click', function() {
+                    mainNav.classList.toggle('active');
+                    this.querySelector('i').classList.toggle('fa-bars');
+                    this.querySelector('i').classList.toggle('fa-times');
+                });
+            }
+            
+            // Control de dropdowns en móvil
+            const dropdowns = document.querySelectorAll('.dropdown');
+            
+            dropdowns.forEach(dropdown => {
+                const dropdownToggle = dropdown.querySelector('.dropdown-toggle');
+                
+                if (dropdownToggle && window.innerWidth <= 992) {
+                    dropdownToggle.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        dropdown.classList.toggle('active');
+                    });
+                }
+            });
+            
+            // Cambiar estilo de header al hacer scroll
+            window.addEventListener('scroll', function() {
+                const header = document.querySelector('header');
+                if (window.scrollY > 50) {
+                    header.classList.add('scrolled');
+                } else {
+                    header.classList.remove('scrolled');
+                }
+            });
         };
     </script>
 
@@ -156,8 +539,8 @@
                     <div class="information">
                         <p class="title-footer">Información</p>
                         <ul>
-                            <li><a href="about.html">Acerca de Nosotros</a></li>
-                            <li><a href="contact.html">Contactános</a></li>
+                            <li><a href="about.php">Acerca de Nosotros</a></li>
+                            <li><a href="contact.php">Contactános</a></li>
                         </ul>
                     </div>
                 </div>
