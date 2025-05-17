@@ -15,6 +15,11 @@ if (!isset($_SESSION['role']) || ($_SESSION['role'] !== 'admin' && $_SESSION['ro
     exit();
 }
 
+// Asegurar que id_usuario esté configurado correctamente
+if (!isset($_SESSION['id_usuario']) && isset($_SESSION['user_id'])) {
+    $_SESSION['id_usuario'] = $_SESSION['user_id'];
+}
+
 require '../config/db.php';
 
 // Obtener avatar del usuario si no está en la sesión
@@ -84,14 +89,14 @@ try {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin control</title>
+    <title>Centro de Paz</title>
     <link rel="stylesheet" href="crud2.css">
     <script src="crud.js" defer></script>
     <script src="navigation.js" defer></script>
 </head>
 <body>
     <div class="left-side">
-        <h1>Admin control</h1>
+        <h1>Centro de Paz</h1>
         <?php if (!empty($_SESSION['avatar']) && file_exists('../' . $_SESSION['avatar'])): ?>
             <img src="../<?php echo htmlspecialchars($_SESSION['avatar']); ?>" alt="profile" class="profile-icon">
         <?php else: ?>
@@ -390,7 +395,6 @@ try {
                                 <th>Comment fragment</th>
                                 <th>User</th>
                                 <th>Associated article</th>
-                                <th>State</th>
                                 <th>Date</th>
                                 <th>Actions</th>
                             </tr>
@@ -398,7 +402,7 @@ try {
                         <tbody>
                             <?php if (empty($comentarios)): ?>
                                 <tr>
-                                    <td colspan="7" class="no-results">
+                                    <td colspan="6" class="no-results">
                                         <div class="no-results-message">
                                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="no-results-icon">
                                                 <path fill="currentColor" d="M256 32c12.9 0 24.6 7.8 29.6 19.8s2.2 25.7-6.9 34.9L264 94.6l24.7 24.7c9.2 9.2 11.9 22.9 6.9 34.9S268.9 176 256 176s-24.6-7.8-29.6-19.8s-2.2-25.7 6.9-34.9L248 94.6l-24.7-24.7c-9.2-9.2-11.9-22.9-6.9-34.9S243.1 32 256 32zM160 256c17.7 0 32 14.3 32 32v96c0 17.7-14.3 32-32 32H96c-17.7 0-32-14.3-32-32V288c0-17.7 14.3-32 32-32h64zm128 0c17.7 0 32 14.3 32 32v96c0 17.7-14.3 32-32 32H224c-17.7 0-32-14.3-32-32V288c0-17.7 14.3-32 32-32h64zm128 0c17.7 0 32 14.3 32 32v96c0 17.7-14.3 32-32 32H352c-17.7 0-32-14.3-32-32V288c0-17.7 14.3-32 32-32h64z"/>
@@ -419,11 +423,6 @@ try {
                                                 <?php echo htmlspecialchars(substr($comentario['post_titulo'], 0, 30)) . '...'; ?>
                                             </a>
                                         </td>
-                                        <td>
-                                            <span class="status-badge <?php echo $comentario['aprobado'] ? 'approved' : 'pending'; ?>">
-                                                <?php echo $comentario['aprobado'] ? 'Aprobado' : 'Pendiente'; ?>
-                                            </span>
-                                        </td>
                                         <td><?php echo date('d/m/Y H:i', strtotime($comentario['fecha_comentario'])); ?></td>
                                         <td>
                                             <?php if (!$comentario['aprobado']): ?>
@@ -431,10 +430,7 @@ try {
                                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentcolor" d="M173.898 439.404l-166.4-166.4c-9.997-9.997-9.997-26.206 0-36.204l36.203-36.204c9.997-9.998 26.207-9.998 36.204 0L192 312.69 432.095 72.596c9.997-9.997 26.207-9.997 36.204 0l36.203 36.204c9.997 9.997 9.997 26.206 0 36.204l-294.4 294.401c-9.998 9.997-26.207 9.997-36.204-.001z"/></svg>
                                                 </button>
                                             <?php endif; ?>
-                                            <button class="ban-user-button" data-id="<?php echo $comentario['id_usuario']; ?>" title="Banear usuario">
-                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><path fill="currentcolor" d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L355.7 253.5 444.3 159c13.1-11.4 20.3-27.8 20.3-44.6V96c0-17.7-14.3-32-32-32H224c-17.7 0-32 14.3-32 32v18.3L38.8 5.1zM0 128v128c0 53 43 96 96 96H352c17.7 0 32-14.3 32-32V160c0-17.7-14.3-32-32-32H96c-17.7 0-32 14.3-32 32zm416 96c0 53-43 96-96 96H96c-53 0-96-43-96-96V128c0-53 43-96 96-96H320c53 0 96 43 96 96v96z"/></svg>
-                                            </button>
-                                            <button class="delete-comment-button" data-id="<?php echo $comentario['id_comentario']; ?>" title="Eliminar">
+                                            <button class="delete-comment-button" data-id="<?php echo $comentario['id_comentario']; ?>" data-content="<?php echo htmlspecialchars(substr($comentario['contenido'], 0, 50)) . '...'; ?>" title="Eliminar">
                                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="currentcolor" d="M135.2 17.7L128 32 32 32C14.3 32 0 46.3 0 64S14.3 96 32 96l384 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-96 0-7.2-14.3C307.4 6.8 296.3 0 284.2 0L163.8 0c-12.1 0-23.2 6.8-28.6 17.7zM416 128L32 128 53.2 467c1.6 25.3 22.6 45 47.9 45l245.8 0c25.3 0 46.3-19.7 47.9-45L416 128z"/></svg>
                                             </button>
                                         </td>
@@ -444,7 +440,6 @@ try {
                         </tbody>
                         <tfoot>
                             <tr>
-                                <td></td>
                                 <td></td>
                                 <td></td>
                                 <td></td>
@@ -647,10 +642,10 @@ try {
     <div class="modal" id="modal-edit-article">
         <div class="modal-body">
             <div class="left-modal">
-                <h1>Edit article</h1>
+                <h1>Editar artículo</h1>
                 <div class="buttons-modal">
-                    <button class="cancel-article" id="cancel-edit">Cancel</button>
-                    <button class="add-article" id="submit-edit-button">Save changes</button>
+                    <button class="cancel-article" id="cancel-edit">Cancelar</button>
+                    <button class="add-article" id="submit-edit-button">Guardar cambios</button>
                 </div>
             </div>
             <div class="right-modal">
@@ -658,40 +653,66 @@ try {
                     <button id="close-edit-modal" class="close-button">&times;</button>
                 </div>
                 <div class="container">
-                    <form action="editar_post.php" method="POST" id="editForm" enctype="multipart/form-data">
+                    <form action="editar_post.php" method="POST" id="editForm" enctype="multipart/form-data" data-debug="1">
                         <input type="hidden" id="edit-id" name="id" value="">
                         
-                        <!-- Título del Post -->
-                        <label for="edit-titulo">Título del Post</label>
-                        <input type="text" id="edit-titulo" name="titulo" required>
-            
-                        <!-- Descripción del Post -->
-                        <label for="edit-descripcion">Descripción del Post</label>
-                        <textarea id="edit-descripcion" name="descripcion" required></textarea>
-            
-                        <!-- Categoría del Post -->
-                        <label for="edit-categoria">Categoría</label>
-                        <select id="edit-categoria" name="categoria" required>
-                            <?php
-                            foreach ($categoriasOpcion as $categoria) {
-                                echo '<option value="' . htmlspecialchars($categoria['id_categoria']) . '">' . htmlspecialchars($categoria['nombre']) . '</option>';
-                            }
-                            ?>
-                        </select>
-            
-                        <!-- Contenido del Post -->
-                        <label for="edit-contenido">Contenido del Post</label>
-                        <textarea id="edit-contenido" name="contenido" required></textarea>
-                        
-                        <!-- Imagen actual -->
-                        <div id="current-image-container">
-                            <p>Current image:</p>
-                            <img id="current-image" src="" alt="Current article image" style="max-width:200px;">
+                        <div class="form-group">
+                            <label for="edit-titulo">Título del artículo:</label>
+                            <input type="text" id="edit-titulo" name="titulo" required>
                         </div>
                         
-                        <!-- Nueva Imagen (opcional) -->
-                        <label for="edit-imagen">Nueva Imagen (opcional)</label>
-                        <input type="file" id="edit-imagen" name="imagen">            
+                        <div class="form-group">
+                            <label for="edit-descripcion">Descripción del artículo:</label>
+                            <textarea id="edit-descripcion" name="descripcion" required></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="edit-categoria">Categoría:</label>
+                            <select id="edit-categoria" name="categoria" required>
+                                <?php
+                                foreach ($categoriasOpcion as $categoria) {
+                                    echo '<option value="' . htmlspecialchars($categoria['id_categoria']) . '">' . htmlspecialchars($categoria['nombre']) . '</option>';
+                                }
+                                ?>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="edit-contenido">Contenido del artículo:</label>
+                            <textarea id="edit-contenido" name="contenido" required></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Imagen destacada actual:</label>
+                            <div id="current-image-container" class="image-container">
+                                <img id="current-image" src="" alt="Current article image">
+                                <small>Esta es la imagen actual destacada del artículo</small>
+                                <!-- El ID de la imagen se guardará como atributo de datos en este contenedor -->
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Imagen de fondo actual:</label>
+                            <div id="current-background-container" class="image-container">
+                                <img id="current-background" src="" alt="Current background image">
+                                <small>Esta es la imagen actual de fondo del artículo</small>
+                                <!-- El ID de la imagen se guardará como atributo de datos en este contenedor -->
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="edit-imagen">Nueva imagen destacada (opcional):</label>
+                            <input type="file" id="edit-imagen" name="imagen_ilustrativa" accept="image/*">
+                            <small>Esta imagen se mostrará como imagen principal del artículo</small>
+                            <img id="preview_edit_ilustrativa" class="image-preview" alt="Vista previa de la nueva imagen destacada">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="edit-imagen-background">Nueva imagen de fondo (opcional):</label>
+                            <input type="file" id="edit-imagen-background" name="imagen_background" accept="image/*">
+                            <small>Esta imagen se usará como fondo del artículo</small>
+                            <img id="preview_edit_background" class="image-preview" alt="Vista previa de la nueva imagen de fondo">
+                        </div>
                     </form>
                 </div>
             </div>
@@ -795,5 +816,26 @@ try {
         </div>
     </div>
     <div class="notification-modal" id="notificationModal"></div>
+    <div class="modal" id="modal-delete-comment-confirmation">
+        <div class="modal-body">
+            <div class="left-modal">
+                <h1>Confirmar Eliminación</h1>
+                <div class="buttons-modal">
+                    <button class="cancel-article" id="cancel-delete-comment">Cancelar</button>
+                    <button class="delete-article" id="confirm-delete-comment-button">Eliminar</button>
+                </div>
+            </div>
+            <div class="right-modal">
+                <div class="modal-header">
+                    <button id="close-delete-comment-modal" class="close-button">&times;</button>
+                </div>
+                <div class="container">
+                    <h2>¿Estás seguro de que deseas eliminar este comentario?</h2>
+                    <p id="comment-delete-content"></p>
+                    <p class="warning-text">Esta acción no se puede deshacer.</p>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
