@@ -901,10 +901,6 @@ header nav a {
     display: flex;
     justify-content: space-between;
 }
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> Karol
 
 @keyframes slideDown {
     from {
@@ -926,11 +922,6 @@ header nav a {
         visibility: hidden;
     }
 }
-<<<<<<< HEAD
-=======
->>>>>>> Karol
-=======
-
 @media (max-width: 480px) {
     
     .thumbnail {

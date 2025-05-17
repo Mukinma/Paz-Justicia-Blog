@@ -207,17 +207,12 @@ form .btn {
     z-index: 10000;
 }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> Karol
 @media (max-width: 767px) {
     .container {
         padding: 15px;
         height: auto;
         min-height: 580px;
     }
-<<<<<<< HEAD
 
     .login-section {
         padding: 20px;
@@ -235,10 +230,6 @@ form .btn {
     form .btn {
         font-size: 16px;
     }
-=======
-}
-=======
->>>>>>> Karol
 
     .login-section {
         padding: 20px;
@@ -340,9 +331,6 @@ form .btn {
     color: #d2e7e7;
     }
 
-<<<<<<< HEAD
->>>>>>> Karol
-=======
     .login-section header {
     position: relative;
     bottom: -10px;
@@ -367,6 +355,4 @@ form .btn {
     position: relative;
     bottom: 30px;
     }
-
->>>>>>> Karol
 }
