@@ -1,63 +1,135 @@
 <?php
+// Iniciar sesión para manejar el estado de "me gusta"
 session_start();
+
+// Requerir archivo de conexión a la base de datos
 require_once '../config/db.php';
 
-// Verificar si el usuario está logueado
-if (!isset($_SESSION['usuario'])) {
-    header('Location: ../admin/usuario.php');
-    exit();
-}
-
-// Obtener el ID del post de la URL
-$id_post = isset($_GET['id']) ? (int)$_GET['id'] : 0;
-
-if ($id_post <= 0) {
+// Verificar si se ha proporcionado un ID de post
+if (!isset($_GET['id']) || empty($_GET['id'])) {
+    // Redirigir a la página principal si no hay ID
     header('Location: ../index.php');
     exit();
 }
 
-try {
-    // Obtener el post con la información de la imagen y categoría
-    $sql = "SELECT p.*, u.name as autor_nombre, u.avatar as autor_avatar, 
-            i_destacada.ruta as ruta_imagen_destacada, i_background.ruta as ruta_imagen_background,
-            c.nombre as categoria_nombre
-            FROM posts p 
-            LEFT JOIN usuarios u ON p.id_usuario = u.id_usuario 
-            LEFT JOIN imagenes i_destacada ON p.id_imagen_destacada = i_destacada.id_imagen
-            LEFT JOIN imagenes i_background ON p.id_imagen_background = i_background.id_imagen
-            LEFT JOIN categorias c ON p.id_categoria = c.id_categoria
-            WHERE p.id_post = ? AND p.estado = 'publicado'";
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute([$id_post]);
-    $post = $stmt->fetch(PDO::FETCH_ASSOC);
+$post_id = intval($_GET['id']);
 
-    if (!$post) {
-        header('Location: ../index.php');
-        exit();
+// Consulta para obtener información del post
+$sql = "SELECT p.*, c.nombre as categoria_nombre, c.slug as categoria_slug, u.name as autor_nombre, 
+        i1.ruta as imagen_destacada, i2.ruta as imagen_background 
+        FROM posts p 
+        LEFT JOIN categorias c ON p.id_categoria = c.id_categoria 
+        LEFT JOIN usuarios u ON p.id_usuario = u.id_usuario 
+        LEFT JOIN imagenes i1 ON p.id_imagen_destacada = i1.id_imagen
+        LEFT JOIN imagenes i2 ON p.id_imagen_background = i2.id_imagen
+        WHERE p.id_post = ? AND p.estado = 'publicado'";
+        
+$stmt = $pdo->prepare($sql);
+$stmt->execute([$post_id]);
+
+// Verificar si el post existe
+if ($stmt->rowCount() === 0) {
+    // Redirigir si el post no existe o no está publicado
+    header('Location: ../index.php');
+    exit();
+}
+
+// Obtener datos del post
+$post = $stmt->fetch(PDO::FETCH_ASSOC);
+
+// Formatear la fecha
+$fecha_formateada = date('d/m/Y', strtotime($post['fecha_publicacion']));
+
+// Obtener posts relacionados (de la misma categoría)
+$sql_relacionados = "SELECT p.id_post, p.titulo, p.resumen, i.ruta as imagen_destacada 
+                    FROM posts p
+                    LEFT JOIN imagenes i ON p.id_imagen_destacada = i.id_imagen
+                    WHERE p.id_categoria = ? AND p.id_post != ? AND p.estado = 'publicado' 
+                    ORDER BY p.fecha_publicacion DESC 
+                    LIMIT 5";
+$stmt_relacionados = $pdo->prepare($sql_relacionados);
+$stmt_relacionados->execute([$post['id_categoria'], $post_id]);
+$posts_relacionados = $stmt_relacionados->fetchAll(PDO::FETCH_ASSOC);
+
+// Consulta para obtener comentarios aprobados
+$sql_comentarios = "SELECT c.*, u.name as nombre_usuario, u.avatar 
+                    FROM comentarios c 
+                    LEFT JOIN usuarios u ON c.id_usuario = u.id_usuario 
+                    WHERE c.id_post = ? AND c.aprobado = 1 
+                    ORDER BY c.fecha_comentario DESC";
+$stmt_comentarios = $pdo->prepare($sql_comentarios);
+$stmt_comentarios->execute([$post_id]);
+$comentarios = $stmt_comentarios->fetchAll(PDO::FETCH_ASSOC);
+
+// Verificar si el usuario ha dado "me gusta"
+$is_liked = false;
+if (isset($_SESSION['id_usuario'])) {
+    // Verificar primero si la tabla existe para evitar errores
+    $sql_check_table = "SHOW TABLES LIKE 'post_likes'";
+    $stmt_check_table = $pdo->prepare($sql_check_table);
+    $stmt_check_table->execute();
+    
+    if ($stmt_check_table->rowCount() > 0) {
+        $sql_check_like = "SELECT * FROM post_likes WHERE id_post = ? AND id_usuario = ?";
+        $stmt_check_like = $pdo->prepare($sql_check_like);
+        $stmt_check_like->execute([$post_id, $_SESSION['id_usuario']]);
+        $is_liked = $stmt_check_like->rowCount() > 0;
     }
+}
 
-    // Obtener comentarios del post
-    $stmt = $pdo->prepare("SELECT c.*, u.name as autor_nombre 
-                          FROM comentarios c 
-                          LEFT JOIN usuarios u ON c.id_usuario = u.id_usuario 
-                          WHERE c.id_post = ? AND c.aprobado = 1 
-                          ORDER BY c.fecha_comentario DESC");
-    $stmt->execute([$id_post]);
-    $comentarios = $stmt->fetchAll(PDO::FETCH_ASSOC);
+// Obtener el número de "me gusta"
+$likes_count = 0;
+$sql_check_table = "SHOW TABLES LIKE 'post_likes'";
+$stmt_check_table = $pdo->prepare($sql_check_table);
+$stmt_check_table->execute();
 
-    // Obtener posts relacionados
-    $stmt = $pdo->prepare("SELECT p.*, c.nombre as categoria_nombre 
-                          FROM posts p 
-                          LEFT JOIN categorias c ON p.id_categoria = c.id_categoria 
-                          WHERE p.id_categoria = ? AND p.id_post != ? AND p.estado = 'publicado' 
-                          ORDER BY p.fecha_publicacion DESC LIMIT 3");
-    $stmt->execute([$post['id_categoria'], $id_post]);
-    $posts_relacionados = $stmt->fetchAll(PDO::FETCH_ASSOC);
+if ($stmt_check_table->rowCount() > 0) {
+    $sql_likes = "SELECT COUNT(*) as likes FROM post_likes WHERE id_post = ?";
+    $stmt_likes = $pdo->prepare($sql_likes);
+    $stmt_likes->execute([$post_id]);
+    $likes_count = $stmt_likes->fetch(PDO::FETCH_ASSOC)['likes'];
+}
 
-} catch (PDOException $e) {
-    error_log("Error en post.php: " . $e->getMessage());
-    header('Location: ../index.php');
-    exit();
+// Validación y depuración de rutas de imágenes
+$background_image = '';
+if (!empty($post['imagen_background'])) {
+    $background_image = $post['imagen_background'];
+    // Si la ruta ya incluye "../assets/", eliminamos el "../" al verificar la existencia
+    $ruta_check = $background_image;
+    if (strpos($ruta_check, '../') === 0) {
+        $ruta_check = substr($ruta_check, 3);
+    }
+    if (!file_exists("../{$ruta_check}")) {
+        error_log("Imagen de fondo no encontrada: ../{$ruta_check}");
+        $background_image = '';
+    }
+}
+
+if (empty($background_image) && !empty($post['imagen_destacada'])) {
+    $background_image = $post['imagen_destacada'];
+    // Si la ruta ya incluye "../assets/", eliminamos el "../" al verificar la existencia
+    $ruta_check = $background_image;
+    if (strpos($ruta_check, '../') === 0) {
+        $ruta_check = substr($ruta_check, 3);
+    }
+    if (!file_exists("../{$ruta_check}")) {
+        error_log("Imagen destacada (usada como fondo) no encontrada: ../{$ruta_check}");
+        $background_image = '';
+    }
+}
+
+// Usar una imagen predeterminada si no hay imágenes válidas
+if (empty($background_image)) {
+    $background_image = 'assets/fondopeace.jpg';
+    if (!file_exists("../{$background_image}")) {
+        error_log("Imagen predeterminada no encontrada: ../{$background_image}");
+        $background_image = '';
+    }
+}
+
+// Eliminamos "../" al principio si existe para evitar doble ruta
+if (strpos($background_image, '../') === 0) {
+    $background_image = substr($background_image, 3);
 }
 ?>
 
@@ -67,810 +139,320 @@ try {
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title><?php echo htmlspecialchars($post['titulo']); ?> - PeaceInProgress</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
-        integrity="..." crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        body {
-            font-family: 'Poppins', sans-serif;
-            background: #35688e;
-            color: #fff;
-        }
-
-        header {
-            width: 100%;
-            height: 60px;
-            padding: 40px;
-            box-sizing: border-box;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            position: fixed;
-            top: 0;
-            left: 0;
-            z-index: 1000;
-            background: rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(8px);
-        }
-
-        header .logo {
-            height: 40px;
-            cursor: pointer;
-        }
-
-        .search-bar {
-            position: relative;
-            flex-grow: 1;
-            max-width: 600px;
-            margin-left: 30px;
-            display: flex;
-            align-items: center;
-            padding: 6px 12px;
-            border-radius: 20px;
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.5);
-        }
-
-        .search-bar input {
-            width: 100%;
-            color: #eee;
-            padding: 6px 36px 6px 12px;
-            border: none;
-            outline: none;
-            font-size: 14px;
-            background-color: transparent;
-            font-weight: 400;
-        }
-
-        .search-bar .search-icon {
-            position: absolute;
-            right: 12px;
-            top: 50%;
-            transform: translateY(-50%);
-            pointer-events: none;
-            font-size: 16px;
-            color: #555;
-        }
-
-        header nav {
-            display: flex;
-            gap: 30px;
-        }
-
-        header nav a {
-            color: #eee;
-            text-decoration: none;
-            font-weight: 500;
-        }
-
-        /* Imagen y título del artículo */
-        .article-header {
-            width: 100%;
-            height: 600px;
-            background: url('../assets/<?php echo htmlspecialchars($post['ruta_imagen_background'] ?? $post['ruta_imagen_destacada']); ?>') no-repeat center center / cover;
-            position: relative;
-        }
-
-        .article-header::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: rgba(0, 0, 0, 0.4);
-            backdrop-filter: blur(4px);
-        }
-
-        .article-header h1 {
-            position: absolute;
-            top: 150px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 3.2em;
-            color: white;
-            z-index: 1;
-            padding: 0 20px;
-            text-align: center;
-        }
-
-        .article-header h2 {
-            position: absolute;
-            bottom: 20px;
-            right: 20px;
-            font-size: 1em;
-            color: white;
-            z-index: 1;
-            text-align: right;
-        }
-
-
-        .container {
-            display: flex;
-            max-width: 1400px;
-            gap: 40px;
-            padding: 0 20px;
-            padding-left: 0;
-            margin-left: 0;
-        }
-
-        .main-content {
-            position: relative;
-            top: -200px;
-            flex: 9;
-            background: #35688e;
-            padding: 30px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-            color: #fff;
-            z-index: 2;
-            max-width: 800px;
-            width: 90%;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
-        .main-content h2 {
-            font-family: Georgia, serif;
-            font-size: 2em;
-            margin-bottom: 20px;
-            color: #ffffff;
-        }
-
-        .main-content p {
-            font-size: 1.1em;
-            line-height: 1.6;
-            color: #e0e0e0;
-            margin-bottom: 20px;
-            text-align: justify;
-        }
-
-        .sidebar {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            padding-top: 20px;
-        }
-
-        .card {
-            background: #82aed0;
-            border-radius: 10px;
-            padding: 10px;
-            font-size: 1em;
-            color: #333;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .card h3 {
-            font-size: 1em;
-            margin-bottom: 5px;
-        }
-
-        .card p {
-            font-size: 0.95em;
-        }
-
-        .carousel {
-            overflow-x: auto;
-            display: flex;
-            gap: 10px;
-            scroll-snap-type: x mandatory;
-            padding: 5px;
-        }
-
-        .carousel::-webkit-scrollbar {
-            display: none;
-        }
-
-        .carousel-card {
-            min-width: 100px;
-            background: #82aed0;
-            color: #333;
-            border-radius: 8px;
-            padding: 8px;
-            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
-            scroll-snap-align: start;
-            flex-shrink: 0;
-            font-size: 0.7em;
-        }
-
-        .carousel-card h4 {
-            font-size: 0.8em;
-            margin-bottom: 4px;
-        }
-
-        .social-icons {
-            display: flex;
-            gap: 10px;
-            padding: 15px;
-        }
-
-        .social-icons a {
-            text-decoration: none;
-            background: #82aed0;
-            border-radius: 50%;
-            width: 70px;
-            height: 70px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: #333333;
-            transition: background 0.3s;
-        }
-
-        .social-icons a:hover {
-            background: #35688e;
-            color: #fff;
-        }
-
-        a.back {
-            display: inline-block;
-            margin-top: 30px;
-            color: #82aed0;
-            text-decoration: none;
-            font-weight: bold;
-            border-bottom: 2px solid transparent;
-            transition: border-color 0.3s;
-        }
-
-        a.back:hover {
-            border-color: #82aed0;
-        }
-
-        @media (max-width: 768px) {
-            .container {
-                flex-direction: column;
-            }
-
-            .sidebar {
-                flex-direction: row;
-                justify-content: space-between;
-                flex-wrap: wrap;
-            }
-
-            .card,
-            .social-icons {
-                flex: 1 1 100%;
-            }
-        }
-
-        .footer {
-            background-color: #024365;
-        }
-
-        .container-footer {
-            display: flex;
-            flex-direction: column;
-            gap: 2rem;
-            padding: 2rem;
-        }
-
-        .menu-footer {
-            display: flex;
-            justify-items: space-between 300px;
-            grid-template-columns: repeat(3, 1fr) 30rem;
-            gap: 2rem;
-
-        }
-
-        .title-footer {
-            font-weight: 600;
-            font-size: 1.6rem;
-            text-transform: uppercase;
-        }
-
-        .contact-info,
-        .information,
-        .my-account,
-        .newsletter {
-            display: flex;
-            flex-direction: column;
-            gap: 2rem;
-        }
-
-        .contact-info ul,
-        .information ul,
-        .my-account ul {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
-
-        .contact-info ul li,
-        .information ul li,
-        .my-account ul li {
-            list-style: none;
-            color: #fff;
-            font-size: 1.4rem;
-            font-weight: 300;
-        }
-
-        .information ul li a,
-        .my-account ul li a {
-            text-decoration: none;
-            color: #fff;
-            font-weight: 300;
-        }
-
-        .information ul li a:hover,
-        .my-account ul li a:hover {
-            color: var(--dark-color);
-        }
-
-        .social-icons2 {
-            display: flex;
-            gap: 1.5rem;
-        }
-
-        .social-icons2 span {
-            border-radius: 50%;
-            width: 3rem;
-            height: 3rem;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .social-icons2 span i {
-            color: #fff;
-            font-size: 1.2rem;
-        }
-
-        .facebook {
-            background-color: #3b5998;
-        }
-
-        .twitter {
-            background-color: #00acee;
-        }
-
-        .youtube {
-            background-color: #c4302b;
-        }
-
-        .pinterest {
-            background-color: #c8232c;
-        }
-
-        .instagram {
-            background: linear-gradient(#405de6,
-                    #833ab4,
-                    #c13584,
-                    #e1306c,
-                    #fd1d1d,
-                    #f56040,
-                    #fcaf45);
-        }
-
-        .content p {
-            font-size: 1.4rem;
-            color: #fff;
-            font-weight: 300;
-        }
-
-        .content input {
-            outline: none;
-            background: none;
-            border: none;
-            border-bottom: 2px solid #d2b495;
-            cursor: pointer;
-            padding: 0.5rem 0 1.2rem;
-            color: var(--dark-color);
-            display: block;
-            margin-bottom: 3rem;
-            margin-top: 2rem;
-            width: 100%;
-            font-family: inherit;
-        }
-
-        .content input::-webkit-input-placeholder {
-            color: #eee;
-        }
-
-        .content button {
-            border: none;
-            background-color: #000;
-            color: #fff;
-            text-transform: uppercase;
-            padding: 1rem 3rem;
-            border-radius: 2rem;
-            font-size: 1.4rem;
-            font-family: inherit;
-            cursor: pointer;
-            font-weight: 600;
-        }
-
-        .content button:hover {
-            background-color: var(--background-color);
-            color: var(--primary-color);
-        }
-
-        .copyright {
-            display: flex;
-            justify-content: space-between;
-            padding-top: 2rem;
-
-            border-top: 1px solid #d2b495;
-        }
-
-        .copyright p {
-            font-weight: 400;
-            font-size: 1.6rem;
-        }
-
-        .logo-footer {
-            display: flex;
-            align-items: right;
-            justify-content: right;
-
-        }
-
-        .logo-footer img {
-            max-width: 100%;
-            height: auto;
-            object-fit: contain;
-            align-items: 0px;
-        }
-
-        .container-container-container-footer {
-            display: flex;
-            justify-content: space-between;
-        }
-
-        .interaction-buttons {
-            display: flex;
-            gap: 20px;
-            margin-top: 15px;
-        }
-
-        .like-button,
-        .share-button {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            cursor: pointer;
-            font-size: 1.2em;
-            color: #ccc;
-            transition: color 0.3s ease;
-        }
-
-        .like-button.liked {
-            color: #ff4f4f;
-        }
-
-        .share-button:hover {
-            color: #4faaff;
-        }
-
-        .like-button .like-count,
-        .share-button span {
-            font-size: 1rem;
-            color: #fff;
-        }
-
-        .interaction-buttons {
-            display: flex;
-            gap: 20px;
-            margin-top: 15px;
-        }
-
-        .like-button,
-        .share-button {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            cursor: pointer;
-            font-size: 1.2em;
-            color: #ccc;
-            transition: color 0.3s ease;
-        }
-
-        .like-button.liked {
-            color: #83d0f6;
-        }
-
-        .share-button:hover {
-            color: #4faaff;
-        }
-
-        .like-button .like-count,
-        .share-button span {
-            font-size: 1rem;
-            color: #fff;
-        }
-
-        /* Estilo para el mensaje flotante */
-        .message {
-            position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: #333;
-            color: white;
-            padding: 10px 20px;
-            border-radius: 5px;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.5s, visibility 0.5s;
-            z-index: 1000;
-        }
-
-        .message.show {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        @media (max-width: 450px) {
-            .main-content {
-            position: relative;
-            top:30px;
-            left: 10px;
-            flex: 9;
-            background: #35688e;
-            padding: 30px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-            color: #fff;
-            z-index: 2;
-            max-width: 800px;
-            width: 90%;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
-        .main-content h2 {
-            font-family: Georgia, serif;
-            font-size: 2em;
-            margin-bottom: 20px;
-            color: #ffffff;
-        }
-
-        .main-content p {
-            font-size: 1.1em;
-            line-height: 1.6;
-            color: #e0e0e0;
-            margin-bottom: 20px;
-            text-align: justify;
-        }
-        .sidebar {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            padding-top: 20px;
-            position: relative;
-            left: 10px;
-
-        }
-
-        .container-footer {
-            
-            display: flex;
-            flex-direction: column;
-            gap: 2rem;
-            padding: 2rem;
-        }
-
-        .menu-footer {
-            display: flex;
-            flex-direction: column;
-            justify-items: space-between 300px;
-            grid-template-columns: repeat(3, 1fr) 30rem;
-            gap: 2rem;
-
-        }
-
-
-    }
-
-    </style>
+    <title><?php echo htmlspecialchars($post['titulo']); ?> - Peace In Progress</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/post_style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 
 <body>
+    <?php
+    // Mostrar notificaciones si existen en la sesión
+    if (isset($_SESSION['success'])) {
+        echo '<div class="notification success"><i class="fas fa-check-circle"></i>' . htmlspecialchars($_SESSION['success']) . '</div>';
+        unset($_SESSION['success']);
+    }
+    if (isset($_SESSION['error'])) {
+        echo '<div class="notification error"><i class="fas fa-exclamation-circle"></i>' . htmlspecialchars($_SESSION['error']) . '</div>';
+        unset($_SESSION['error']);
+    }
+    ?>
 
     <header>
-        <img src="../assets/logo.png" class="logo" onclick="window.location.href='../index.php'">
+        <img src="../assets/logo.png" alt="Logo Peace In Progress" class="logo">
 
         <div class="search-bar">
-            <input type="text" placeholder="Search...">
-            <span class="search-icon">🔍</span>
+            <input type="text" placeholder="Buscar artículos...">
+            <i class="fas fa-search search-icon"></i>
         </div>
 
         <nav>
-            <a href="index.html">Home</a>
-            <a href="contact/contact.html">Contact</a>
-            <a href="">Info</a>
-            <a href="login/login.html" class="btn">Login</a>
+            <a href="../index.php">Inicio</a>
+            <a href="#">Categorías</a>
+            <a href="#">Contacto</a>
         </nav>
     </header>
 
-    <div class="article-header" style="background-image: url('../assets/<?php echo htmlspecialchars($post['ruta_imagen_background'] ?? $post['ruta_imagen_destacada']); ?>')">
+    <div class="article-header" style="background-image: url('../<?php echo htmlspecialchars($background_image); ?>');">
         <h1><?php echo htmlspecialchars($post['titulo']); ?></h1>
-        <h2>Autor: <?php 
-            $nombre_completo = $post['autor_nombre'];
-            $nombre_palabras = explode(' ', $nombre_completo);
-            echo htmlspecialchars($nombre_palabras[0]); 
-        ?></h2>
     </div>
 
     <div class="container">
         <div class="main-content">
-            <p><?php echo nl2br(htmlspecialchars($post['contenido'])); ?></p>
-
-            <?php if (!empty($post['ruta_imagen_destacada'])): ?>
-            <img src="../assets/<?php echo htmlspecialchars($post['ruta_imagen_destacada']); ?>" alt="Imagen ilustrativa" style="width: 100%; margin-top: 30px; margin-bottom: 30px;">
+            <div class="post-meta">
+                <span class="category"><?php echo htmlspecialchars($post['categoria_nombre']); ?></span>
+                <span><i class="far fa-clock"></i> <?php echo $fecha_formateada; ?></span>
+                <span><i class="far fa-user"></i> <?php echo htmlspecialchars($post['autor_nombre']); ?></span>
+            </div>
+            
+            <div class="post-content">
+                <?php echo $post['contenido']; ?>
+            </div>
+            
+            <?php
+            $mostrar_imagen_destacada = false;
+            if (!empty($post['imagen_destacada']) && $post['imagen_destacada'] != $background_image) {
+                $ruta_img = $post['imagen_destacada'];
+                // Si la ruta ya incluye "../assets/", eliminamos el "../" al verificar la existencia
+                if (strpos($ruta_img, '../') === 0) {
+                    $ruta_img = substr($ruta_img, 3);
+                }
+                if (file_exists("../{$ruta_img}")) {
+                    $mostrar_imagen_destacada = true;
+                } else {
+                    error_log("Imagen destacada no encontrada: ../{$ruta_img}");
+                }
+            }
+            ?>
+            
+            <?php if ($mostrar_imagen_destacada): ?>
+            <?php 
+            // Eliminamos "../" al principio si existe para evitar doble ruta
+            $ruta_img_destacada = $post['imagen_destacada'];
+            if (strpos($ruta_img_destacada, '../') === 0) {
+                $ruta_img_destacada = substr($ruta_img_destacada, 3);
+            }
+            ?>
+            <figure>
+                <img src="../<?php echo htmlspecialchars($ruta_img_destacada); ?>" alt="<?php echo htmlspecialchars($post['titulo']); ?>" class="featured-image">
+                <figcaption>Imagen destacada: <?php echo htmlspecialchars($post['titulo']); ?></figcaption>
+            </figure>
             <?php endif; ?>
 
             <div class="interaction-buttons">
-                <div class="like-button" onclick="toggleLike(this)" data-post-id="<?php echo $id_post; ?>">
-                    <i class="fa-solid fa-heart"></i>
-                    <span class="like-count"><?php echo $post['visitas']; ?></span>
+                <div class="like-button <?php echo $is_liked ? 'liked' : ''; ?>" data-post-id="<?php echo $post_id; ?>">
+                    <i class="<?php echo $is_liked ? 'fas' : 'far'; ?> fa-heart"></i>
+                    <span class="like-count"><?php echo $likes_count; ?></span>
                 </div>
-                <div class="share-button" onclick="shareArticle()">
-                    <i class="fa-solid fa-share-nodes"></i>
+                <div class="share-button">
+                    <i class="fas fa-share-alt"></i>
                     <span>Compartir</span>
                 </div>
             </div>
 
-            <div id="copyMessage" class="message">
-                ¡Enlace copiado al portapapeles!
-            </div>
-
-            <a href="index.php" class="back">← Volver al inicio</a>
-        </div>
-
-        <aside class="sidebar">
-            <div class="card">
-                <p>Publicado: <?php echo date('d/m/Y', strtotime($post['fecha_publicacion'])); ?></p>
-                <p>Categoría: <?php echo htmlspecialchars($post['categoria_nombre']); ?></p>
-            </div>
-
-            <div class="card">
-                <h3>Artículos Relacionados</h3>
-                <div class="carousel">
-                    <?php foreach ($posts_relacionados as $relacionado): ?>
-                    <div class="carousel-card">
-                        <?php if (!empty($relacionado['imagen_destacada'])): ?>
-                        <img src="<?php echo htmlspecialchars($relacionado['imagen_destacada']); ?>" alt="Imagen relacionada" style="width: 100%; height: 120px; object-fit: cover; border-radius: 4px; margin-bottom: 10px;">
-                        <?php endif; ?>
-                        <h4><?php echo htmlspecialchars($relacionado['titulo']); ?></h4>
-                        <p><?php echo substr(htmlspecialchars($relacionado['resumen']), 0, 100) . '...'; ?></p>
-                        <a href="post.php?id=<?php echo $relacionado['id_post']; ?>" class="see-more-button">Ver más</a>
-                    </div>
-                    <?php endforeach; ?>
-                </div>
-            </div>
-
-            <div class="card">
-                <h3>Comentarios</h3>
-                <form id="commentForm" method="POST" action="../controllers/comment_controller.php">
-                    <input type="hidden" name="post_id" value="<?php echo $id_post; ?>">
-                    <textarea name="contenido" id="commentInput" placeholder="Escribe tu comentario..." rows="3"
-                        style="width: 100%; padding: 5px; border-radius: 5px; border: none;" required></textarea>
-                    <button type="submit"
-                        style="margin-top: 10px; padding: 6px 12px; background: #35688e; color: white; border: none; border-radius: 5px; cursor: pointer;">Publicar</button>
-                </form>
-                <div id="commentList" style="margin-top: 10px;">
+            <a href="../index.php" class="back">← Volver al inicio</a>
+            
+            <!-- Sección de comentarios -->
+            <div class="comments-section">
+                <h3>Comentarios (<?php echo count($comentarios); ?>)</h3>
+                
+                <?php if (count($comentarios) > 0): ?>
+                <div class="comments-list">
                     <?php foreach ($comentarios as $comentario): ?>
-                    <div class="comment" style="display: flex; align-items: center; background: #d0e3f1; padding: 5px; border-radius: 5px; margin-bottom: 10px;">
-                        <?php if (!empty($comentario['autor_avatar'])): ?>
-                        <img src="<?php echo htmlspecialchars($comentario['autor_avatar']); ?>" alt="Usuario" 
-                             style="width: 40px; height: 40px; border-radius: 50%; margin-right: 10px;">
-                        <?php else: ?>
-                        <img src="../assets/default-avatar.png" alt="Usuario" 
-                             style="width: 40px; height: 40px; border-radius: 50%; margin-right: 10px;">
-                        <?php endif; ?>
-                        <div>
-                            <p style="margin: 0; font-weight: bold;"><?php echo htmlspecialchars($comentario['autor_nombre']); ?></p>
-                            <p style="margin: 0;"><?php echo htmlspecialchars($comentario['contenido']); ?></p>
-                            <small style="color: #666;"><?php echo date('d/m/Y H:i', strtotime($comentario['fecha_comentario'])); ?></small>
+                    <div class="comment">
+                        <div class="comment-avatar">
+                            <?php if (!empty($comentario['avatar']) && file_exists('../' . $comentario['avatar'])): ?>
+                                <img src="../<?php echo htmlspecialchars($comentario['avatar']); ?>" alt="Avatar">
+                            <?php else: ?>
+                                <img src="../assets/profile-icon.svg" alt="Avatar">
+                            <?php endif; ?>
+                        </div>
+                        <div class="comment-content">
+                            <div class="comment-header">
+                                <span class="comment-author"><?php echo htmlspecialchars($comentario['nombre_usuario'] ?? 'Anónimo'); ?></span>
+                                <span class="comment-date"><?php echo date('d/m/Y H:i', strtotime($comentario['fecha_comentario'])); ?></span>
+                            </div>
+                            <div class="comment-text">
+                                <?php echo htmlspecialchars($comentario['contenido']); ?>
+                            </div>
                         </div>
                     </div>
                     <?php endforeach; ?>
                 </div>
+                <?php else: ?>
+                <div class="no-comments">
+                    <p>No hay comentarios todavía. ¡Sé el primero en comentar!</p>
+                </div>
+                <?php endif; ?>
+                
+                <!-- Formulario para añadir comentarios -->
+                <div class="comment-form">
+                    <h4>Deja un comentario</h4>
+                    <?php if (isset($_SESSION['usuario'])): ?>
+                    <form action="../actions/add_comment.php" method="POST">
+                        <input type="hidden" name="post_id" value="<?php echo $post_id; ?>">
+                        <textarea name="comment" placeholder="Escribe tu comentario..." required></textarea>
+                        <button type="submit" class="submit-comment">Enviar comentario</button>
+                    </form>
+                    <?php else: ?>
+                    <div class="login-prompt">
+                        <p>Debes <a href="../admin/usuario.php">iniciar sesión</a> para comentar.</p>
+                    </div>
+                    <?php endif; ?>
+                </div>
             </div>
-        </aside>
+        </div>
+
+        <div class="sidebar">
+            <div class="card">
+                <h3>Sobre el autor</h3>
+                <p><?php echo htmlspecialchars($post['autor_nombre']); ?></p>
+            </div>
+
+            <div class="card">
+                <h3>Artículos relacionados</h3>
+                <div class="carousel">
+                    <?php foreach ($posts_relacionados as $relacionado): ?>
+                    <?php 
+                    $mostrar_imagen_relacionada = false;
+                    if (!empty($relacionado['imagen_destacada'])) {
+                        $ruta_rel = $relacionado['imagen_destacada'];
+                        // Si la ruta ya incluye "../assets/", eliminamos el "../" al verificar la existencia
+                        if (strpos($ruta_rel, '../') === 0) {
+                            $ruta_rel = substr($ruta_rel, 3);
+                        }
+                        if (file_exists("../{$ruta_rel}")) {
+                            $mostrar_imagen_relacionada = true;
+                        } else {
+                            error_log("Imagen de post relacionado no encontrada: ../{$ruta_rel}");
+                        }
+                    }
+                    ?>
+                    <div class="carousel-card">
+                        <?php if ($mostrar_imagen_relacionada): ?>
+                        <?php 
+                        // Eliminamos "../" al principio si existe para evitar doble ruta
+                        $ruta_img_rel = $relacionado['imagen_destacada'];
+                        if (strpos($ruta_img_rel, '../') === 0) {
+                            $ruta_img_rel = substr($ruta_img_rel, 3);
+                        }
+                        ?>
+                        <div class="carousel-img" style="background-image: url('../<?php echo htmlspecialchars($ruta_img_rel); ?>');"></div>
+                        <?php endif; ?>
+                        <h4><?php echo htmlspecialchars($relacionado['titulo']); ?></h4>
+                        <p><?php echo substr(htmlspecialchars($relacionado['resumen']), 0, 50) . '...'; ?></p>
+                        <a href="post.php?id=<?php echo $relacionado['id_post']; ?>">Leer más</a>
+                    </div>
+                    <?php endforeach; ?>
+                    
+                    <?php if (empty($posts_relacionados)): ?>
+                    <p>No hay artículos relacionados disponibles.</p>
+                    <?php endif; ?>
+                </div>
+            </div>
+
+            <div class="social-icons">
+                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+            </div>
+            </div>
     </div>
 
+    <div id="message" class="message">Enlace copiado al portapapeles</div>
+
     <footer class="footer">
-        <div class="container container-footer">
-            <div class="container-container-container-footer">
+        <div class="container-footer">
                 <div class="menu-footer">
                     <div class="contact-info">
                         <p class="title-footer">Información de Contacto</p>
                         <ul>
-                            <li>Teléfono: 314-149-5596</li>
-                            <li>EmaiL: PeaceInProgress.com</li>
+                        <li>Dirección: 123 Calle Principal, Ciudad</li>
+                        <li>Teléfono: 123-456-789</li>
+                        <li>Email: info@peaceinprogress.com</li>
                         </ul>
-                        <div class="social-icons2">
-                            <span class="facebook">
-                                <i class="fa-brands fa-facebook-f"></i>
-                            </span>
-                            <span class="twitter">
-                                <i class="fa-brands fa-twitter"></i>
-                            </span>
-                            <span class="instagram">
-                                <i class="fa-brands fa-instagram"></i>
-                            </span>
-                        </div>
                     </div>
-
                     <div class="information">
                         <p class="title-footer">Información</p>
                         <ul>
                             <li><a href="#">Acerca de Nosotros</a></li>
+                        <li><a href="#">Información de Envío</a></li>
+                        <li><a href="#">Políticas de Privacidad</a></li>
+                        <li><a href="#">Términos y Condiciones</a></li>
                             <li><a href="#">Contactános</a></li>
                         </ul>
                     </div>
+                <div class="my-account">
+                    <p class="title-footer">Mi cuenta</p>
+                    <ul>
+                        <li><a href="#">Mi cuenta</a></li>
+                        <li><a href="#">Historial de Órdenes</a></li>
+                        <li><a href="#">Lista de Deseos</a></li>
+                        <li><a href="#">Boletín</a></li>
+                        <li><a href="#">Reembolsos</a></li>
+                    </ul>
                 </div>
                 <div class="logo-footer">
-                    <img src="image/logo.png" alt="Logo Peace In Progress">
+                    <img src="../assets/logo.png" alt="Logo Peace In Progress">
                 </div>
             </div>
 
             <div class="copyright">
                 <p>
-                    PEACE IN PROGRESS &copy; 2025
+                    PEACE IN PROGRESS &copy; <?php echo date('Y'); ?>
+                </p>
             </div>
         </div>
     </footer>
 
     <script>
-    // Función para manejar likes (visitas)
-    function toggleLike(button) {
-        const postId = button.dataset.postId;
-        fetch('../controllers/visit_controller.php', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                post_id: postId
-            })
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                const count = button.querySelector('.like-count');
-                let visits = parseInt(count.textContent);
-                count.textContent = visits + 1;
+        document.addEventListener('DOMContentLoaded', function() {
+            // Función para manejar el botón "Me gusta"
+            const likeButton = document.querySelector('.like-button');
+            if (likeButton) {
+                likeButton.addEventListener('click', function() {
+                    const postId = this.getAttribute('data-post-id');
+                    
+                    // Enviar solicitud AJAX al servidor
+                    fetch('../ajax/like_post.php', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                        },
+                        body: 'post_id=' + postId
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            // Actualizar UI
+                            const likeCount = this.querySelector('.like-count');
+                            likeCount.textContent = data.likes;
+                            
+                            if (data.liked) {
+                                this.classList.add('liked');
+                                this.querySelector('i').classList.replace('far', 'fas');
+                            } else {
+                                this.classList.remove('liked');
+                                this.querySelector('i').classList.replace('fas', 'far');
+                            }
+                        } else {
+                            // Mostrar mensaje de error
+                            showMessage(data.message || 'Debes iniciar sesión para dar me gusta');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        showMessage('Error al procesar la solicitud');
+                    });
+                });
             }
-        })
-        .catch(error => console.error('Error:', error));
-    }
-
-    // Función para compartir
-    function shareArticle() {
-        const url = window.location.href;
-        const title = document.title;
-
-        if (navigator.share) {
-            navigator.share({
-                title: title,
-                url: url
-            }).catch((error) => console.log('Error al compartir:', error));
-        } else {
-            navigator.clipboard.writeText(url).then(() => {
-                showCopyMessage();
-            });
-        }
-    }
-
-    function showCopyMessage() {
-        const message = document.getElementById('copyMessage');
-        message.classList.add('show');
-
-        setTimeout(() => {
-            message.classList.remove('show');
-        }, 3000);
-    }
+            
+            // Función para manejar el botón de compartir
+            const shareButton = document.querySelector('.share-button');
+            if (shareButton) {
+                shareButton.addEventListener('click', function() {
+                    const url = window.location.href;
+                    
+                    // Copiar al portapapeles
+                    navigator.clipboard.writeText(url).then(function() {
+                        showMessage('Enlace copiado al portapapeles');
+                    }, function(err) {
+                        console.error('No se pudo copiar el texto: ', err);
+                    });
+                });
+            }
+            
+            // Función para mostrar mensajes
+            function showMessage(text) {
+                const message = document.getElementById('message');
+                message.textContent = text;
+                message.classList.add('show');
+                
+                setTimeout(() => {
+                    message.classList.remove('show');
+                }, 3000);
+            }
+        });
     </script>
 
 </body>

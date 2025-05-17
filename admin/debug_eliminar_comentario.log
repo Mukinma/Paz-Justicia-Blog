@@ -1,0 +1,72 @@
+=== Nueva solicitud 2025-05-17 06:56:21 ===
+POST: Array
+(
+    [id_comentario] => 6
+)
+
+SESSION: Array
+(
+    [intentos] => 0
+    [bloqueo_tiempo] => 
+    [id_usuario] => 2
+    [user_id] => 2
+    [usuario] => Christopher Eugenio Nieves Martínez
+    [email] => cnieves0@ucol.mx
+    [role] => admin
+    [rol] => admin
+    [avatar] => assets/avatars/6826f8454b688.jpg
+)
+
+ID de comentario a eliminar: 6
+Datos del comentario: Array
+(
+    [id_post] => 8
+    [id_usuario] => 2
+)
+
+Resultado de la eliminación: true
+Filas afectadas: 1
+Registro de actividad: true
+Respuesta final: Array
+(
+    [success] => 1
+    [message] => Comentario eliminado correctamente.
+)
+
+
+=== Nueva solicitud 2025-05-17 07:24:02 ===
+POST: Array
+(
+    [id_comentario] => 5
+)
+
+SESSION: Array
+(
+    [intentos] => 0
+    [bloqueo_tiempo] => 
+    [id_usuario] => 2
+    [user_id] => 2
+    [usuario] => Christopher Eugenio Nieves Martínez
+    [email] => cnieves0@ucol.mx
+    [role] => admin
+    [rol] => admin
+    [avatar] => assets/avatars/6826f8454b688.jpg
+)
+
+ID de comentario a eliminar: 5
+Datos del comentario: Array
+(
+    [id_post] => 8
+    [id_usuario] => 2
+)
+
+Resultado de la eliminación: true
+Filas afectadas: 1
+Registro de actividad: true
+Respuesta final: Array
+(
+    [success] => 1
+    [message] => Comentario eliminado correctamente.
+)
+
+

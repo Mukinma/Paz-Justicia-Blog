@@ -44,23 +44,7 @@
                 <a href="views/about.html">sobre nosotros</a>
             </div>
         </div>
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-=======
->>>>>>> Karol
 
-        <nav>
-            <a href="">Home</a>
-            <a href="contact/contact.html">Contact</a>
-            <a href="">Info</a>
-            <a href="admin/usuario.php" class="btn">Login</a>
-            <a href="admin/adminControl.php" class="btn">Admin control</a>
-        </nav>
-<<<<<<< HEAD
->>>>>>> Karol
-=======
->>>>>>> Karol
     </header>
 
     <?php if (isset($_SESSION['error'])): ?>

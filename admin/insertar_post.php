@@ -10,47 +10,29 @@ require 'verificar_sesion.php';
 verificarAdmin();
 
 // Verificar si el usuario está logueado y obtener su ID
-session_start();
-
-// Mostrar información de la sesión para depuración
-echo "<pre>";
-echo "Información de la sesión:\n";
-print_r($_SESSION);
-echo "</pre>";
-
 if (!isset($_SESSION['id_usuario'])) {
-    echo "No hay sesión iniciada. Redirigiendo a la página de inicio de sesión...";
-    header('Location: ../database/usuario.php');
+    // Redirigir silenciosamente sin mostrar información de depuración
+    header('Location: usuario.php');
     exit();
 }
 
 $id_usuario = $_SESSION['id_usuario'];
-echo "ID de usuario actual: " . $id_usuario;
 
 // Verificar que el usuario existe en la base de datos
 $stmtCheck = $pdo->prepare("SELECT COUNT(*) FROM usuarios WHERE id_usuario = ?");
 $stmtCheck->execute([$id_usuario]);
 if ($stmtCheck->fetchColumn() == 0) {
-    echo "Usuario no encontrado en la base de datos. Redirigiendo...";
-    header('Location: ../database/usuario.php?error=usuario_no_encontrado');
+    header('Location: usuario.php?error=usuario_no_encontrado');
     exit();
 }
-
-// Mostrar información del usuario
-$stmtUser = $pdo->prepare("SELECT * FROM usuarios WHERE id_usuario = ?");
-$stmtUser->execute([$id_usuario]);
-$usuario = $stmtUser->fetch(PDO::FETCH_ASSOC);
-echo "<pre>";
-echo "Información del usuario:\n";
-print_r($usuario);
-echo "</pre>";
 
 // Configuración para subida de imágenes
 $uploadDir = '../assets/';
 if (!file_exists($uploadDir)) {
     mkdir($uploadDir, 0755, true);
 }
-$allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/jpg'];
+// Agregar soporte para webp
+$allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/jpg', 'image/webp'];
 $maxFileSize = 2 * 1024 * 1024; // 2MB
 
 // Función para generar el slug
@@ -64,24 +46,70 @@ function generarSlug($titulo) {
 // Función para subir imagen
 function subirImagen($file, $uploadDir, $allowedTypes, $maxFileSize, $tipo_imagen) {
     if ($file['error'] !== UPLOAD_ERR_OK) {
-        throw new Exception("Error al subir el archivo: " . $file['error']);
+        $errores = [
+            UPLOAD_ERR_INI_SIZE => "El archivo excede el tamaño máximo permitido por PHP.",
+            UPLOAD_ERR_FORM_SIZE => "El archivo excede el tamaño máximo permitido por el formulario.",
+            UPLOAD_ERR_PARTIAL => "El archivo se subió parcialmente.",
+            UPLOAD_ERR_NO_FILE => "No se subió ningún archivo.",
+            UPLOAD_ERR_NO_TMP_DIR => "Falta la carpeta temporal.",
+            UPLOAD_ERR_CANT_WRITE => "No se pudo escribir el archivo en el disco.",
+            UPLOAD_ERR_EXTENSION => "Una extensión de PHP detuvo la subida."
+        ];
+        $mensaje = isset($errores[$file['error']]) ? $errores[$file['error']] : "Error desconocido al subir el archivo";
+        throw new Exception($mensaje);
     }
     
     // Verificar tipo de archivo
-    $fileType = mime_content_type($file['tmp_name']);
+    $fileType = null;
+    
+    // Intentar obtener el MIME type con mime_content_type si está disponible
+    if (function_exists('mime_content_type')) {
+        $fileType = mime_content_type($file['tmp_name']);
+    } 
+    // Alternativa si mime_content_type no está disponible
+    else {
+        // Usar la extensión para determinar el tipo
+        $extension = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
+        $mimeTypes = [
+            'jpg' => 'image/jpeg',
+            'jpeg' => 'image/jpeg',
+            'png' => 'image/png',
+            'gif' => 'image/gif',
+            'webp' => 'image/webp'
+        ];
+        
+        if (isset($mimeTypes[$extension])) {
+            $fileType = $mimeTypes[$extension];
+        } else {
+            throw new Exception("No se pudo determinar el tipo de archivo. Extensión no reconocida.");
+        }
+    }
+    
     if (!in_array($fileType, $allowedTypes)) {
-        throw new Exception("Tipo de archivo no permitido. Solo se aceptan JPEG, PNG y GIF.");
+        throw new Exception("Tipo de archivo no permitido ($fileType). Solo se aceptan JPEG, PNG, GIF y WebP.");
     }
     
     // Verificar tamaño
     if ($file['size'] > $maxFileSize) {
-        throw new Exception("El archivo es demasiado grande. Tamaño máximo: 2MB.");
+        $maxSizeMB = $maxFileSize / (1024 * 1024);
+        throw new Exception("El archivo es demasiado grande. Tamaño máximo: {$maxSizeMB}MB.");
     }
     
     // Generar nombre único
     $extension = pathinfo($file['name'], PATHINFO_EXTENSION);
     $filename = uniqid() . '.' . $extension;
     $destination = $uploadDir . $filename;
+    
+    // Verificar y crear el directorio de destino si no existe
+    if (!is_dir($uploadDir)) {
+        if (!mkdir($uploadDir, 0755, true)) {
+            throw new Exception("No se pudo crear el directorio para guardar las imágenes.");
+        }
+    }
+    
+    if (!is_writable($uploadDir)) {
+        throw new Exception("No se puede escribir en el directorio de destino.");
+    }
     
     if (!move_uploaded_file($file['tmp_name'], $destination)) {
         throw new Exception("No se pudo guardar el archivo subido.");
