@@ -232,6 +232,8 @@ body.loaded {
 }
 
 form input {
+    position: relative;
+    bottom: 15px;
     outline: none;
     border: 1px solid rgba(0, 0, 0, 0.1);
     padding: 10px 12px;
@@ -491,5 +493,113 @@ div[style*="background-color: #ffe0e0"] {
 @media (min-height: 900px) {
     .container {
         max-height: 75vh;
+    }
+}
+@media (max-width: 480px) {
+
+    .container {
+    position: relative;
+    top: -25px;
+    width: 320px;
+    height: 570px;
+    border-radius: 12px;
+    padding: 20px 30px 120px;
+    background: rgba(124, 188, 188, 0.8);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    }
+
+    .login-section {
+    position: absolute;
+    left: 50%;
+    bottom: -85%;
+    transform: translateX(-50%);
+    width: calc(100% + 120px);
+    padding: 20px 100px;
+    background: #d2e7e7;
+    border-radius: 290px;
+    height: 100%;
+    transition: all 0.6s ease;
+}
+
+    .social-buttons button {
+    position: relative;
+    bottom: 13px;
+    width: 100%;
+    padding: 10px;
+    background: #d2e7e7;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    cursor: pointer;
+    }
+
+    form .btn {
+    position: relative;
+    bottom: 40px;
+    margin-top: 15px;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 8px;
+    font-size: 18px;
+    font-weight: 500;
+    cursor: pointer;
+    }
+
+    form input {
+    position: relative;
+    bottom: 36px;
+    outline: none;
+    border: none;
+    padding: 10px 15px;
+    font-size: 16px;
+    color: #333;
+    font-weight: 400;
+    border-radius: 8px;
+    background: #d2e7e7;
+    }
+    
+    .separator {
+    position: relative;
+    bottom: 20px;
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    }
+
+    .signup-section form a {
+    position: relative;
+    bottom: 30px;
+    color: #d2e7e7;
+    }
+
+    .login-section header {
+    position: relative;
+    bottom: -10px;
+    color: #333;
+    opacity: 0.6;
+    }
+
+    .login-section .social-buttons button {
+    position: relative;
+    bottom: -10px;
+    border: 1px solid #000;
+    }
+
+    .login-section .separator p {
+    color: #000;
+    position: relative;
+    bottom: -10px;
+    }
+
+    a {
+    text-decoration: none;
+    position: relative;
+    bottom: 30px;
     }
 }
