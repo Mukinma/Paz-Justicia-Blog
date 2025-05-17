@@ -88,10 +88,12 @@ if(isset($_POST['login'])) {
             $usuario = $resultado->fetch_assoc();
 
             if(password_verify($pass, $usuario['pass'])){
+                $_SESSION['id_usuario'] = $usuario['id_usuario'];
                 $_SESSION['user_id'] = $usuario['id_usuario'];
                 $_SESSION['usuario'] = $usuario['name'];
                 $_SESSION['email'] = $usuario['email'];
                 $_SESSION['role'] = $usuario['rol'];
+                $_SESSION['rol'] = $usuario['rol'];
                 $_SESSION['avatar'] = $usuario['avatar'];
                 $_SESSION['intentos'] = 0;
                 header("Location: ../index.php");
