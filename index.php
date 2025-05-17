@@ -41,6 +41,7 @@
                           </div>';
                 }
                 ?>
+                <a href="views/about.html">sobre nosotros</a>
             </div>
         </div>
 <<<<<<< HEAD
@@ -85,7 +86,7 @@
                         rusas están decididas a acabar con las protestas por completo...
                     </div>
                     <div class="buttons">
-                        <a href="articulo1.html" class="see-more-button">SEE MORE</a>
+                        <a href="articulo1.html" class="see-more-button">Ver mas</a>
                     </div>
                 </div>
             </div>
@@ -100,7 +101,7 @@
                         pastoral de adolescentes y jóvenes a unirse en la tarea urgente de construir la paz en el país.
                     </div>
                     <div class="buttons">
-                        <a href="articulo2.html" class="see-more-button">SEE MORE</a>
+                        <a href="articulo2.html" class="see-more-button">Ver mas</a>
                     </div>
                 </div>
             </div>
@@ -116,7 +117,7 @@
                         victimas.
                     </div>
                     <div class="buttons">
-                        <a href="articulo3.html" class="see-more-button">SEE MORE</a>
+                        <a href="articulo3.html" class="see-more-button">Ver mas</a>
                     </div>
                 </div>
             </div>

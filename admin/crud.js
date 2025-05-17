@@ -434,4 +434,76 @@ document.addEventListener('DOMContentLoaded', function() {
             window.location.href = `eliminar_post.php?id=${postId}`;
         });
     }
+
+    // Configuración de botones de cambio de rol
+    const changeRoleButtons = document.querySelectorAll('.change-role-button');
+    const modalChangeRole = document.getElementById('modal-change-role');
+    const closeChangeRoleModal = document.getElementById('close-change-role-modal');
+    const cancelChangeRole = document.getElementById('cancel-change-role');
+    const confirmChangeRoleButton = document.getElementById('confirm-change-role-button');
+    
+    if (changeRoleButtons.length > 0) {
+        changeRoleButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const userId = this.dataset.userId;
+                const currentRole = this.dataset.currentRole;
+                
+                // Rellenar el formulario con los datos actuales
+                document.getElementById('change-role-user-id').value = userId;
+                
+                // Seleccionar el rol actual en el dropdown
+                const roleSelect = document.getElementById('new-role');
+                for (let i = 0; i < roleSelect.options.length; i++) {
+                    if (roleSelect.options[i].value.toLowerCase() === currentRole.toLowerCase()) {
+                        roleSelect.selectedIndex = i;
+                        break;
+                    }
+                }
+                
+                // Abrir el modal
+                openModal(modalChangeRole);
+            });
+        });
+    }
+    
+    // Cerrar modal de cambio de rol
+    if (closeChangeRoleModal) {
+        closeChangeRoleModal.addEventListener('click', closeAllModals);
+    }
+    
+    if (cancelChangeRole) {
+        cancelChangeRole.addEventListener('click', closeAllModals);
+    }
+    
+    // Confirmar cambio de rol
+    if (confirmChangeRoleButton) {
+        confirmChangeRoleButton.addEventListener('click', async function() {
+            const userId = document.getElementById('change-role-user-id').value;
+            const newRole = document.getElementById('new-role').value;
+            
+            try {
+                const response = await fetch('cambiar_rol.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ id_usuario: userId, rol: newRole })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    showNotification(data.message || 'Rol actualizado correctamente', 'success');
+                    closeAllModals();
+                    // Recargar la página para mostrar los cambios
+                    window.location.reload();
+                } else {
+                    showNotification(data.message || 'Error al actualizar el rol', 'error');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showNotification('Error al actualizar el rol', 'error');
+            }
+        });
+    }
 });

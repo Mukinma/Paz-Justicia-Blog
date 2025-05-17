@@ -42,7 +42,7 @@ async function translateTextNodes(node, lang) {
 }
 
 async function translatePage(lang) {
-    const elements = document.querySelectorAll("h1, h2, h3, h4, h5, h6, p, small, button, a, div, strong");
+    const elements = document.querySelectorAll("h1, h2, h3, h4, h5, h6, p, small, button, a, div, strong, ");
 
     for (const el of elements) {
         await translateTextNodes(el, lang);

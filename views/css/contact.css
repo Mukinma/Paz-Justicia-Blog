@@ -1,10 +1,9 @@
 body {
     margin: 0;
-    padding: 0;
-    font-family: 'Poppins', sans-serif;
-    background-color: #a3c6dd;
+    font-family: 'Rubik', sans-serif;
+    background: linear-gradient(to bottom, #0a1e35, #82aed0);
+    padding-top: 100px;
 }
-
 
 header {
     width: 100%;
@@ -67,7 +66,7 @@ header nav {
     gap: 30px;
 }
 
-<<<<<<< HEAD
+
 .traductor {
     background: none;
     border: 2px solid #eee;
@@ -83,13 +82,29 @@ header nav {
 }
 
 
-=======
->>>>>>> 17f400250494cd8031d05bf44b731ee3be4130dd
+
 header nav a {
     color: #eee;
     text-decoration: none;
     font-weight: 500;
 }
+
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+}
+
+header .logo {
+    height: 50px;
+    cursor: pointer;
+    filter: brightness(1.2);
+    transition: transform 0.3s ease, filter 0.3s ease;
+}
+
 
 .contact-section {
     padding: 90px 80px;
