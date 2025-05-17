@@ -67,6 +67,8 @@ body {
 .login-section header {
     color: #333;
     opacity: 0.6;
+    position: relative;
+    top: 15px;
 }
 
 .social-buttons {
@@ -92,6 +94,8 @@ body {
 }
 
 .login-section .social-buttons button {
+    position: relative;
+    top: 3px;
     border: 1px solid #000;
 }
 
@@ -130,6 +134,8 @@ body {
 }
 
 form input {
+    position: relative;
+    bottom: 15px;
     outline: none;
     border: none;
     padding: 10px 15px;
@@ -146,15 +152,20 @@ form input {
 }
 
 form a {
+    position: relative;
+    top: -20px;
     color: #333;
     text-align: center;
 }
 
 .signup-section form a {
+    position: relative;
+    bottom: 15px;
     color: #d2e7e7;
 }
 
 form .btn {
+    position: relative;
     margin-top: 15px;
     border: none;
     padding: 10px 15px;
@@ -163,6 +174,7 @@ form .btn {
     font-weight: 500;
     cursor: pointer;
     width: 100%;
+    top: -42px;
 }
 
 .login-section .btn {
@@ -196,12 +208,16 @@ form .btn {
 }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> Karol
 @media (max-width: 767px) {
     .container {
         padding: 15px;
         height: auto;
         min-height: 580px;
     }
+<<<<<<< HEAD
 
     .login-section {
         padding: 20px;
@@ -221,7 +237,26 @@ form .btn {
     }
 =======
 }
+=======
+>>>>>>> Karol
 
+    .login-section {
+        padding: 20px;
+        width: calc(100% + 60px);
+    }
+
+    .social-buttons button {
+        font-size: 14px;
+    }
+
+    form input {
+        font-size: 14px;
+    }
+
+    form .btn {
+        font-size: 16px;
+    }
+}
 @media (max-width: 480px) {
 
     .container {
@@ -237,21 +272,21 @@ form .btn {
     }
 
     .login-section {
-    position: relative;
-    left: 0%;
+    position: absolute;
+    left: 50%;
     bottom: -85%;
     transform: translateX(-50%);
-    width: calc(10% + 120px);
+    width: calc(100% + 120px);
     padding: 20px 100px;
     background: #d2e7e7;
     border-radius: 290px;
     height: 100%;
     transition: all 0.6s ease;
-    }
+}
 
     .social-buttons button {
     position: relative;
-    bottom: 25px;
+    bottom: 13px;
     width: 100%;
     padding: 10px;
     background: #d2e7e7;
@@ -264,7 +299,6 @@ form .btn {
     gap: 6px;
     cursor: pointer;
     }
-
 
     form .btn {
     position: relative;
@@ -304,6 +338,34 @@ form .btn {
     position: relative;
     bottom: 30px;
     color: #d2e7e7;
+    }
+
+<<<<<<< HEAD
+>>>>>>> Karol
+=======
+    .login-section header {
+    position: relative;
+    bottom: -10px;
+    color: #333;
+    opacity: 0.6;
+    }
+
+    .login-section .social-buttons button {
+    position: relative;
+    bottom: -10px;
+    border: 1px solid #000;
+    }
+
+    .login-section .separator p {
+    color: #000;
+    position: relative;
+    bottom: -10px;
+    }
+
+    a {
+    text-decoration: none;
+    position: relative;
+    bottom: 30px;
     }
 
 >>>>>>> Karol

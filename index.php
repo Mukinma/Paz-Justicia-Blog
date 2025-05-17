@@ -45,7 +45,10 @@
             </div>
         </div>
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> Karol
 
         <nav>
             <a href="">Home</a>
@@ -54,6 +57,9 @@
             <a href="admin/usuario.php" class="btn">Login</a>
             <a href="admin/adminControl.php" class="btn">Admin control</a>
         </nav>
+<<<<<<< HEAD
+>>>>>>> Karol
+=======
 >>>>>>> Karol
     </header>
 
@@ -82,8 +88,8 @@
                     <div class="title">LA CENSURA</div>
                     <div class="topic">DE LAS PROTESTAS</div>
                     <div class="des">
-                        En Rusia, la gente sigue protestando contra la guerra de Ucrania. Sin embargo, las autoridades
-                        rusas están decididas a acabar con las protestas por completo...
+                        En Rusia, la gente sigue protestando contra la guerra </br> de Ucrania. Sin embargo, las autoridades
+                        rusas están decididas </br> a acabar con las protestas por completo...
                     </div>
                     <div class="buttons">
                         <a href="articulo1.html" class="see-more-button">Ver mas</a>
