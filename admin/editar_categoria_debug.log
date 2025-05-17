@@ -290,3 +290,42 @@
     "slug": "prueba-categoria-2-1",
     "descripcion": "Prueba categor\u00eda 2"
 }
+[2025-05-16 15:27:26] Recibida solicitud editar_categoria.php
+[2025-05-16 15:27:26] Datos POST:
+{
+    "id": "10",
+    "nombre": "Paz y Conflictos",
+    "descripcion": "Cobertura de guerras, procesos de reconciliaci\u00f3n y contextos de conflicto global."
+}
+[2025-05-16 15:27:26] Sesión:
+{
+    "intentos": 0,
+    "bloqueo_tiempo": null,
+    "user_id": 2,
+    "usuario": "Christopher Eugenio Nieves Mart\u00ednez",
+    "email": "cnieves0@ucol.mx",
+    "role": "admin",
+    "avatar": "assets\/avatars\/6826f8454b688.jpg"
+}
+[2025-05-16 15:27:26] Procesando solicitud POST
+[2025-05-16 15:27:26] Datos recibidos
+{
+    "id": "10",
+    "nombre": "Paz y Conflictos",
+    "descripcion": "Cobertura de guerras, procesos de reconciliaci\u00f3n y contextos de conflicto global."
+}
+[2025-05-16 15:27:26] Validación exitosa
+[2025-05-16 15:27:26] La categoría existe
+[2025-05-16 15:27:26] Slug generado
+{
+    "slug": "paz-y-conflictos"
+}
+[2025-05-16 15:27:26] Iniciada transacción
+[2025-05-16 15:27:26] Transacción confirmada
+[2025-05-16 15:27:26] Categoría actualizada
+{
+    "id_categoria": 10,
+    "nombre": "Paz y Conflictos",
+    "slug": "paz-y-conflictos",
+    "descripcion": "Cobertura de guerras, procesos de reconciliaci\u00f3n y contextos de conflicto global."
+}
