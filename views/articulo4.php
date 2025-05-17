@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+    <link rel="icon" href="../assets/minilogo.png">
 
 <head>
     <meta charset="UTF-8" />
@@ -546,7 +547,7 @@
 <body>
 
     <header>
-        <img src="image/logo.png" class="logo" onclick="location.href='index.html'">
+        <img src="../assets/logo.png" class="logo" onclick="location.href='index.php'">
 
         <div class="search-bar">
             <input type="text" placeholder="Search...">
@@ -554,10 +555,10 @@
         </div>
 
         <nav>
-            <a href="index.html">Home</a>
-            <a href="contact/contact.html">Contact</a>
-            <a href="">Info</a>
-            <a href="login/login.html" class="btn">Login</a>
+            <a href="../index.php">Home</a>
+            <a href="contact.php">Contact</a>
+            <a href="about.php">Info</a>
+            <a href="../admin/usuario.php" class="btn">Login</a>
         </nav>
     </header>
 
@@ -611,7 +612,7 @@
             </p>
 
 
-            <img src="img1.jpg" alt="Imagen ilustrativa" style="width: 100%; margin-top: 30px; margin-bottom: 30px;">
+            <img src="../image/img1.jpg" alt="Imagen ilustrativa" style="width: 100%; margin-top: 30px; margin-bottom: 30px;">
 
             <div class="interaction-buttons">
                 <div class="like-button" onclick="toggleLike(this)">
@@ -629,7 +630,7 @@
             </div>
 
 
-            <a href="index.html" class="back">← Volver al inicio</a>
+            <a href="../index.php" class="back">← Volver al inicio</a>
         </div>
 
         <aside class="sidebar">
@@ -788,13 +789,13 @@
                     <div class="information">
                         <p class="title-footer">Información</p>
                         <ul>
-                            <li><a href="#">Acerca de Nosotros</a></li>
-                            <li><a href="#">Contactános</a></li>
+                            <li><a href="about.php">Acerca de Nosotros</a></li>
+                            <li><a href="contact.php">Contactános</a></li>
                         </ul>
                     </div>
                 </div>
                 <div class="logo-footer">
-                    <img src="image/logo.png" alt="Logo Peace In Progress">
+                    <img src="../image/logo.png" alt="Logo Peace In Progress">
                 </div>
             </div>
 

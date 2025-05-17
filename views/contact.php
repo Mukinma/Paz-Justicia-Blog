@@ -19,7 +19,7 @@
       <img
         src="../assets/logo.png"
         class="logo"
-        onclick="location.href='index.html'"
+        onclick="location.href='index.php'"
       />
 
       <div class="search-bar">
@@ -29,9 +29,9 @@
 
         <nav>
             <a href="../index.php">home</a>
-            <a href="contact.html">Contact</a>
-            <a href="about.html">Info</a>
-            <a href="login.html" class="btn">Login</a>
+            <a href="contact.php">Contact</a>
+            <a href="about.php">Info</a>
+            <a href="../admin/usuario.php" class="btn">Login</a>
         </nav>
     </header>
 

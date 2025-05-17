@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 
+<link rel="icon" href="assets/minilogo.png">
+
+
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -9,13 +12,28 @@
         integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" 
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="views/css/style.css" />
+    <link rel="stylesheet" href="views/css/index_style.css">
     <link rel="stylesheet" href="views/css/noticias.css">
 </head>
 
 <body>
-    <header>
-        <div class="header-container">
-            <img src="assets/logo.png" class="logo" onclick="location.href='index.php'">
+        <header>
+        <img src="assets/logo.png" class="logo" onclick="location.href='index.php'">
+
+        <div class="search-bar">
+            <input type="text" placeholder="Search...">
+            <span class="search-icon">🔍</span>
+        </div>
+
+        <nav>
+        <select class="traductor-select" onchange="translatePage(this.value)">
+            <option value="es">Español</option>
+            <option value="en">Inglés</option>
+        </select>
+            <a href="index.php">Home</a>
+            <a href="views/contact.php">Contact</a>
+            <a href="views/about.php">Info</a>
+        </nav>
             
             <div class="profile-section">
                 <?php
@@ -38,10 +56,10 @@
                     }
                     echo '<a href="admin/logout.php"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a>
                             </div>
-                          </div>';
+                        </div>';
                 }
                 ?>
-                <a href="views/about.html">sobre nosotros</a>
+                
             </div>
         </div>
     </header>
@@ -75,7 +93,7 @@
                         rusas están decididas a acabar con las protestas por completo...
                     </div>
                     <div class="buttons">
-                        <a href="articulo1.html" class="see-more-button">Ver mas</a>
+                        <a href="views/articulo1.php" class="see-more-button">Ver mas</a>
                     </div>
                 </div>
             </div>
@@ -90,7 +108,7 @@
                         pastoral de adolescentes y jóvenes a unirse en la tarea urgente de construir la paz en el país.
                     </div>
                     <div class="buttons">
-                        <a href="articulo2.html" class="see-more-button">Ver mas</a>
+                        <a href="views/articulo2.php" class="see-more-button">Ver mas</a>
                     </div>
                 </div>
             </div>
@@ -106,7 +124,7 @@
                         victimas.
                     </div>
                     <div class="buttons">
-                        <a href="articulo3.html" class="see-more-button">Ver mas</a>
+                        <a href="views/articulo3.php" class="see-more-button">Ver mas</a>
                     </div>
                 </div>
             </div>
@@ -121,7 +139,7 @@
                         disminuir porque hay una estrategia y se va a cumplir"..."
                     </div>
                     <div class="buttons">
-                        <a href="articulo4.html" class="see-more-button">SEE MORE</a>
+                        <a href="views/articulo4.php" class="see-more-button">SEE MORE</a>
                     </div>
                 </div>
             </div>
@@ -192,7 +210,7 @@
             <div class="noticia-principal">
                 <img src="image/img5.jpg" alt="Imagen principal">
                 <small>19 de marzo de 2025 | Administrador</small>
-                <h3><a href="articulo1.html">México: Autoridades deberían investigar aparente sitio de asesinatos
+                <h3><a href="views/articulo1.php">México: Autoridades deberían investigar aparente sitio de asesinatos
                         masivos</a></h3>
                 <p>Las autoridades mexicanas deberían llevar a cabo una investigación exhaustiva e imparcial sobre el
                     reciente hallazgo...</p>
@@ -204,7 +222,7 @@
                     <img src="image/img1.jpg" alt="">
                     <div>
                         <small>27 de febrero de 2025 | Administrador</small>
-                        <h4><a href="articulo2.html">Israel reproduce los métodos militares de Gaza en Cisjordania</a>
+                        <h4><a href="views/articulo2.php">Israel reproduce los métodos militares de Gaza en Cisjordania</a>
                         </h4>
                         <p>Las autoridades mexicanas deberían llevar a cabo una investigación exhaustiva e imparcial
                             sobre el reciente hallazgo...</p>
@@ -214,7 +232,7 @@
                     <img src="image/img2.jpg" alt="">
                     <div>
                         <small>25 de marzo de 2025 | Administrador</small>
-                        <h4><a href="articulo3.html">La FIFA debe reconocer y apoyar al equipo de mujeres afganas en el
+                        <h4><a href="views/articulo3.php">La FIFA debe reconocer y apoyar al equipo de mujeres afganas en el
                                 exilio</a></h4>
                         <p>Las autoridades mexicanas deberían llevar a cabo una investigación exhaustiva e imparcial
                             sobre el reciente hallazgo...</p>
@@ -224,7 +242,7 @@
                     <img src="image/img3.jpg" alt="">
                     <div>
                         <small>22 de enero de 2025 | Administrador</small>
-                        <h4><a href="articulo4.html">Órdenes ejecutivas de Trump amenazan un amplio espectro de derechos
+                        <h4><a href="views/articulo4.php">Órdenes ejecutivas de Trump amenazan un amplio espectro de derechos
                                 humanos</a></h4>
                         <p>Las autoridades mexicanas deberían llevar a cabo una investigación exhaustiva e imparcial
                             sobre el reciente hallazgo...</p>
@@ -234,7 +252,7 @@
                     <img src="image/img4.jpg" alt="">
                     <div>
                         <small>24 de enero de 2025 | Administrador</small>
-                        <h4><a href="articulo4.html">Estados Unidos cierra sus puertas a refugiados, solicitantes de
+                        <h4><a href="views/articulo4.php">Estados Unidos cierra sus puertas a refugiados, solicitantes de
                                 asilo y migrantes</a></h4>
                         <p>Las autoridades mexicanas deberían llevar a cabo una investigación exhaustiva e imparcial
                             sobre el reciente hallazgo...</p>
@@ -249,7 +267,7 @@
             <h2>Involúcrate</h2>
             <p>¿Quieres sumar al cambio y no sabes cómo? Te mostramos como lograrlo desde donde estés.
             </p>
-            <a href="involucrate/involucrate.html" class="boton-involucrarse">Actuar Ahora</a>
+            <a href="involucrate/involucrate.php" class="boton-involucrarse">Actuar Ahora</a>
         </div>
     </section>
 
@@ -260,58 +278,58 @@
 
             <div class="categoria-card">
                 <div class="icono">
-                    <img src="ICONOJUSTICIA.png" alt="Justicia y Derechos Humanos">
+                    <img src="assets/imginvolucrate/ICONOJUSTICIA.png" alt="Justicia y Derechos Humanos">
                 </div>
                 <h3 class="titulo">Justicia y Derechos Humanos</h3>
                 <p class="descripcion">Acceso a la justicia, abusos de poder, sistema penitenciario..</p>
-                <a href="Categorias/categoriaJusticia.html" class="btn-categoria">Ver artículos</a>
+                <a href="views/categoriaJusticia.php" class="btn-categoria">Ver artículos</a>
             </div>
 
             <div class="categoria-card">
                 <div class="icono">
-                    <img src="ICONOPAZ.png" alt="Paz y Conflictos">
+                    <img src="assets/imginvolucrate/ICONOPAZ.png" alt="Paz y Conflictos">
                 </div>
                 <h3 class="titulo">Paz y Conflictos</h3>
                 <p class="descripcion">Cobertura de guerras, procesos de reconciliación y contextos de conflicto global.
                 </p>
-                <a href="Categorias/categoriapaz.html" class="btn-categoria">Ver artículos</a>
+                <a href="views/categoriapaz.php" class="btn-categoria">Ver artículos</a>
             </div>
 
             <div class="categoria-card">
                 <div class="icono">
-                    <img src="ICONODIVERSIDAD.png" alt="Igualdad y Diversidad">
+                    <img src="assets/imginvolucrate/ICONODIVERSIDAD.png" alt="Igualdad y Diversidad">
                 </div>
                 <h3 class="titulo">Igualdad y Diversidad</h3>
                 <p class="descripcion">Causas y luchas por una sociedad más tolerante e inclusiva.</p>
-                <a href="Categorias/categoriaIgualdad.html" class="btn-categoria">Ver artículos</a>
+                <a href="views/categoriaIgualdad.php" class="btn-categoria">Ver artículos</a>
             </div>
 
             <div class="categoria-card">
                 <div class="icono">
-                    <img src="ICONOPARTICIPACION.png" alt="Participación Ciudadana">
+                    <img src="assets/imginvolucrate/ICONOPARTICIPACION.png" alt="Participación Ciudadana">
                 </div>
                 <h3 class="titulo">Participación Ciudadana</h3>
                 <p class="descripcion">Activismo, protestas pacíficas y organizaciones que protegen.</p>
-                <a href="Categorias/categoriaParticipacion.html" class="btn-categoria">Ver artículos</a>
+                <a href="views/categoriaParticipacion.php" class="btn-categoria">Ver artículos</a>
             </div>
 
             <div class="categoria-card">
                 <div class="icono">
-                    <img src="ICONOCORRUPCION.png" alt="Corrupción y Transparencia">
+                    <img src="assets/imginvolucrate/ICONOCORRUPCION.png" alt="Corrupción y Transparencia">
                 </div>
                 <h3 class="titulo">Corrupción y Transparencia</h3>
                 <p class="descripcion">Investigaciones sobre corrupción y reformas por un sistema justo.</p>
-                <a href="Categorias/categoriacorrupcion.html" class="btn-categoria">Ver artículos</a>
+                <a href="views/categoriacorrupcion.php" class="btn-categoria">Ver artículos</a>
             </div>
 
             <div class="categoria-card">
                 <div class="icono">
-                    <img src="ICONOPOLITICA.png" alt="Politica y gobernanza">
+                    <img src="assets/imginvolucrate/ICONOPOLITICA.png" alt="Politica y gobernanza">
                 </div>
                 <h3 class="titulo">Politica y gobernanza</h3>
                 <p class="descripcion">Cobertura de politica, programas y acciones del gobierno para fortalecer la paz y
                     seguridad.</p>
-                <a href="Categorias/categoriapolitica.html" class="btn-categoria">Ver artículos</a>
+                <a href="views/categoriapolitica.php" class="btn-categoria">Ver artículos</a>
             </div>
 
         </div>
@@ -335,7 +353,7 @@
 
         </div>
         <div class="experience-image">
-            <img src="formulario2.png" alt="Persona escribiendo experiencia">
+            <img src="assets/imginvolucrate/formulario2.png" alt="Persona escribiendo experiencia">
         </div>
     </section>
 
@@ -368,8 +386,8 @@
                     <div class="information">
                         <p class="title-footer">Información</p>
                         <ul>
-                            <li><a href="#">Acerca de Nosotros</a></li>
-                            <li><a href="#">Contáctanos</a></li>
+                            <li><a href="about.php">Acerca de Nosotros</a></li>
+                            <li><a href="contact.php">Contáctanos</a></li>
                         </ul>
                     </div>
                 </div>
@@ -385,6 +403,7 @@
         </div>
     </footer>
     <script src="js/app.js"></script>
+    <script defer src="js/traslate.js"></script>
 </body>
 
 </html>

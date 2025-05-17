@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html lang="es">
+    <link rel="icon" href="../assets/minilogo.png">
 
-<head>
+<html lang="es">
+  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Artículo - Marcha de Paz</title>
@@ -9,11 +11,11 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
         integrity="..." crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
 
         body {
             font-family: 'Poppins', sans-serif;
@@ -91,7 +93,7 @@
         .article-header {
             width: 100%;
             height: 600px;
-            background: url('image/img1.jpg') no-repeat center center / cover;
+            background: url('image/img2.jpg') no-repeat center center / cover;
             position: relative;
         }
 
@@ -150,10 +152,9 @@
         }
 
         .main-content h2 {
-            font-family: Georgia, serif;
             font-size: 2em;
             margin-bottom: 20px;
-            color: #ffffff;
+            color: #b0d1ff;
         }
 
         .main-content p {
@@ -457,96 +458,13 @@
             display: flex;
             justify-content: space-between;
         }
-
-        .interaction-buttons {
-            display: flex;
-            gap: 20px;
-            margin-top: 15px;
-        }
-
-        .like-button,
-        .share-button {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            cursor: pointer;
-            font-size: 1.2em;
-            color: #ccc;
-            transition: color 0.3s ease;
-        }
-
-        .like-button.liked {
-            color: #ff4f4f;
-        }
-
-        .share-button:hover {
-            color: #4faaff;
-        }
-
-        .like-button .like-count,
-        .share-button span {
-            font-size: 1rem;
-            color: #fff;
-        }
-
-        .interaction-buttons {
-            display: flex;
-            gap: 20px;
-            margin-top: 15px;
-        }
-
-        .like-button,
-        .share-button {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            cursor: pointer;
-            font-size: 1.2em;
-            color: #ccc;
-            transition: color 0.3s ease;
-        }
-
-        .like-button.liked {
-            color: #83d0f6;
-        }
-
-        .share-button:hover {
-            color: #4faaff;
-        }
-
-        .like-button .like-count,
-        .share-button span {
-            font-size: 1rem;
-            color: #fff;
-        }
-
-        /* Estilo para el mensaje flotante */
-        .message {
-            position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: #333;
-            color: white;
-            padding: 10px 20px;
-            border-radius: 5px;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.5s, visibility 0.5s;
-            z-index: 1000;
-        }
-
-        .message.show {
-            opacity: 1;
-            visibility: visible;
-        }
     </style>
-</head>
+  </head>
 
 <body>
 
     <header>
-        <img src="image/logo.png" class="logo" onclick="location.href='index.html'">
+        <img src="../assets/logo.png" class="logo" onclick="location.href='../index.php'">
 
         <div class="search-bar">
             <input type="text" placeholder="Search...">
@@ -554,82 +472,79 @@
         </div>
 
         <nav>
-            <a href="index.html">Home</a>
-            <a href="contact/contact.html">Contact</a>
-            <a href="">Info</a>
-            <a href="login/login.html" class="btn">Login</a>
+            <a href="../index.php">Home</a>
+            <a href="contact.php">Contact</a>
+            <a href="about.php">Info</a>
+            <a href="../admin/usuario.php" class="btn">Login</a>
         </nav>
     </header>
 
     <div class="article-header">
-        <h1>LA GUERRA DE RUSIA Y UCRANIA</h1>
-        <h2>Autor: Juan</h2>
+        <h1>LA IGLESIA</h1>
+        <h2>Autor: Fatima Contreras</h2>
     </div>
 
     <div class="container">
         <div class="main-content">
-            <h2>La censura de las protestas</h2>
+            <h2>URGEN A CONSTRUIR LA PAZ ANTE OLA DE VIOLENCIA</h2>
             <p>
-                Desde el inicio de la invasión a gran escala de Ucrania en febrero de 2022, el gobierno ruso ha
-                intensificado su represión contra cualquier forma de disidencia, implementando leyes que criminalizan la
-                protesta pacífica y la libertad de expresión. Estas medidas han resultado en la detención y
-                encarcelamiento de miles de ciudadanos que se oponen a la guerra, según informes de Amnistía
-                Internacional.
+                En un contexto de creciente violencia que afecta de manera alarmante a los jóvenes de México, la Iglesia
+                Católica ha emitido un mensaje de solidaridad y acción, invitando a los agentes de pastoral de
+                adolescentes y jóvenes a unirse en la tarea urgente de construir la paz en el país. Este pronunciamiento
+                surge en respuesta al trágico asesinato de ocho jóvenes en la parroquia San José de Mendoza, Salamanca,
+                en el estado de Guanajuato, varios de los cuales eran miembros activos de la Pastoral Juvenil.
+                Ante este episodio, la Pastoral Juvenil Latinoamericana y Caribeña (PJ) adhiere a la oración con sus
+                familias y comunidades, clamando por la paz y la justicia. “Que su testimonio de fe y entrega -escribió
+                la PJ- siga iluminando nuestro caminar. En medio del dolor, seguimos creyendo en un mundo donde reine el
+                amor de Cristo”.
+                La Conferencia del Episcopado Mexicano (CEM), en un comunicado emitido con motivo de esta tragedia,
+                expresó su cercanía y solidaridad con las familias de las víctimas y con todas aquellas que, a lo largo
+                de la actual crisis de violencia, han perdido a un ser querido. La Iglesia, alzando su voz en este
+                difícil momento, ha mostrado una vez más su compromiso con la protección de los más vulnerables y la
+                promoción de la paz.
             </p>
 
-            <h3>Legislación para silenciar la disidencia</h3>
-            <p>
-                Poco después de iniciada la guerra, Rusia introdujo leyes de censura que penalizan la difusión de
-                "información falsa" y la "desacreditación" de las fuerzas armadas, con penas de hasta 15 años de
-                prisión. Estas leyes han sido utilizadas para castigar a quienes expresan opiniones contrarias a la
-                narrativa oficial sobre el conflicto en Ucrania.
-            </p>
-
-            <h3>Represalias más allá del encarcelamiento</h3>
-            <p>
-                Además de las penas de prisión, las autoridades rusas han empleado otras tácticas para reprimir la
-                disidencia:
-                • Confiscación de propiedades: En 2024, se aprobó una ley que permite confiscar bienes de personas
-                acusadas bajo las leyes de censura de guerra
-                • Represión a menores: Niños y niñas han sido víctimas de persecución política debido a las opiniones de
-                sus padres o por expresar su desacuerdo con la guerra
-                • Negación de contacto familiar: A los detenidos se les ha negado sistemáticamente el contacto con sus
-                familias, como en el caso del político de oposición Vladimir Kara-Murza, quien estuvo más de un año sin
-                comunicación con sus seres queridos.
-
+            <p>Un llamado al diálogo y a la justicia
+                El comunicado no solo se limita a la solidaridad, sino que también hace un llamado a la acción. En un
+                esfuerzo conjunto, la CEM, la Conferencia de Superiores Mayores de Religiosos de México (CIRM) y los
+                Jesuitas han convocado a un Diálogo Nacional por la Paz. Este esfuerzo busca que la sociedad mexicana
+                asuma su responsabilidad en la construcción de un ambiente pacífico y seguro para todos.
+                Obispo de Irapuato: Seamos hijos del Dios que es Amor
+                El obispo de la diócesis de Irapuato (circunscripción a la que pertenece la parroquia en la que ocurrió
+                el crimen), Mons. Enrique Díaz Díaz, ha exigido una investigación exhaustiva sobre los hechos ocurridos
+                en Salamanca, subrayando la necesidad de justicia y de medidas preventivas para evitar que situaciones
+                tan dolorosas se repitan. La Iglesia también recordó que los adolescentes y jóvenes son los más
+                afectados por la violencia, instando a cuidar sus vidas y ofrecerles los medios para alejarlos de la
+                maldad que amenaza con atraparlos.
+                En efecto, Díaz Díaz aseguró que acompaña “con profundo amor de padre” a los familiares y amigos de las
+                víctimas, primero con su “oración cercana, que es la primera fuerza de los cristianos”. También presidió
+                la santa misa exequial de los jóvenes asesinados el miércoles 19 de marzo, en la solemnidad de San José.
+                Igualmente, se rezará el santo rosario a partir del jueves 20 a las 21:00 por Zoom, con la participación
+                de jóvenes y asesores de distintas parroquias de la diócesis.
             </p>
 
             <p>
-                Amnistía Internacional insta a la comunidad internacional a exigir la derogación de las leyes de censura
-                de guerra en Rusia y la liberación inmediata de todas las personas encarceladas por expresar
-                pacíficamente sus opiniones. La organización también anima a firmar peticiones y enviar mensajes de
-                solidaridad a los presos de conciencia.
-                La represión en Rusia ha alcanzado niveles alarmantes, equiparando las penas por protestar contra la
-                guerra con las impuestas por delitos graves como el atraco a mano armada. Es fundamental que la
-                comunidad internacional se solidarice con quienes defienden la paz y la libertad de expresión en Rusia.
-
+                Acciones para la promoción de la paz
+                Ante el impacto devastador de la violencia, la Iglesia ha propuesto una serie de acciones que involucran
+                a toda la comunidad en la promoción de la paz. Entre las actividades destacadas se incluyen: el domingo
+                23 de marzo, en todas las iglesias, se encenderán ocho velas en honor a los adolescentes y jóvenes
+                asesinados o desaparecidos. Los asistentes podrán escribir los nombres de las víctimas en tarjetas,
+                colocándolas junto a las velas como un símbolo de recuerdo y compromiso con la paz.
+                Asimismo, el sábado 29 de marzo a las 17 se llevará a cabo una movilización en las principales plazas de
+                pueblos y ciudades del país, llevando rosas y fotografías de los jóvenes fallecidos, sumándose a una
+                caravana por la paz que partirá desde San José de Mendoza.
+                Además, durante los viernes de Cuaresma se promoverá el rezo del viacrucis por la paz en diversas
+                localidades, pidiendo por las víctimas de la violencia y por el fin de la crisis de inseguridad en el
+                país.
+                A su vez, el Episcopado exhorta a los grupos juveniles y pastorales a vincularse con los equipos
+                estatales del Diálogo Nacional por la Paz, con el objetivo de diseñar proyectos locales y mantener un
+                diálogo constante con las autoridades para asegurar el seguimiento de los compromisos en materia de
+                pacificación.
             </p>
 
+            <img src="../assets/img2.jpg" alt="Imagen ilustrativa" style="width: 100%; margin-top: 30px; margin-bottom: 30px;">
 
-            <img src="img1.jpg" alt="Imagen ilustrativa" style="width: 100%; margin-top: 30px; margin-bottom: 30px;">
-
-            <div class="interaction-buttons">
-                <div class="like-button" onclick="toggleLike(this)">
-                    <i class="fa-solid fa-heart"></i>
-                    <span class="like-count">0</span>
-                </div>
-                <div class="share-button" onclick="shareArticle()">
-                    <i class="fa-solid fa-share-nodes"></i>
-                    <span>Compartir</span>
-                </div>
-            </div>
-
-            <div id="copyMessage" class="message">
-                ¡Enlace copiado al portapapeles!
-            </div>
-
-
-            <a href="index.html" class="back">← Volver al inicio</a>
+            <a href="../index.php" class="back">← Volver al inicio</a>
         </div>
 
         <aside class="sidebar">
@@ -717,46 +632,6 @@
                         input.value = '';
                     }
                 });
-
-                // like y compartir
-                function toggleLike(button) {
-                    const icon = button.querySelector('i');
-                    const count = button.querySelector('.like-count');
-                    let likes = parseInt(count.textContent);
-
-                    if (button.classList.contains('liked')) {
-                        button.classList.remove('liked');
-                        count.textContent = likes - 1;
-                    } else {
-                        button.classList.add('liked');
-                        count.textContent = likes + 1;
-                    }
-                }
-
-                function shareArticle() {
-                    const url = window.location.href;
-                    const title = document.title;
-
-                    if (navigator.share) {
-                        navigator.share({
-                            title: title,
-                            url: url
-                        }).catch((error) => console.log('Error al compartir:', error));
-                    } else {
-                        navigator.clipboard.writeText(url).then(() => {
-                            showCopyMessage();
-                        });
-                    }
-                }
-
-                function showCopyMessage() {
-                    const message = document.getElementById('copyMessage');
-                    message.classList.add('show');
-
-                    setTimeout(() => {
-                        message.classList.remove('show');
-                    }, 3000);
-                }
             </script>
 
         </aside>
@@ -770,7 +645,7 @@
                         <p class="title-footer">Información de Contacto</p>
                         <ul>
                             <li>Teléfono: 314-149-5596</li>
-                            <li>EmaiL: PeaceInProgress.com</li>
+                            <li>EmaiL: PeaceInProgress@gmail.com</li>
                         </ul>
                         <div class="social-icons2">
                             <span class="facebook">
@@ -788,13 +663,13 @@
                     <div class="information">
                         <p class="title-footer">Información</p>
                         <ul>
-                            <li><a href="#">Acerca de Nosotros</a></li>
-                            <li><a href="#">Contactános</a></li>
+                            <li><a href="about.php">Acerca de Nosotros</a></li>
+                            <li><a href="contact.php">Contactános</a></li>
                         </ul>
                     </div>
                 </div>
                 <div class="logo-footer">
-                    <img src="image/logo.png" alt="Logo Peace In Progress">
+                    <img src="../assets/logo.png" alt="Logo Peace In Progress">
                 </div>
             </div>
 
