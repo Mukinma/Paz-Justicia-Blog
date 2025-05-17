@@ -1078,4 +1078,12 @@ header nav a {
     gap: 10px;
     align-items: center;
     }
+
+    header .logo {
+    height: 30px;
+    cursor: pointer;
+    filter: brightness(1.2);
+    transition: transform 0.3s ease, filter 0.3s ease;
+    transform: translate(-15%, -50%);
+    }
 }
