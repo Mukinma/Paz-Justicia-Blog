@@ -1922,6 +1922,61 @@ tbody tr td button {
     bottom: 20px;
 }
 
+/* Estilos para miniaturas de categorías */
+.thumbnail-cell {
+    width: 80px;
+    height: 80px;
+    text-align: center;
+    padding: 5px !important;
+}
+
+.categoria-thumbnail {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 8px;
+    transition: transform 0.2s ease;
+    border: 1px solid #ddd;
+    background-color: #f8f8f8;
+}
+
+.categoria-thumbnail:hover {
+    transform: scale(1.1);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+/* Estilos para la visualización de la imagen actual */
+#category-current-image-container {
+    width: 150px;
+    height: 150px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+#category-current-image {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+#category-current-image-container small {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0,0,0,0.6);
+    color: white;
+    padding: 5px;
+    font-size: 10px;
+    text-align: center;
+}
+
 
 
 

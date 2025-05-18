@@ -15,14 +15,7 @@ if (!isset($_GET['id']) || empty($_GET['id'])) {
 $post_id = intval($_GET['id']);
 
 // Consulta para obtener información del post
-$sql = "SELECT p.*, c.nombre as categoria_nombre, c.slug as categoria_slug, u.name as autor_nombre, 
-        i1.ruta as imagen_destacada, i2.ruta as imagen_background 
-        FROM posts p 
-        LEFT JOIN categorias c ON p.id_categoria = c.id_categoria 
-        LEFT JOIN usuarios u ON p.id_usuario = u.id_usuario 
-        LEFT JOIN imagenes i1 ON p.id_imagen_destacada = i1.id_imagen
-        LEFT JOIN imagenes i2 ON p.id_imagen_background = i2.id_imagen
-        WHERE p.id_post = ? AND p.estado = 'publicado'";
+$sql = "SELECT p.*, c.nombre as categoria_nombre, c.slug as categoria_slug, c.imagen as imagen_categoria,         u.name as autor_nombre,         i1.ruta as imagen_destacada, i2.ruta as imagen_background         FROM posts p         LEFT JOIN categorias c ON p.id_categoria = c.id_categoria         LEFT JOIN usuarios u ON p.id_usuario = u.id_usuario         LEFT JOIN imagenes i1 ON p.id_imagen_destacada = i1.id_imagen        LEFT JOIN imagenes i2 ON p.id_imagen_background = i2.id_imagen        WHERE p.id_post = ? AND p.estado = 'publicado'";
         
 $stmt = $pdo->prepare($sql);
 $stmt->execute([$post_id]);
@@ -143,6 +136,13 @@ if (strpos($background_image, '../') === 0) {
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/post_style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Meta tags -->
+    <meta property="og:title" content="<?php echo htmlspecialchars($post['titulo']); ?> - Peace in Progress">
+    <meta property="og:description" content="<?php echo htmlspecialchars(substr($post['resumen'], 0, 160)); ?>">
+    <meta property="og:image" content="<?php echo isset($post['imagen_destacada']) ? $post['imagen_destacada'] : (!empty($post['imagen_categoria']) ? $post['imagen_categoria'] : 'assets/image-placeholder.png'); ?>">
+    <meta property="og:type" content="article">
+    <meta property="article:published_time" content="<?php echo $post['fecha_publicacion']; ?>">
+    <meta property="article:section" content="<?php echo htmlspecialchars($post['categoria_nombre']); ?>">
 </head>
 
 <body>

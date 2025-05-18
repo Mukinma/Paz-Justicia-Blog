@@ -576,7 +576,7 @@ try {
                     <button id="close-modal" class="close-button">&times;</button>
                 </div>
                 <div class="container">
-                    <form action="insertar_categoria.php" method="POST" id="categoryForm">
+                    <form action="insertar_categoria.php" method="POST" id="categoryForm" enctype="multipart/form-data">
                         <div class="form-group">
                             <label for="nombre">Nombre de la categoría:</label>
                             <input type="text" id="nombre" name="nombre" required>
@@ -584,6 +584,12 @@ try {
                         <div class="form-group">
                             <label for="descripcion">Descripción:</label>
                             <textarea id="descripcion" name="descripcion"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="categoria_imagen">Imagen de la categoría:</label>
+                            <input type="file" id="categoria_imagen" name="imagen" accept="image/*">
+                            <small>Formato recomendado: PNG o JPG de al menos 300x300px</small>
+                            <img id="preview_new_category_image" class="image-preview" alt="Vista previa de la imagen">
                         </div>
                     </form>
                 </div>
@@ -753,8 +759,9 @@ try {
                     <button id="close-edit-category-modal" class="close-button">&times;</button>
                 </div>
                 <div class="container">
-                    <form action="editar_categoria.php" method="POST" id="editCategoryForm">
+                    <form action="editar_categoria.php" method="POST" id="editCategoryForm" enctype="multipart/form-data">
                         <input type="hidden" id="edit-category-id" name="id" value="">
+                        <input type="hidden" id="edit-category-imagen-actual" name="imagen_actual" value="">
                         <div class="form-group">
                             <label for="edit-category-nombre">Nombre de la categoría:</label>
                             <input type="text" id="edit-category-nombre" name="nombre" required>
@@ -762,6 +769,19 @@ try {
                         <div class="form-group">
                             <label for="edit-category-descripcion">Descripción:</label>
                             <textarea id="edit-category-descripcion" name="descripcion"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Imagen actual:</label>
+                            <div id="category-current-image-container" class="image-container">
+                                <img id="category-current-image" src="" alt="Imagen de la categoría">
+                                <small>Esta es la imagen actual de la categoría</small>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="edit-category-imagen">Nueva imagen (opcional):</label>
+                            <input type="file" id="edit-category-imagen" name="imagen" accept="image/*">
+                            <small>Formato recomendado: PNG o JPG de al menos 300x300px</small>
+                            <img id="preview_category_image" class="image-preview" alt="Vista previa de la nueva imagen">
                         </div>
                     </form>
                 </div>

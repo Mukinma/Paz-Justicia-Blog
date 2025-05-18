@@ -43,13 +43,31 @@ try {
             throw new Exception('Ya existe una categoría con ese nombre o slug');
         }
 
+        // Procesar imagen si se ha subido una
+        $imagen = null;
+        if (isset($_FILES['imagen']) && $_FILES['imagen']['error'] === UPLOAD_ERR_OK) {
+            $nombre_temporal = $_FILES['imagen']['tmp_name'];
+            $nombre_archivo = uniqid() . '_' . basename($_FILES['imagen']['name']);
+            $ruta_destino = '../assets/categorias/' . $nombre_archivo;
+            
+            // Crear el directorio si no existe
+            if (!file_exists('../assets/categorias/')) {
+                mkdir('../assets/categorias/', 0777, true);
+            }
+            
+            // Mover el archivo subido
+            if (move_uploaded_file($nombre_temporal, $ruta_destino)) {
+                $imagen = 'assets/categorias/' . $nombre_archivo;
+            }
+        }
+
         // Iniciar transacción
         $pdo->beginTransaction();
 
         try {
             // Insertar la nueva categoría
-            $stmt = $pdo->prepare("INSERT INTO categorias (nombre, slug, descripcion) VALUES (?, ?, ?)");
-            $stmt->execute([$nombre, $slug, $descripcion]);
+            $stmt = $pdo->prepare("INSERT INTO categorias (nombre, slug, descripcion, imagen) VALUES (?, ?, ?, ?)");
+            $stmt->execute([$nombre, $slug, $descripcion, $imagen]);
 
             $pdo->commit();
             echo json_encode(['success' => true, 'message' => 'Categoría creada exitosamente']);

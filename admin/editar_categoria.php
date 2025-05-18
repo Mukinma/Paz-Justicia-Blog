@@ -83,9 +83,30 @@ try {
         $pdo->beginTransaction();
         log_debug("Iniciada transacción");
         
+        // Manejar la carga de la imagen si se proporciona
+        $imagen = null;
+        if (isset($_FILES['imagen']) && $_FILES['imagen']['error'] === UPLOAD_ERR_OK) {
+            $nombre_temporal = $_FILES['imagen']['tmp_name'];
+            $nombre_archivo = uniqid() . '_' . basename($_FILES['imagen']['name']);
+            $ruta_destino = '../assets/categorias/' . $nombre_archivo;
+            
+            // Crear el directorio si no existe
+            if (!file_exists('../assets/categorias/')) {
+                mkdir('../assets/categorias/', 0777, true);
+            }
+            
+            // Mover el archivo subido
+            if (move_uploaded_file($nombre_temporal, $ruta_destino)) {
+                $imagen = 'assets/categorias/' . $nombre_archivo;
+            }
+        } else if (isset($_POST['imagen_actual']) && !empty($_POST['imagen_actual'])) {
+            // Mantener la imagen actual si no se sube una nueva
+            $imagen = $_POST['imagen_actual'];
+        }
+        
         // Actualizar la categoría
-        $stmt = $pdo->prepare("UPDATE categorias SET nombre = ?, slug = ?, descripcion = ? WHERE id_categoria = ?");
-        $success = $stmt->execute([$nombre, $slug, $descripcion, $id]);
+        $stmt = $pdo->prepare("UPDATE categorias SET nombre = ?, slug = ?, descripcion = ?, imagen = ? WHERE id_categoria = ?");
+        $success = $stmt->execute([$nombre, $slug, $descripcion, $imagen, $id]);
         
         if (!$success) {
             $errorInfo = $stmt->errorInfo();
@@ -113,7 +134,8 @@ try {
                 'id_categoria' => $id,
                 'nombre' => $nombre,
                 'slug' => $slug,
-                'descripcion' => $descripcion
+                'descripcion' => $descripcion,
+                'imagen' => $imagen
             ]
         ]);
     } else {

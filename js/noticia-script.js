@@ -28,9 +28,12 @@ class TrendingCarousel {
             isAnimating: false,
             autoplayEnabled: true,
             userInteracted: false,
+            isStopped: false,
             lastTransitionTime: 0,
             touchStartX: 0,
-            isTouching: false
+            isTouching: false,
+            errorCount: 0,
+            maxRetries: 3
         };
         
         // Configuración
@@ -46,7 +49,10 @@ class TrendingCarousel {
         this.timers = {
             autoplay: null,
             animation: null,
-            debounce: null
+            debounce: null,
+            progressBar: null,
+            resetStop: null,
+            errorReset: null
         };
         
         // Inicializar
@@ -79,6 +85,9 @@ class TrendingCarousel {
     init() {
         console.log(`Inicializando carousel con ${this.state.totalSlides} slides`);
         
+        // Aplicar clase global que habilita el scroll para todos los slides
+        this.enableScrollingForAllSlides();
+        
         // Preparar el slide inicial
         this.preloadCriticalImages();
         this.applyInitialStyles();
@@ -88,7 +97,12 @@ class TrendingCarousel {
         
         // Iniciar autoplay después de que todo esté listo
         this.state.lastTransitionTime = Date.now();
-        setTimeout(() => this.startAutoplay(), 1000);
+        setTimeout(() => {
+            // Verificar que aún existe el carousel (por si se ha desmontado)
+            if (this.carousel && document.body.contains(this.carousel)) {
+                this.startAutoplay();
+            }
+        }, 1000);
         
         // Aplicar clase de inicialización
         this.carousel.classList.add('carousel-initialized');
@@ -121,17 +135,40 @@ class TrendingCarousel {
      * Aplica estilos iniciales para el slide activo
      */
     applyInitialStyles() {
-        // Resetear todos los slides
+        if (!this.slides || this.slides.length === 0) return;
+        
+        // Ocultar todos los slides por defecto
         this.slides.forEach(slide => {
-            slide.classList.remove('active');
             slide.style.opacity = '0';
             slide.style.visibility = 'hidden';
             slide.style.zIndex = '0';
+            slide.classList.remove('active');
             
+            // Resetear estilos de contenido
             const content = slide.querySelector('.content');
             if (content) {
+                if (window.matchMedia('(max-width: 768px)').matches) {
+                    content.style.transform = 'translate(-50%, -50%) translateX(30px)';
+                } else {
+                    content.style.transform = 'translateY(-50%) translateX(30px)';
+                }
                 content.style.opacity = '0';
-                content.style.transform = 'translateY(-50%) translateX(-30px)';
+                
+                // Resetear elementos dentro del contenido
+                const elements = [
+                    content.querySelector('.topic'),
+                    content.querySelector('.title'),
+                    content.querySelector('.des'),
+                    content.querySelector('.metrics'),
+                    content.querySelector('.buttons')
+                ];
+                
+                elements.forEach(el => {
+                    if (el) {
+                        el.style.opacity = '0';
+                        el.style.transform = 'translateY(20px)';
+                    }
+                });
             }
         });
         
@@ -145,14 +182,59 @@ class TrendingCarousel {
             
             const content = activeSlide.querySelector('.content');
             if (content) {
+                if (window.matchMedia('(max-width: 768px)').matches) {
+                    content.style.transform = 'translate(-50%, -50%) translateX(0)';
+                } else {
+                    content.style.transform = 'translateY(-50%) translateX(0)';
+                }
                 content.style.opacity = '1';
-                content.style.transform = 'translateY(-50%) translateX(0)';
                 
-                // Inicializar métricas visibles
-                const metrics = content.querySelector('.metrics');
-                if (metrics) {
-                    metrics.style.opacity = '1';
-                    metrics.style.transform = 'translateY(0)';
+                // Animar elementos dentro del contenido con secuencia
+                const scrollableContent = content.querySelector('.scrollable-content');
+                if (scrollableContent) {
+                    // Asegurar que el scrollable content tiene su overflow habilitado
+                    scrollableContent.style.overflow = 'auto';
+                    scrollableContent.style.overflowY = 'auto';
+                    
+                    // Reiniciar la posición de scroll
+                    scrollableContent.scrollTop = 0;
+                    
+                    const elements = [
+                        scrollableContent.querySelector('.topic'),
+                        scrollableContent.querySelector('.title'),
+                        scrollableContent.querySelector('.des'),
+                        scrollableContent.querySelector('.metrics')
+                    ];
+                    
+                    elements.forEach((el, index) => {
+                        if (el) {
+                            setTimeout(() => {
+                                el.style.opacity = '1';
+                                el.style.transform = 'translateY(0)';
+                                el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                            }, el.classList.contains('des') ? 
+                               150 + (index * 80) : // Más retraso para la descripción
+                               100 + (index * 70));
+                        }
+                    });
+                }
+                
+                // Asegurar que los botones sean visibles inmediatamente
+                const buttonContainer = content.querySelector('.button-container');
+                if (buttonContainer) {
+                    buttonContainer.style.opacity = '1';
+                    
+                    const buttons = buttonContainer.querySelector('.buttons');
+                    if (buttons) {
+                        buttons.style.opacity = '1';
+                        buttons.style.transform = 'translateY(0)';
+                        
+                        const buttonElements = buttons.querySelectorAll('button');
+                        buttonElements.forEach(btn => {
+                            btn.style.opacity = '1';
+                            btn.style.transform = 'translateY(0)';
+                        });
+                    }
                 }
             }
         }
@@ -367,18 +449,22 @@ class TrendingCarousel {
             return;
         }
         
-        // No hacer nada si ya estamos en ese slide
+        // No hacer nada si ya estamos en ese slide o hay una animación en curso
         if (index === this.state.currentIndex || this.state.isAnimating) {
             return;
         }
         
         // Activar flag de animación
         this.state.isAnimating = true;
+        console.log(`Transición iniciada: ${this.state.currentIndex} -> ${index}`);
         
         // Guardar índice anterior y actualizar actual
         this.state.previousIndex = this.state.currentIndex;
         this.state.currentIndex = index;
         this.state.lastTransitionTime = Date.now();
+        
+        // Detener cualquier autoplay activo
+        this.stopAutoplay();
         
         // Obtener referencias a los slides
         const currentSlide = this.slides[this.state.previousIndex];
@@ -412,75 +498,126 @@ class TrendingCarousel {
             }
         });
         
+        // Habilitar scroll en el slide entrante de inmediato
+        const nextContent = nextSlide.querySelector('.content');
+        if (nextContent) {
+            const nextScrollable = nextContent.querySelector('.scrollable-content');
+            if (nextScrollable) {
+                // Forzar habilitación de scroll
+                nextScrollable.style.overflow = 'auto';
+                nextScrollable.style.overflowY = 'auto';
+                nextScrollable.classList.add('scroll-enabled');
+                nextScrollable.scrollTop = 0;
+            }
+        }
+        
         // Fase 2: Configurar slide entrante
         nextSlide.style.visibility = 'visible';
         nextSlide.style.opacity = '0';
         nextSlide.classList.add('active');
         
-        // Fase 3: Animar la transición usando requestAnimationFrame para mejor rendimiento
+        // Fase 3: Animar salida del slide actual y entrada del nuevo
         requestAnimationFrame(() => {
-            // Animar salida del slide actual
-            if (currentSlide) {
-                currentSlide.style.transition = `opacity ${this.config.animationDuration/2}ms ease-out`;
-                currentSlide.style.opacity = '0';
+            // Animar salida del contenido actual
+            const currentContent = currentSlide.querySelector('.content');
+            if (currentContent) {
+                if (window.matchMedia('(max-width: 768px)').matches) {
+                    currentContent.style.opacity = '0';
+                    currentContent.style.transform = 'translate(-50%, -50%) translateX(-30px)';
+                } else {
+                    currentContent.style.opacity = '0';
+                    currentContent.style.transform = 'translateY(-50%) translateX(-30px)';
+                }
             }
             
-            // Animar entrada del nuevo slide
-            nextSlide.style.transition = `opacity ${this.config.animationDuration}ms ease-in`;
+            // Comenzar a desvanecer slide actual
+            currentSlide.style.opacity = '0';
             
-            // Ejecutar en el siguiente frame para asegurar transición fluida
-            requestAnimationFrame(() => {
+            // Animar entrada del nuevo slide
+            setTimeout(() => {
                 nextSlide.style.opacity = '1';
                 
                 // Animar contenido del nuevo slide
-                const nextContent = nextSlide.querySelector('.content');
                 if (nextContent) {
                     nextContent.style.opacity = '0';
-                    nextContent.style.transform = 'translateY(-50%) translateX(-30px)';
+                    
+                    if (window.matchMedia('(max-width: 768px)').matches) {
+                        nextContent.style.transform = 'translate(-50%, -50%) translateX(30px)';
+                    } else {
+                        nextContent.style.transform = 'translateY(-50%) translateX(30px)';
+                    }
                     
                     setTimeout(() => {
-                        nextContent.style.opacity = '1';
-                        nextContent.style.transform = 'translateY(-50%) translateX(0)';
-                        
-                        // Animar entrada de las métricas con un pequeño retraso adicional
-                        const metrics = nextContent.querySelector('.metrics');
-                        if (metrics) {
-                            metrics.style.transform = 'translateY(20px)';
-                            metrics.style.opacity = '0';
-                            
-                            setTimeout(() => {
-                                metrics.style.transition = 'all 0.4s ease-out';
-                                metrics.style.transform = 'translateY(0)';
-                                metrics.style.opacity = '1';
-                            }, 200);
+                        if (window.matchMedia('(max-width: 768px)').matches) {
+                            nextContent.style.transform = 'translate(-50%, -50%) translateX(0)';
+                        } else {
+                            nextContent.style.transform = 'translateY(-50%) translateX(0)';
                         }
-                    }, this.config.contentDelay);
+                        nextContent.style.opacity = '1';
+                        
+                        // Animar elementos dentro del contenido con secuencia, excepto botones
+                        const scrollableContent = nextContent.querySelector('.scrollable-content');
+                        if (scrollableContent) {
+                            // Triple verificación para asegurar que el overflow esté habilitado
+                            scrollableContent.style.overflow = 'auto';
+                            scrollableContent.style.overflowY = 'auto';
+                            scrollableContent.classList.add('scroll-enabled');
+                            
+                            // Reiniciar la posición de scroll
+                            scrollableContent.scrollTop = 0;
+                            
+                            const elements = [
+                                scrollableContent.querySelector('.topic'),
+                                scrollableContent.querySelector('.title'),
+                                scrollableContent.querySelector('.des'),
+                                scrollableContent.querySelector('.metrics')
+                            ];
+                            
+                            elements.forEach((el, index) => {
+                                if (el) {
+                                    el.style.opacity = '0';
+                                    el.style.transform = 'translateY(20px)';
+                                    el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                                    
+                                    // Para la descripción, usar un retraso adicional
+                                    const delay = el.classList.contains('des') ? 
+                                        150 + (index * 80) : // Más retraso para la descripción
+                                        100 + (index * 70);
+                                    
+                                    setTimeout(() => {
+                                        el.style.opacity = '1';
+                                        el.style.transform = 'translateY(0)';
+                                    }, delay);
+                                }
+                            });
+                        }
+                        
+                        // Asegurar que los botones sean visibles inmediatamente
+                        const buttonContainer = nextContent.querySelector('.button-container');
+                        if (buttonContainer) {
+                            buttonContainer.style.opacity = '1';
+                            
+                            const buttons = buttonContainer.querySelector('.buttons');
+                            if (buttons) {
+                                buttons.style.opacity = '1';
+                                buttons.style.transform = 'translateY(0)';
+                                
+                                // Asegurar que cada botón individual esté visible
+                                const buttonElements = buttons.querySelectorAll('button');
+                                buttonElements.forEach(btn => {
+                                    btn.style.opacity = '1';
+                                    btn.style.transform = 'translateY(0)';
+                                });
+                            }
+                        }
+                    }, 400);
                 }
                 
-                // Finalizar animación del slide anterior
-                if (currentSlide) {
-                    setTimeout(() => {
-                        currentSlide.classList.remove('active');
-                        currentSlide.style.visibility = 'hidden';
-                        
-                        const currentContent = currentSlide.querySelector('.content');
-                        if (currentContent) {
-                            currentContent.style.opacity = '0';
-                        }
-                    }, this.config.animationDuration/2);
-                }
-            });
-            
-            // Actualizar miniaturas
-            this.updateThumbnails();
-            
-            // Añadir clase de transición
-            this.carousel.classList.add('transitioning');
-            
-            // Programar finalización de la transición
-            this.timers.animation = setTimeout(() => {
-                this.finalizeTransition();
-            }, this.config.animationDuration + 50);
+                // Programar finalización de transición
+                setTimeout(() => {
+                    this.finalizeTransition();
+                }, 1000); // Tiempo total de la transición
+            }, 200);
         });
     }
     
@@ -488,58 +625,99 @@ class TrendingCarousel {
      * Finaliza la transición y limpia
      */
     finalizeTransition() {
-        // Quitar clase de transición
+        // Remover clase de transición
         this.carousel.classList.remove('transitioning');
         
-        // Verificar y asegurar estados correctos
-        this.slides.forEach((slide, i) => {
-            // Limpiar transiciones
-            slide.style.transition = '';
+        // Actualizar miniaturas
+        this.updateThumbnails();
+        
+        // Resetear flags
+        this.state.isAnimating = false;
+        
+        // Realizar limpieza de slides
+        this.slides.forEach(slide => {
+            const isActive = slide.classList.contains('active');
             
-            // Configurar visibilidad según el estado
-            if (i === this.state.currentIndex) {
-                slide.style.visibility = 'visible';
-                slide.style.opacity = '1';
-                slide.style.zIndex = '5';
-                slide.classList.add('active');
-                
+            if (isActive) {
+                // Para el slide activo, garantizar que el overflow está habilitado
                 const content = slide.querySelector('.content');
                 if (content) {
-                    content.style.opacity = '1';
-                    content.style.transform = 'translateY(-50%) translateX(0)';
+                    // Garantizar que el contenido desplazable tiene su overflow habilitado
+                    const scrollableContent = content.querySelector('.scrollable-content');
+                    if (scrollableContent) {
+                        // Método directo: establecer estilos importantes que no pueden ser sobrescritos
+                        scrollableContent.style.setProperty('overflow', 'auto', 'important');
+                        scrollableContent.style.setProperty('overflow-y', 'auto', 'important');
+                        scrollableContent.classList.add('scroll-enabled');
+                    }
                     
-                    // Asegurar que las métricas estén visibles
-                    const metrics = content.querySelector('.metrics');
-                    if (metrics) {
-                        metrics.style.transition = '';
-                        metrics.style.opacity = '1';
-                        metrics.style.transform = 'translateY(0)';
+                    const buttons = content.querySelector('.buttons');
+                    if (buttons) {
+                        buttons.style.opacity = '1';
+                        buttons.style.transform = 'translateY(0)';
+                        
+                        const buttonElements = buttons.querySelectorAll('button');
+                        buttonElements.forEach(btn => {
+                            btn.style.opacity = '1';
+                            btn.style.transform = 'translateY(0)';
+                        });
                     }
                 }
             } else {
+                slide.classList.remove('active');
                 slide.style.visibility = 'hidden';
                 slide.style.opacity = '0';
                 slide.style.zIndex = '0';
-                slide.classList.remove('active');
                 
+                // Resetear estilos de contenido pero mantener overflow habilitado
                 const content = slide.querySelector('.content');
                 if (content) {
-                    content.style.opacity = '0';
-                    
-                    // Ocultar métricas
-                    const metrics = content.querySelector('.metrics');
-                    if (metrics) {
-                        metrics.style.opacity = '0';
+                    if (window.matchMedia('(max-width: 768px)').matches) {
+                        content.style.transform = 'translate(-50%, -50%) translateX(30px)';
+                    } else {
+                        content.style.transform = 'translateY(-50%) translateX(30px)';
                     }
+                    content.style.opacity = '0';
+                    content.style.transition = '';
+                    
+                    // Mantener overflow habilitado incluso en slides no activos
+                    const scrollableContent = content.querySelector('.scrollable-content');
+                    if (scrollableContent) {
+                        // Reiniciar la posición de scroll pero mantener overflow
+                        scrollableContent.scrollTop = 0;
+                        scrollableContent.style.setProperty('overflow', 'auto', 'important');
+                        scrollableContent.style.setProperty('overflow-y', 'auto', 'important');
+                        scrollableContent.classList.add('scroll-enabled');
+                    }
+                    
+                    // Resetear elementos dentro del contenido
+                    const elements = [
+                        content.querySelector('.topic'),
+                        content.querySelector('.title'),
+                        content.querySelector('.des'),
+                        content.querySelector('.metrics')
+                    ];
+                    
+                    elements.forEach(el => {
+                        if (el) {
+                            el.style.opacity = '0';
+                            el.style.transform = 'translateY(20px)';
+                            el.style.transition = '';
+                        }
+                    });
                 }
             }
         });
         
-        // Asegurar que los thumbnails están sincronizados
-        this.updateThumbnails();
+        // Volver a habilitar el scroll en todos los slides para garantizar consistencia
+        this.enableScrollingForAllSlides();
         
-        // Desbloquear animación
-        this.state.isAnimating = false;
+        console.log(`Transición finalizada, slide activo: ${this.state.currentIndex}`);
+        
+        // Reiniciar autoplay si está activado
+        if (this.state.autoplayEnabled) {
+            this.resetAutoplay();
+        }
     }
     
     /**
@@ -608,10 +786,16 @@ class TrendingCarousel {
      * Inicia el autoplay
      */
     startAutoplay() {
+        // Limpieza previa de timers para evitar duplicados
         this.stopAutoplay();
         
-        // No iniciar si el usuario interactuó recientemente
-        if (this.state.userInteracted) {
+        // No iniciar si el carousel no existe, está detenido o el usuario interactuó recientemente
+        if (!this.carousel || this.state.userInteracted || this.state.isStopped || !document.body.contains(this.carousel)) {
+            return;
+        }
+        
+        // Verificar si el documento está visible
+        if (document.hidden) {
             return;
         }
         
@@ -625,7 +809,7 @@ class TrendingCarousel {
             this.updateProgressBar(1 - (remainingTime / this.config.autoplayDelay));
             
             this.timers.autoplay = setTimeout(() => {
-                if (!this.state.userInteracted && !this.state.isAnimating) {
+                if (!this.state.userInteracted && !this.state.isAnimating && !this.state.isStopped) {
                     this.showNextSlide();
                     this.startAutoplay();
                 }
@@ -636,9 +820,11 @@ class TrendingCarousel {
             this.animateProgressBar();
             
             // Programar cambios automáticos
-            this.timers.autoplay = setInterval(() => {
-                if (!this.state.userInteracted && !this.state.isAnimating) {
+            this.timers.autoplay = setTimeout(() => {
+                if (!this.state.userInteracted && !this.state.isAnimating && !this.state.isStopped) {
                     this.showNextSlide();
+                    // Llamar recursivamente para continuar el autoplay
+                    setTimeout(() => this.startAutoplay(), 100);
                 }
             }, this.config.autoplayDelay);
         }
@@ -655,6 +841,15 @@ class TrendingCarousel {
             this.timeBar.style.transition = 'none';
             this.timeBar.style.width = '0%';
         }
+        
+        // Marcar como detenido temporalmente
+        this.state.isStopped = true;
+        
+        // Después de un corto período, permitir que se reinicie si es necesario
+        clearTimeout(this.timers.resetStop);
+        this.timers.resetStop = setTimeout(() => {
+            this.state.isStopped = false;
+        }, 200);
     }
     
     /**
@@ -665,32 +860,25 @@ class TrendingCarousel {
         
         // Pequeño retraso para evitar problemas de timing
         setTimeout(() => {
-            if (!this.carousel.matches(':hover')) {
+            // Solo reiniciar si el ratón no está sobre el carousel y si el documento es visible
+            if (!this.carousel.matches(':hover') && !document.hidden) {
                 this.state.userInteracted = false;
                 this.startAutoplay();
             }
-        }, 100);
+        }, 300);
     }
     
     /**
      * Limpia todos los timers activos
      */
     clearTimers() {
-        if (this.timers.autoplay) {
-            clearInterval(this.timers.autoplay);
-            clearTimeout(this.timers.autoplay);
-            this.timers.autoplay = null;
-        }
-        
-        if (this.timers.animation) {
-            clearTimeout(this.timers.animation);
-            this.timers.animation = null;
-        }
-        
-        if (this.timers.debounce) {
-            clearTimeout(this.timers.debounce);
-            this.timers.debounce = null;
-        }
+        Object.keys(this.timers).forEach(key => {
+            if (this.timers[key]) {
+                clearTimeout(this.timers[key]);
+                clearInterval(this.timers[key]);
+                this.timers[key] = null;
+            }
+        });
     }
     
     /**
@@ -712,8 +900,11 @@ class TrendingCarousel {
         // Forzar un reflow para resetear la animación
         void this.timeBar.offsetWidth;
         
-        this.timeBar.style.transition = `width ${this.config.autoplayDelay}ms linear`;
-        this.timeBar.style.width = '100%';
+        // Aplicar transición para animación
+        requestAnimationFrame(() => {
+            this.timeBar.style.transition = `width ${this.config.autoplayDelay}ms linear`;
+            this.timeBar.style.width = '100%';
+        });
     }
     
     /**
@@ -724,6 +915,100 @@ class TrendingCarousel {
             clearTimeout(this.timers.debounce);
             this.timers.debounce = setTimeout(() => func.apply(this, args), delay);
         };
+    }
+    
+    /**
+     * Maneja errores durante la animación y recupera el carrusel
+     */
+    handleError() {
+        this.state.errorCount++;
+        console.warn(`Error en el carrusel (${this.state.errorCount}/${this.state.maxRetries})`);
+        
+        // Forzar finalización si hay error
+        this.clearTimers();
+        
+        if (this.state.errorCount >= this.state.maxRetries) {
+            console.error('Demasiados errores, reiniciando completamente el carrusel');
+            this.state.isAnimating = false;
+            this.state.isStopped = true;
+            
+            // Forzar un estado limpio después de un retraso
+            setTimeout(() => {
+                try {
+                    // Reinicializar todo el carrusel
+                    this.applyInitialStyles();
+                    this.state.errorCount = 0;
+                    this.state.isStopped = false;
+                    this.startAutoplay();
+                } catch (e) {
+                    console.error('Error fatal en el carrusel, deshabilitando:', e);
+                    this.disableCarousel();
+                }
+            }, 1000);
+        } else {
+            // Intento de recuperación simple
+            this.state.isAnimating = false;
+            setTimeout(() => this.finalizeTransition(), 500);
+        }
+    }
+    
+    /**
+     * En caso de error fatal, deshabilita el carrusel
+     */
+    disableCarousel() {
+        if (!this.carousel) return;
+        
+        // Eliminar todos los eventos
+        this.carousel.removeEventListener('mouseenter', this.onCarouselMouseEnter);
+        this.carousel.removeEventListener('mouseleave', this.onCarouselMouseLeave);
+        this.carousel.removeEventListener('touchstart', this.onTouchStart);
+        this.carousel.removeEventListener('touchmove', this.onTouchMove);
+        this.carousel.removeEventListener('touchend', this.onTouchEnd);
+        
+        if (this.prevBtn) {
+            this.prevBtn.removeEventListener('click', this.onPrevButtonClick);
+        }
+        
+        if (this.nextBtn) {
+            this.nextBtn.removeEventListener('click', this.onNextButtonClick);
+        }
+        
+        // Detener completamente el autoplay
+        this.stopAutoplay();
+        
+        // Mostrar al menos un slide
+        if (this.slides.length > 0) {
+            const activeSlide = this.slides[0];
+            activeSlide.style.opacity = '1';
+            activeSlide.style.visibility = 'visible';
+        }
+        
+        console.warn('Carrusel deshabilitado por errores.');
+    }
+    
+    /**
+     * Habilita el scroll vertical para todos los slides
+     */
+    enableScrollingForAllSlides() {
+        if (!this.slides) return;
+        
+        this.slides.forEach(slide => {
+            const content = slide.querySelector('.content');
+            if (content) {
+                const scrollableContent = content.querySelector('.scrollable-content');
+                if (scrollableContent) {
+                    // Establecer overflow y asegurar que no se resetee por otras operaciones
+                    scrollableContent.style.overflow = 'auto';
+                    scrollableContent.style.overflowY = 'auto';
+                    
+                    // Agregar una clase para identificar que el scroll está habilitado
+                    scrollableContent.classList.add('scroll-enabled');
+                    
+                    // Resetear posición de scroll
+                    scrollableContent.scrollTop = 0;
+                }
+            }
+        });
     }
 }
 

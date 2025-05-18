@@ -255,6 +255,60 @@ document.addEventListener('DOMContentLoaded', function() {
                             document.getElementById('edit-category-nombre').value = data.categoria.nombre;
                             document.getElementById('edit-category-descripcion').value = data.categoria.descripcion || '';
                             
+                            // Manejar la imagen de la categoría si existe
+                            const imagenContainer = document.getElementById('category-current-image-container');
+                            const imagenElement = document.getElementById('category-current-image');
+                            const imagenActualInput = document.getElementById('edit-category-imagen-actual');
+                            
+                            if (data.categoria.imagen) {
+                                // Asignar la imagen actual al campo oculto
+                                imagenActualInput.value = data.categoria.imagen;
+                                
+                                // Mostrar la imagen actual
+                                // Verificar si la ruta ya contiene "../" para evitar rutas duplicadas
+                                let rutaImagen = data.categoria.imagen;
+                                if (rutaImagen.startsWith('../')) {
+                                    imagenElement.src = rutaImagen;
+                                } else {
+                                    imagenElement.src = '../' + rutaImagen;
+                                }
+                                
+                                imagenContainer.style.display = 'block';
+                                
+                                // Añadir manejador de errores para la imagen
+                                imagenElement.onerror = function() {
+                                    console.error('Error al cargar la imagen de categoría:', this.src);
+                                    this.onerror = null;
+                                    this.src = '../assets/image-placeholder.png';
+                                    imagenContainer.querySelector('small').textContent = 'No se pudo cargar la imagen';
+                                };
+                            } else {
+                                // Si no hay imagen, ocultar el contenedor
+                                imagenContainer.style.display = 'none';
+                            }
+                            
+                            // Configurar la previsualización de la nueva imagen
+                            const imageInput = document.getElementById('edit-category-imagen');
+                            const imagePreview = document.getElementById('preview_category_image');
+                            
+                            if (imageInput && imagePreview) {
+                                imageInput.addEventListener('change', function() {
+                                    if (this.files && this.files[0]) {
+                                        const reader = new FileReader();
+                                        reader.onload = function(e) {
+                                            imagePreview.src = e.target.result;
+                                            imagePreview.style.display = 'block';
+                                            imagePreview.classList.add('active');
+                                        }
+                                        reader.readAsDataURL(this.files[0]);
+                                    } else {
+                                        imagePreview.src = '';
+                                        imagePreview.style.display = 'none';
+                                        imagePreview.classList.remove('active');
+                                    }
+                                });
+                            }
+                            
                             // Mostrar el modal
                             openModal(modalEditCategory);
         } else {
@@ -590,11 +644,20 @@ document.addEventListener('DOMContentLoaded', function() {
         const editImagenBackground = document.getElementById('edit-imagen-background');
         const previewEditBackground = document.getElementById('preview_edit_background');
         
+        // Previsualización para imágenes de categorías
+        const newCategoryImage = document.getElementById('categoria_imagen');
+        const previewNewCategoryImage = document.getElementById('preview_new_category_image');
+        
+        const editCategoryImage = document.getElementById('edit-category-imagen');
+        const previewEditCategoryImage = document.getElementById('preview_category_image');
+        
         // Configurar cada input de archivo para mostrar una previsualización
         setupImagePreview(imagenIlustrativa, previewIlustrativa);
         setupImagePreview(imagenBackground, previewBackground);
         setupImagePreview(editImagenIlustrativa, previewEditIlustrativa);
         setupImagePreview(editImagenBackground, previewEditBackground);
+        setupImagePreview(newCategoryImage, previewNewCategoryImage);
+        setupImagePreview(editCategoryImage, previewEditCategoryImage);
     }
     
     // Función auxiliar para configurar la previsualización de imagen

@@ -374,13 +374,14 @@ header nav a {
     transition: filter 0.8s ease;
 }
 
-/* Contenido con transiciones optimizadas */
+/* Contenido con transiciones optimizadas y scroll */
 .carousel .list .item .content {
     position: absolute;
     top: 50%;
-    width: 70%;
-    max-width: 1200px;
-    padding: 0 30px;
+    left: 5%;
+    width: 75%;
+    max-width: 1000px;
+    padding: 25px 30px;
     transform: translateY(-50%) translateX(-30px);
     opacity: 0;
     z-index: 10;
@@ -388,12 +389,111 @@ header nav a {
         opacity 0.5s ease,
         transform 0.5s cubic-bezier(0.33, 1, 0.68, 1);
     will-change: opacity, transform;
+    background: rgba(14, 47, 90, 0.75);
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    display: flex;
+    flex-direction: column;
+    max-height: 65vh;
+    overflow: hidden;
 }
 
-/* Contenido activo */
-.carousel .list .item.active .content {
-    opacity: 1;
-    transform: translateY(-50%) translateX(0);
+/* Contenedor con scroll para el contenido principal */
+.carousel .list .item .content .scrollable-content {
+    position: relative;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-right: 10px;
+    margin-right: -10px; /* Compensar el padding para scroll */
+    flex: 1;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
+    /* Estilo para ocultar el scrollbar en webkit browsers pero mantener funcionalidad */
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    mask-image: linear-gradient(to bottom, black 85%, transparent 100%);
+    max-height: calc(100% - 60px);
+    overscroll-behavior: contain;
+}
+
+/* Garantiza que el scroll siempre funcione para elementos con la clase scroll-enabled */
+.carousel .list .item .content .scrollable-content.scroll-enabled {
+    overflow: auto !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    max-height: calc(100% - 60px) !important;
+    will-change: scroll-position;
+    -webkit-overflow-scrolling: touch; /* Para mejor desempeño en iOS */
+}
+
+/* Estilos para scrollbar */
+.carousel .list .item .content .scrollable-content::-webkit-scrollbar {
+    width: 5px;
+}
+
+.carousel .list .item .content .scrollable-content::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.carousel .list .item .content .scrollable-content::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.3);
+    border-radius: 5px;
+}
+
+/* Contenedor para botones fijos en la parte inferior */
+.carousel .list .item .content .button-container {
+    margin-top: 15px;
+    position: relative;
+    z-index: 15;
+}
+
+/* Estilos para botones */
+.carousel .list .item .content .buttons {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    position: relative;
+    z-index: 15;
+}
+
+.carousel .list .item .content .buttons button {
+    background-color: #1976d2;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 30px;
+    font-size: 0.95em;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(25, 118, 210, 0.3);
+    min-width: 100px;
+    text-align: center;
+    position: relative;
+    z-index: 20;
+    opacity: 1 !important;
+    transform: translateY(0) !important;
+}
+
+.carousel .list .item .content .buttons button:first-child {
+    background-color: #1976d2;
+}
+
+.carousel .list .item .content .buttons button:last-child {
+    background-color: rgba(30, 136, 229, 0.3);
+    backdrop-filter: blur(5px);
+}
+
+.carousel .list .item .content .buttons button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(25, 118, 210, 0.4);
+    background-color: #1e88e5;
+}
+
+.carousel .list .item .content .buttons button:last-child:hover {
+    background-color: rgba(30, 136, 229, 0.4);
 }
 
 /* Barra de tiempo como indicador visual */
@@ -401,11 +501,11 @@ header nav a {
     position: absolute;
     z-index: 1000;
     height: 4px;
-    background-color: #63b6f5;
+    background-color: #1e88e5;
     left: 0;
     top: 0;
     width: 0%;
-    box-shadow: 0 0 8px rgba(99, 182, 245, 0.7);
+    box-shadow: 0 0 8px rgba(30, 136, 229, 0.7);
     transition: width linear;
     will-change: width;
 }
@@ -450,7 +550,71 @@ header nav a {
 /* Ajustes para vista móvil */
 @media screen and (max-width: 768px) {
     .carousel .list .item .content {
-        top: 40%;
+        width: 85%;
+        left: 50%;
+        transform: translate(-50%, -50%) translateX(-30px);
+        top: 50%;
+        padding: 15px;
+        max-height: 70vh;
+    }
+    
+    .carousel .list .item.active .content {
+        transform: translate(-50%, -50%) translateX(0);
+    }
+    
+    .carousel .list .item .content .scrollable-content .title {
+        font-size: 1.8em;
+    }
+    
+    .carousel .list .item .content .scrollable-content .des {
+        font-size: 0.9em;
+        -webkit-line-clamp: 2;
+        min-height: 3em; /* Asegurar espacio mínimo para 2 líneas */
+    }
+    
+    .carousel .list .item .content .buttons {
+        gap: 8px;
+    }
+    
+    .carousel .list .item .content .buttons button {
+        padding: 8px 12px;
+        font-size: 0.85em;
+        flex: 1;
+    }
+    
+    .carousel .thumbnail {
+        top: auto;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: auto;
+        max-height: none;
+        flex-direction: row;
+        justify-content: center;
+        padding: 10px 0;
+        transform: translateY(100%);
+        mask-image: none;
+    }
+    
+    .carousel:hover .thumbnail {
+        transform: translateY(0);
+        right: 0;
+    }
+    
+    .carousel .thumbnail .item {
+        width: 100px;
+        height: 60px;
+        margin: 0 4px;
+    }
+    
+    .carousel .thumbnail .item:hover {
+        transform: translateY(-5px);
+    }
+    
+    .carousel .arrows button {
+        width: 40px;
+        height: 40px;
     }
 }
 
@@ -462,12 +626,28 @@ header nav a {
     z-index: 2;
     display: flex;
     flex-direction: column;
-    gap: 15px; /* Reduce el espacio entre miniaturas */
-    transition: all 0.5s ease;
-    height: 75vh; /* Limitar la altura para que quepan 4 items */
-    overflow: hidden; /* Ocultar cualquier overflow */
-    padding: 10px 0;
-    justify-content: center;
+    gap: 10px;
+    transition: all 0.4s ease;
+    max-height: 65vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 10px 5px;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
+    mask-image: linear-gradient(to bottom, transparent 0%, black 5%, black 95%, transparent 100%);
+}
+
+.carousel .thumbnail::-webkit-scrollbar {
+    width: 4px;
+}
+
+.carousel .thumbnail::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.carousel .thumbnail::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.3);
+    border-radius: 4px;
 }
 
 .carousel:hover .thumbnail {
@@ -475,26 +655,27 @@ header nav a {
 }
 
 .carousel .thumbnail .item {
-    width: 180px;
-    height: 100px;
+    width: 160px;
+    height: 90px;
     flex-shrink: 0;
     position: relative;
-    border-radius: 10px;
+    border-radius: 8px;
     overflow: hidden;
-    transition: all 0.5s cubic-bezier(0.2, 1, 0.3, 1);
+    transition: all 0.3s ease;
     cursor: pointer;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-    opacity: 0.5;
-    transform: scale(0.9) translateX(30px);
-}
-
-.carousel .thumbnail .item.active {
-    display: none; /* Ocultar la miniatura activa - no es necesaria */
+    filter: brightness(0.65) saturate(0.8);
+    border: 2px solid transparent;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
 }
 
 .carousel .thumbnail .item:hover {
-    opacity: 0.8;
-    transform: scale(0.95) translateX(10px);
+    filter: brightness(0.85) saturate(1);
+    transform: translateX(-5px);
+}
+
+.carousel .thumbnail .item.active {
+    filter: brightness(1) saturate(1.2);
+    border-color: #1976d2;
 }
 
 .carousel .thumbnail .item img {
@@ -505,23 +686,11 @@ header nav a {
 
 .carousel .thumbnail .item .content {
     position: absolute;
-    inset: 0;
-    display: flex;
-    align-items: flex-end;
-    padding: 10px;
-    background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
-}
-
-.carousel .thumbnail .item .content .title {
-    color: white;
-    font-size: 0.8em;
-    line-height: 1.2;
-    text-shadow: 0 1px 3px rgba(0,0,0,0.8);
-    overflow: hidden;
-    text-overflow: ellipsis;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 8px;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
 }
 
 .carousel .arrows {
@@ -572,81 +741,16 @@ header nav a {
     pointer-events: none;
 }
 
-/* Estilos responsivos */
+/* Ajustes responsivos */
 @media screen and (max-width: 1200px) {
     .carousel .list .item .content {
-        width: 60%;
+        width: 70%;
+        padding: 20px 25px;
+        left: 2%;
     }
     
     .carousel .thumbnail {
-        height: 65vh;
-        right: -100px;
-    }
-    
-    .carousel:hover .thumbnail {
-        right: 15px;
-    }
-    
-    .carousel .thumbnail .item {
-        width: 160px;
-        height: 90px;
-    }
-}
-
-@media screen and (max-width: 992px) {
-    .carousel .list .item .content {
-        width: 60%;
-        padding: 25px;
-    }
-    
-    .carousel .list .item .content .title {
-        font-size: 2.2em;
-    }
-    
-    .carousel .list .item .content .buttons button {
-        padding: 12px 25px;
-    }
-    
-    .carousel .thumbnail .item {
-        width: 150px;
-        height: 85px;
-    }
-    
-    .carousel .arrows {
-        left: 5%;
-    }
-}
-
-@media screen and (max-width: 768px) {
-    .carousel .list .item .content {
-        width: 80%;
-        padding: 20px;
-    }
-    
-    .carousel .list .item .content .title {
-        font-size: 1.8em;
-    }
-    
-    .carousel .list .item .content .des {
-        font-size: 1em;
-        font-weight: 300;
-        line-height: 1.5;
-        margin: 15px 0 20px 0;
-        color: rgba(255, 255, 255, 0.9);
-        display: -webkit-box;
-        -webkit-line-clamp: 5;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
-    }
-    
-    .carousel .list .item .content .buttons button {
-        padding: 10px 20px;
-        font-size: 0.9em;
-    }
-    
-    .carousel .thumbnail {
-        height: 60vh;
-        right: -110px;
+        max-height: 60vh;
     }
     
     .carousel:hover .thumbnail {
@@ -657,57 +761,65 @@ header nav a {
         width: 140px;
         height: 80px;
     }
+}
+
+@media screen and (max-width: 992px) {
+    .carousel .list .item .content {
+        width: 80%;
+        max-width: 600px;
+        padding: 20px;
+    }
     
-    .carousel .arrows button {
-        width: 40px;
-        height: 40px;
-        font-size: 1em;
+    .carousel .list .item .content .title {
+        font-size: 2em;
+    }
+    
+    .carousel .list .item .content .buttons button {
+        padding: 8px 15px;
+        font-size: 0.9em;
+    }
+    
+    .carousel .thumbnail .item {
+        width: 120px;
+        height: 70px;
+    }
+    
+    .carousel .arrows {
+        bottom: 10px;
     }
 }
 
 @media screen and (max-width: 576px) {
     .carousel {
-        height: 95vh; /* Ligeramente más pequeño para evitar desbordamiento */
+        height: 450px; /* Altura ajustada para móviles */
     }
     
     .carousel .list .item .content {
-        left: 50%;
-        transform: translate(-50%, -50%);
-        width: 85%;
-        padding: 20px;
+        width: 90%;
+        padding: 12px;
+        top: 50%;
     }
     
     .carousel .list .item.active .content {
-        transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%) translateX(0);
     }
     
     .carousel .thumbnail {
-        bottom: 10%;
-        right: 0;
-        left: 0;
-        top: auto;
-        transform: none;
-        flex-direction: row;
-        justify-content: center;
-        gap: 10px;
-        height: auto;
-        padding: 0 15px;
+        padding: 8px 0;
     }
     
     .carousel:hover .thumbnail {
-        bottom: 10%;
+        transform: translateY(0);
     }
     
     .carousel .thumbnail .item {
-        width: calc(25% - 8px);
-        height: 60px;
-        transform: none;
+        width: 80px;
+        height: 45px;
+        margin: 0 3px;
     }
     
     .carousel .arrows {
-        bottom: 20%;
-        left: 50%;
-        transform: translateX(-50%);
+        bottom: 70px;
     }
 }
 
@@ -1599,28 +1711,94 @@ header nav a {
 }
 
 /* Estilos para métricas de popularidad */
-.carousel .list .item .content .metrics {
+.carousel .list .item .content .scrollable-content .metrics {
     display: flex;
     gap: 15px;
     margin-bottom: 15px;
-    color: rgba(255, 255, 255, 0.85);
+    color: rgba(255, 255, 255, 0.9);
     font-size: 0.9em;
+    background: rgba(14, 47, 90, 0.5);
+    padding: 8px 12px;
+    border-radius: 8px;
+    align-self: flex-start;
 }
 
-.carousel .list .item .content .metrics span {
+.carousel .list .item .content .scrollable-content .metrics span {
     display: flex;
     align-items: center;
     gap: 6px;
 }
 
-.carousel .list .item .content .metrics .views i {
-    color: #63b6f5;
+.carousel .list .item .content .scrollable-content .metrics .views i {
+    color: #64b5f6;
 }
 
-.carousel .list .item .content .metrics .likes i {
-    color: #f1683a;
+.carousel .list .item .content .scrollable-content .metrics .likes i {
+    color: #e91e63;
 }
 
-.carousel .list .item .content .buttons button {
-    padding: 12px 25px;
+/* Estilos para la categoría */
+.carousel .list .item .content .scrollable-content .topic {
+    display: inline-block;
+    background-color: #1e88e5;
+    color: #fff;
+    font-size: 0.9em;
+    font-weight: 600;
+    padding: 6px 15px;
+    border-radius: 20px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+    box-shadow: 0 2px 10px rgba(30, 136, 229, 0.3);
+}
+
+/* Estilos para el título */
+.carousel .list .item .content .scrollable-content .title {
+    font-size: 2.4em;
+    font-weight: 700;
+    color: #fff;
+    line-height: 1.2;
+    margin-bottom: 5px;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+/* Estilos para la descripción */
+.carousel .list .item .content .scrollable-content .des {
+    font-size: 1em;
+    font-weight: 300;
+    line-height: 1.5;
+    margin: 10px 0 15px 0;
+    color: rgba(255, 255, 255, 0.95);
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    min-height: 4.5em; /* Asegurar espacio mínimo para 3 líneas */
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+/* Contenido activo */
+.carousel .list .item.active .content {
+    opacity: 1;
+    transform: translateY(-50%) translateX(0);
+}
+
+.categoria-icono {
+    width: 20px;
+    height: 20px;
+    margin-right: 8px;
+    vertical-align: middle;
+    border-radius: 4px;
+    object-fit: cover;
+}
+
+.dropdown-menu li a {
+    display: flex;
+    align-items: center;
+    padding: 8px 15px;
+}
+
+.dropdown-menu li a:hover .categoria-icono {
+    transform: scale(1.1);
+    transition: transform 0.2s ease;
 }

@@ -20,21 +20,7 @@
             </div>
             
             <nav class="main-nav">
-                <ul class="nav-menu">
-                    <li><a href="views/about.php">Sobre Nosotros</a></li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle">Categorías <i class="fas fa-chevron-down"></i></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="views/categoriaCorrupcion.php">Corrupción y Transparencia</a></li>
-                            <li><a href="views/categoriaIgualdad.php">Igualdad y Diversidad</a></li>
-                            <li><a href="views/categoriaJusticia.php">Justicia y Derechos Humanos</a></li>
-                            <li><a href="views/categoriaParticipacion.php">Participación Ciudadana</a></li>
-                            <li><a href="views/categoriaPaz.php">Paz y Conflictos</a></li>
-                            <li><a href="views/categoriaPolitica.php">Política y Gobernanza</a></li>
-                        </ul>
-                    </li>
-                    <li><a href="views/contact.php">Contacto</a></li>
-                </ul>
+                                <ul class="nav-menu">                    <li><a href="views/about.php">Sobre Nosotros</a></li>                    <li class="dropdown">                        <a href="#" class="dropdown-toggle">Categorías <i class="fas fa-chevron-down"></i></a>                        <ul class="dropdown-menu">                            <?php                            // Consulta para obtener todas las categorías con sus imágenes                            $sqlCategorias = "SELECT id_categoria, nombre, slug, imagen FROM categorias ORDER BY nombre";                            $stmtCategorias = $pdo->prepare($sqlCategorias);                            $stmtCategorias->execute();                            $categorias = $stmtCategorias->fetchAll(PDO::FETCH_ASSOC);                                                        foreach ($categorias as $cat) {                                $nombre = htmlspecialchars($cat['nombre']);                                $slug = htmlspecialchars($cat['slug']);                                $imagen = !empty($cat['imagen']) ? htmlspecialchars($cat['imagen']) : 'assets/image-placeholder.png';                                                                // Construir nombre del archivo PHP basado en la convención de nombres                                $nombreArchivo = 'categoria' . str_replace(' ', '', ucwords(str_replace('-', ' ', str_replace(' y ', ' ', $slug)))) . '.php';                                                                // Verificar si la imagen existe                                if (!file_exists($imagen) && strpos($imagen, '/') !== false) {                                    $imagen = 'assets/image-placeholder.png';                                }                                                                echo '<li>                                        <a href="views/' . $nombreArchivo . '">                                            <img src="' . $imagen . '" alt="' . $nombre . '" class="categoria-icono">                                            ' . $nombre . '                                        </a>                                      </li>';                            }                            ?>                        </ul>                    </li>                    <li><a href="views/contact.php">Contacto</a></li>                </ul>
             </nav>
             
             <div class="profile-section">
@@ -169,17 +155,20 @@
             <div class="item <?php echo $activeClass; ?>" data-id="<?php echo $post['id_post']; ?>">
                 <img src="<?php echo htmlspecialchars($imagenURL); ?>" alt="<?php echo htmlspecialchars($post['titulo']); ?>">
                 <div class="content">
-                    <div class="topic"><?php echo htmlspecialchars($post['categoria']); ?></div>
-                    <div class="title"><?php echo htmlspecialchars($post['titulo']); ?></div>
-                    <div class="author">Por <?php echo htmlspecialchars($post['autor']); ?> | <?php echo $fechaFormateada; ?></div>
-                    <div class="des"><?php echo htmlspecialchars($post['resumen']); ?></div>
-                    <div class="metrics">
-                        <span class="views"><i class="fas fa-eye"></i> <?php echo $post['visitas']; ?></span>
-                        <span class="likes"><i class="fas fa-heart"></i> <?php echo $post['likes']; ?></span>
+                    <div class="scrollable-content">
+                        <div class="topic"><?php echo htmlspecialchars($post['categoria']); ?></div>
+                        <div class="title"><?php echo htmlspecialchars($post['titulo']); ?></div>
+                        <div class="des"><?php echo htmlspecialchars($post['resumen']); ?></div>
+                        <div class="metrics">
+                            <span class="views"><i class="fas fa-eye"></i> <?php echo $post['visitas']; ?></span>
+                            <span class="likes"><i class="fas fa-heart"></i> <?php echo $post['likes']; ?></span>
+                        </div>
                     </div>
-                    <div class="buttons">
-                        <button onclick="window.location.href='views/post.php?id=<?php echo $post['id_post']; ?>'">Leer Artículo</button>
-                        <button onclick="window.location.href='views/categorias.php?categoria=<?php echo urlencode($post['categoria']); ?>'">Más en <?php echo htmlspecialchars($post['categoria']); ?></button>
+                    <div class="button-container">
+                        <div class="buttons">
+                            <button onclick="window.location.href='views/post.php?id=<?php echo $post['id_post']; ?>'">Leer</button>
+                            <button onclick="window.location.href='views/categoria<?php echo str_replace(' ', '', ucfirst($post['categoria'])); ?>.php'">Más en <?php echo htmlspecialchars($post['categoria']); ?></button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -254,60 +243,110 @@
     <section class="destacados-section">
         <h2>Más Recientes</h2>
         <div class="destacados-container">
-
+            <?php
+            // Consulta para obtener los posts más recientes
+            $sqlRecientes = "SELECT p.id_post, p.titulo, p.resumen, p.fecha_publicacion, 
+                           i1.ruta AS imagen_destacada, 
+                           c.nombre AS categoria, c.slug AS categoria_slug, u.name AS autor
+                    FROM posts p
+                    LEFT JOIN imagenes i1 ON p.id_imagen_destacada = i1.id_imagen
+                    LEFT JOIN categorias c ON p.id_categoria = c.id_categoria
+                    LEFT JOIN usuarios u ON p.id_usuario = u.id_usuario
+                    WHERE p.estado = 'publicado'
+                    ORDER BY p.fecha_publicacion DESC
+                    LIMIT 5";
+            
+            $stmtRecientes = $pdo->prepare($sqlRecientes);
+            $stmtRecientes->execute();
+            $postsRecientes = $stmtRecientes->fetchAll(PDO::FETCH_ASSOC);
+            
+            if (!empty($postsRecientes)) {
+                // Primer post (principal)
+                $postPrincipal = $postsRecientes[0];
+                
+                // Preparar imagen principal
+                $imagenPrincipal = !empty($postPrincipal['imagen_destacada']) ? $postPrincipal['imagen_destacada'] : 'assets/default-post.jpg';
+                
+                // Corregir la ruta si es necesario
+                if (strpos($imagenPrincipal, '../') === 0) {
+                    $imagenPrincipal = substr($imagenPrincipal, 3);
+                }
+                
+                // Verificar que exista la imagen
+                if (!file_exists(__DIR__ . '/' . $imagenPrincipal)) {
+                    $imagenPrincipal = 'assets/image-placeholder.png';
+                }
+                
+                // Formatear fecha
+                $fechaPrincipal = new DateTime($postPrincipal['fecha_publicacion']);
+                $fechaPrincipalFormateada = $fechaPrincipal->format('d \d\e F \d\e Y');
+                
+                // Link para categoría
+                $categoriaPrincipalSlug = !empty($postPrincipal['categoria_slug']) ? 
+                                         $postPrincipal['categoria_slug'] : 
+                                         str_replace(' ', '', ucfirst($postPrincipal['categoria']));
+            ?>
             <!-- Noticia principal -->
             <div class="noticia-principal">
-                <img src="image/img5.jpg" alt="Imagen principal">
-                <small>19 de marzo de 2025 | Administrador</small>
-                <h3><a href="articulo1.html">México: Autoridades deberían investigar aparente sitio de asesinatos
-                        masivos</a></h3>
-                <p>Las autoridades mexicanas deberían llevar a cabo una investigación exhaustiva e imparcial sobre el
-                    reciente hallazgo...</p>
+                <a href="views/post.php?id=<?php echo $postPrincipal['id_post']; ?>" class="noticia-imagen-link">
+                    <img src="<?php echo htmlspecialchars($imagenPrincipal); ?>" alt="<?php echo htmlspecialchars($postPrincipal['titulo']); ?>">
+                </a>
+                <div class="noticia-categoria"><?php echo htmlspecialchars($postPrincipal['categoria']); ?></div>
+                <div class="contenido">
+                    <small><?php echo $fechaPrincipalFormateada; ?> | <?php echo htmlspecialchars($postPrincipal['autor']); ?></small>
+                    <h3><a href="views/post.php?id=<?php echo $postPrincipal['id_post']; ?>"><?php echo htmlspecialchars($postPrincipal['titulo']); ?></a></h3>
+                    <p><?php echo htmlspecialchars(substr($postPrincipal['resumen'], 0, 150) . (strlen($postPrincipal['resumen']) > 150 ? '...' : '')); ?></p>
+                    <a href="views/post.php?id=<?php echo $postPrincipal['id_post']; ?>" class="leer-mas">Leer más</a>
+                </div>
             </div>
 
             <!-- Noticias secundarias -->
             <div class="noticias-secundarias">
+                <?php
+                    // Posts secundarios (del 2 al 5)
+                    $postsSecundarios = array_slice($postsRecientes, 1);
+                    
+                    foreach ($postsSecundarios as $post) {
+                        // Preparar imagen
+                        $imagen = !empty($post['imagen_destacada']) ? $post['imagen_destacada'] : 'assets/default-thumbnail.jpg';
+                        
+                        // Corregir la ruta si es necesario
+                        if (strpos($imagen, '../') === 0) {
+                            $imagen = substr($imagen, 3);
+                        }
+                        
+                        // Verificar que exista la imagen
+                        if (!file_exists(__DIR__ . '/' . $imagen)) {
+                            $imagen = 'assets/image-placeholder.png';
+                        }
+                        
+                        // Formatear fecha
+                        $fecha = new DateTime($post['fecha_publicacion']);
+                        $fechaFormateada = $fecha->format('d \d\e F \d\e Y');
+                        
+                        // Recortar descripción
+                        $descripcionCorta = strlen($post['resumen']) > 80 ? substr($post['resumen'], 0, 80) . '...' : $post['resumen'];
+                ?>
                 <div class="noticia-secundaria">
-                    <img src="image/img1.jpg" alt="">
-                    <div>
-                        <small>27 de febrero de 2025 | Administrador</small>
-                        <h4><a href="articulo2.html">Israel reproduce los métodos militares de Gaza en Cisjordania</a>
-                        </h4>
-                        <p>Las autoridades mexicanas deberían llevar a cabo una investigación exhaustiva e imparcial
-                            sobre el reciente hallazgo...</p>
+                    <a href="views/post.php?id=<?php echo $post['id_post']; ?>" class="noticia-imagen-link">
+                        <img src="<?php echo htmlspecialchars($imagen); ?>" alt="<?php echo htmlspecialchars($post['titulo']); ?>">
+                    </a>
+                    <div class="info">
+                        <div class="noticia-categoria-small"><?php echo htmlspecialchars($post['categoria']); ?></div>
+                        <small><?php echo $fechaFormateada; ?></small>
+                        <h4><a href="views/post.php?id=<?php echo $post['id_post']; ?>"><?php echo htmlspecialchars($post['titulo']); ?></a></h4>
+                        <p><?php echo htmlspecialchars($descripcionCorta); ?></p>
                     </div>
                 </div>
-                <div class="noticia-secundaria">
-                    <img src="image/img2.jpg" alt="">
-                    <div>
-                        <small>25 de marzo de 2025 | Administrador</small>
-                        <h4><a href="articulo3.html">La FIFA debe reconocer y apoyar al equipo de mujeres afganas en el
-                                exilio</a></h4>
-                        <p>Las autoridades mexicanas deberían llevar a cabo una investigación exhaustiva e imparcial
-                            sobre el reciente hallazgo...</p>
-                    </div>
-                </div>
-                <div class="noticia-secundaria">
-                    <img src="image/img3.jpg" alt="">
-                    <div>
-                        <small>22 de enero de 2025 | Administrador</small>
-                        <h4><a href="articulo4.html">Órdenes ejecutivas de Trump amenazan un amplio espectro de derechos
-                                humanos</a></h4>
-                        <p>Las autoridades mexicanas deberían llevar a cabo una investigación exhaustiva e imparcial
-                            sobre el reciente hallazgo...</p>
-                    </div>
-                </div>
-                <div class="noticia-secundaria">
-                    <img src="image/img4.jpg" alt="">
-                    <div>
-                        <small>24 de enero de 2025 | Administrador</small>
-                        <h4><a href="articulo4.html">Estados Unidos cierra sus puertas a refugiados, solicitantes de
-                                asilo y migrantes</a></h4>
-                        <p>Las autoridades mexicanas deberían llevar a cabo una investigación exhaustiva e imparcial
-                            sobre el reciente hallazgo...</p>
-                    </div>
-                </div>
+                <?php
+                    }
+                ?>
             </div>
+            <?php
+            } else {
+                echo '<div class="no-posts-message">No hay artículos recientes disponibles</div>';
+            }
+            ?>
         </div>
     </section>
 
