@@ -146,15 +146,13 @@ header .logo:hover {
 }
 
 .login-btn {
-    background: linear-gradient(135deg, #1e90ff, #0077cc);
-    color: white;
+    background: transparent;
+    color: #EEEEEE;
     padding: 0.6rem 1.2rem;
     border-radius: 50px;
     text-decoration: none;
     font-weight: 500;
     transition: all 0.3s ease;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     letter-spacing: 0.5px;
     font-size: 0.9rem;
 }
@@ -1086,4 +1084,5 @@ header nav a {
     transition: transform 0.3s ease, filter 0.3s ease;
     transform: translate(-15%, -50%);
     }
+
 }

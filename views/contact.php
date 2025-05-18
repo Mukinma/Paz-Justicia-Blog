@@ -28,7 +28,7 @@
       </div>
 
         <nav>
-            <a href="../index.php">home</a>
+            <a href="../index.php">Home</a>
             <a href="contact.php">Contact</a>
             <a href="about.php">Info</a>
             <a href="../admin/usuario.php" class="btn">Login</a>
@@ -36,7 +36,7 @@
     </header>
 
     <section class="contact-section">
-      <h2>Contactanos</h2>
+      <h2>Contáctanos</h2>
       <div class="contact-box">
         <!-- Panel izquierdo -->
         <div class="left-panel">
@@ -50,12 +50,12 @@
           <div class="info-block">
             <div class="icon"><i class="fas fa-phone"></i></div>
             <div>
-              <p class="label">Telefono</p>
+              <p class="label">Teléfono</p>
               <p class="detail">+33 123 456 76</p>
             </div>
           </div>
           <div class="socials">
-            <p class="label">Siguenos en nuestras Redes</p>
+            <p class="label">Síguenos en nuestras Redes</p>
             <div class="icons">
               <a href="#"><i class="fab fa-facebook-f social"></i></a>
               <a
@@ -77,7 +77,7 @@
 
         <!-- Panel derecho -->
         <form class="right-panel" id="contactForm">
-          <h3>Envianos mensaje</h3>
+          <h3>Envíanos mensaje</h3>
           <div class="form-row">
             <input
               type="text"

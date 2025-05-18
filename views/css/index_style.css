@@ -63,7 +63,7 @@ nav a {
     transition: color 0.3s ease, background-color 0.3s ease;
 }
 nav a:hover {
-    color: #ffcc00;
+    color: #ccc;
     background-color: rgba(255, 255, 255, 0.1);
 }
 
@@ -75,16 +75,17 @@ nav a:hover {
     margin: 0 auto;
     position: relative;
 }
+
 .traductor-select {
-    background-color: #333;
-    color: white;
+    background-color: transparent;
+    color:#EEEEEE;
     padding: 8px 16px;
     border: none;
     border-radius: 6px;
     font-size: 14px;
     cursor: pointer;
-    appearance: none; /* oculta el estilo nativo */
     transition: background-color 0.3s ease, color 0.3s ease;
+    font-family: 'Poppins';
 }
 
 .traductor-select:hover {
@@ -104,3 +105,31 @@ header .logo {
     filter: brightness(1.2);
     transition: transform 0.3s ease, filter 0.3s ease;
 }
+
+/*@media(max-width: 480px){
+    
+    .logo-footer img {
+    width: 165%;
+    height: 8%;
+    object-fit: contain;
+    align-items: flex-end;
+    position: relative;
+    transform: translate(15%, 77%);
+    }
+
+    .container-footer {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    padding: 1rem;
+    }
+
+    header .logo {
+    height: 30px;
+    cursor: pointer;
+    filter: brightness(1.2);
+    transition: transform 0.3s ease, filter 0.3s ease;
+    transform: translate(-18%);
+    }
+
+} */
