@@ -329,3 +329,205 @@
     "slug": "paz-y-conflictos",
     "descripcion": "Cobertura de guerras, procesos de reconciliaci\u00f3n y contextos de conflicto global."
 }
+[2025-05-18 14:39:56] Recibida solicitud editar_categoria.php
+[2025-05-18 14:39:56] Datos POST:
+{
+    "id": "13",
+    "imagen_actual": "",
+    "nombre": "Justicia y Derechos Humanos",
+    "descripcion": "Acceso a la justicia, abusos de poder, sistema penitenciario y m\u00e1s. Esta secci\u00f3n examina la defensa de los derechos fundamentales como base de sociedades pac\u00edficas."
+}
+[2025-05-18 14:39:56] Sesión:
+{
+    "intentos": 0,
+    "bloqueo_tiempo": null,
+    "id_usuario": 2,
+    "user_id": 2,
+    "usuario": "Christopher Eugenio Nieves Mart\u00ednez",
+    "email": "cnieves0@ucol.mx",
+    "role": "admin",
+    "rol": "admin",
+    "avatar": "assets\/avatars\/6826f8454b688.jpg"
+}
+[2025-05-18 14:39:56] Procesando solicitud POST
+[2025-05-18 14:39:56] Datos recibidos
+{
+    "id": "13",
+    "nombre": "Justicia y Derechos Humanos",
+    "descripcion": "Acceso a la justicia, abusos de poder, sistema penitenciario y m\u00e1s. Esta secci\u00f3n examina la defensa de los derechos fundamentales como base de sociedades pac\u00edficas."
+}
+[2025-05-18 14:39:56] Validación exitosa
+[2025-05-18 14:39:56] La categoría existe
+[2025-05-18 14:39:56] Slug generado
+{
+    "slug": "justicia-y-derechos-humanos"
+}
+[2025-05-18 14:39:56] Iniciada transacción
+[2025-05-18 14:39:56] Transacción confirmada
+[2025-05-18 14:39:56] Categoría actualizada
+{
+    "id_categoria": 13,
+    "nombre": "Justicia y Derechos Humanos",
+    "slug": "justicia-y-derechos-humanos",
+    "descripcion": "Acceso a la justicia, abusos de poder, sistema penitenciario y m\u00e1s. Esta secci\u00f3n examina la defensa de los derechos fundamentales como base de sociedades pac\u00edficas.",
+    "imagen": null
+}
+[2025-05-18 14:47:05] Recibida solicitud editar_categoria.php
+[2025-05-18 14:47:05] Datos POST:
+{
+    "id": "13",
+    "imagen_actual": "",
+    "nombre": "Justicia y Derechos Humanos",
+    "descripcion": "Acceso a la justicia, abusos de poder, sistema penitenciario y m\u00e1s. Esta secci\u00f3n examina la defensa de los derechos fundamentales como base de sociedades pac\u00edficas."
+}
+[2025-05-18 14:47:05] Sesión:
+{
+    "intentos": 0,
+    "bloqueo_tiempo": null,
+    "id_usuario": 2,
+    "user_id": 2,
+    "usuario": "Christopher Eugenio Nieves Mart\u00ednez",
+    "email": "cnieves0@ucol.mx",
+    "role": "admin",
+    "rol": "admin",
+    "avatar": "assets\/avatars\/6826f8454b688.jpg"
+}
+[2025-05-18 14:47:05] Procesando solicitud POST
+[2025-05-18 14:47:05] Datos recibidos
+{
+    "id": "13",
+    "nombre": "Justicia y Derechos Humanos",
+    "descripcion": "Acceso a la justicia, abusos de poder, sistema penitenciario y m\u00e1s. Esta secci\u00f3n examina la defensa de los derechos fundamentales como base de sociedades pac\u00edficas."
+}
+[2025-05-18 14:47:05] Validación exitosa
+[2025-05-18 14:47:05] La categoría existe
+[2025-05-18 14:47:05] Slug generado
+{
+    "slug": "justicia-y-derechos-humanos"
+}
+[2025-05-18 14:47:05] Iniciada transacción
+[2025-05-18 14:47:05] Transacción confirmada
+[2025-05-18 14:47:05] Categoría actualizada
+{
+    "id_categoria": 13,
+    "nombre": "Justicia y Derechos Humanos",
+    "slug": "justicia-y-derechos-humanos",
+    "descripcion": "Acceso a la justicia, abusos de poder, sistema penitenciario y m\u00e1s. Esta secci\u00f3n examina la defensa de los derechos fundamentales como base de sociedades pac\u00edficas.",
+    "imagen": null
+}
+[2025-05-18 14:48:34] Recibida solicitud editar_categoria.php
+[2025-05-18 14:48:34] Datos POST:
+{
+    "id": "10",
+    "imagen_actual": "",
+    "nombre": "Paz y Conflictos",
+    "descripcion": "Cobertura de guerras, procesos de reconciliaci\u00f3n y contextos de conflicto global."
+}
+[2025-05-18 14:48:34] Sesión:
+{
+    "intentos": 0,
+    "bloqueo_tiempo": null,
+    "id_usuario": 2,
+    "user_id": 2,
+    "usuario": "Christopher Eugenio Nieves Mart\u00ednez",
+    "email": "cnieves0@ucol.mx",
+    "role": "admin",
+    "rol": "admin",
+    "avatar": "assets\/avatars\/6826f8454b688.jpg"
+}
+[2025-05-18 14:48:34] Procesando solicitud POST
+[2025-05-18 14:48:34] Datos recibidos
+{
+    "id": "10",
+    "nombre": "Paz y Conflictos",
+    "descripcion": "Cobertura de guerras, procesos de reconciliaci\u00f3n y contextos de conflicto global."
+}
+[2025-05-18 14:48:34] Validación exitosa
+[2025-05-18 14:48:34] La categoría existe
+[2025-05-18 14:48:34] Slug generado
+{
+    "slug": "paz-y-conflictos"
+}
+[2025-05-18 14:48:34] Iniciada transacción
+[2025-05-18 14:48:34] Transacción confirmada
+[2025-05-18 14:48:34] Categoría actualizada
+{
+    "id_categoria": 10,
+    "nombre": "Paz y Conflictos",
+    "slug": "paz-y-conflictos",
+    "descripcion": "Cobertura de guerras, procesos de reconciliaci\u00f3n y contextos de conflicto global.",
+    "imagen": null
+}
+[2025-05-18 14:52:55] Recibida solicitud editar_categoria.php
+[2025-05-18 14:52:55] Datos POST:
+{
+    "id": "13",
+    "imagen_actual": "",
+    "nombre": "Justicia y Derechos Humanos",
+    "descripcion": "Acceso a la justicia, abusos de poder, sistema penitenciario y m\u00e1s. Esta secci\u00f3n examina la defensa de los derechos fundamentales como base de sociedades pac\u00edficas."
+}
+[2025-05-18 14:52:55] Datos FILES:
+{
+    "imagen": {
+        "name": "JUSTICIAYDERECHOS.jpg",
+        "type": "",
+        "tmp_name": "",
+        "error": 1,
+        "size": 0
+    }
+}
+[2025-05-18 14:52:55] Sesión:
+{
+    "intentos": 0,
+    "bloqueo_tiempo": null,
+    "id_usuario": 2,
+    "user_id": 2,
+    "usuario": "Christopher Eugenio Nieves Mart\u00ednez",
+    "email": "cnieves0@ucol.mx",
+    "role": "admin",
+    "rol": "admin",
+    "avatar": "assets\/avatars\/6826f8454b688.jpg"
+}
+[2025-05-18 14:52:55] Procesando solicitud POST
+[2025-05-18 14:52:55] Datos recibidos
+{
+    "id": "13",
+    "nombre": "Justicia y Derechos Humanos",
+    "descripcion": "Acceso a la justicia, abusos de poder, sistema penitenciario y m\u00e1s. Esta secci\u00f3n examina la defensa de los derechos fundamentales como base de sociedades pac\u00edficas."
+}
+[2025-05-18 14:52:55] Validación exitosa
+[2025-05-18 14:52:55] La categoría existe
+{
+    "id_categoria": 13,
+    "nombre": "Justicia y Derechos Humanos",
+    "slug": "justicia-y-derechos-humanos",
+    "descripcion": "Acceso a la justicia, abusos de poder, sistema penitenciario y m\u00e1s. Esta secci\u00f3n examina la defensa de los derechos fundamentales como base de sociedades pac\u00edficas.",
+    "imagen": null
+}
+[2025-05-18 14:52:55] Slug generado
+{
+    "slug": "justicia-y-derechos-humanos"
+}
+[2025-05-18 14:52:55] Iniciada transacción
+[2025-05-18 14:52:55] Imagen actual de la categoría
+{
+    "imagen": null
+}
+[2025-05-18 14:52:55] Error en la subida de imagen
+{
+    "error_code": 1,
+    "error_message": "El archivo excede el tama\u00f1o m\u00e1ximo permitido por PHP"
+}
+[2025-05-18 14:52:55] Imagen final a usar
+{
+    "imagen": null
+}
+[2025-05-18 14:52:55] Transacción confirmada
+[2025-05-18 14:52:55] Categoría actualizada
+{
+    "id_categoria": 13,
+    "nombre": "Justicia y Derechos Humanos",
+    "slug": "justicia-y-derechos-humanos",
+    "descripcion": "Acceso a la justicia, abusos de poder, sistema penitenciario y m\u00e1s. Esta secci\u00f3n examina la defensa de los derechos fundamentales como base de sociedades pac\u00edficas.",
+    "imagen": null
+}

@@ -1,0 +1,1 @@
+ALTER TABLE categorias ADD COLUMN imagen VARCHAR(255) COMMENT 'Ruta a la imagen de la categoría' AFTER descripcion; 

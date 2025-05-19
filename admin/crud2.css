@@ -52,8 +52,26 @@ body{
 }
 .left-side .profile-icon:hover {
     transform: scale(1.05);
-    border-color: rgba(255, 255, 255, 0.4);
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+}
+.left-side .profile-initial {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 36px;
+    font-weight: bold;
+    color: #ffffff;
+    background-color: #2c6f8e;
+    margin: 20px auto;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s;
+}
+.left-side .profile-initial:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
 }
 .left-side h2{
     color: #ffffff;
@@ -1922,237 +1940,68 @@ tbody tr td button {
     bottom: 20px;
 }
 
-@media(max-width: 480px){
-
-    .right-side {
-        margin-left: 30vw;
-        width: calc(100vw - 30vw - 20px);
-        padding: 30px 20px;
-        position: relative;
-    }
-
-    .content {
-    flex: 1;
-    padding: 20px;
-    overflow-y: auto;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    width: 177%;
-    box-sizing: border-box;
-    position: relative;
-    top: 20%;
-    right: 70%;
-    height: auto;
-    }
-
-
-    .rectangle {
-        border-radius: 30px;
-        background: var(--COLOR-5, #2E7EA7);
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: flex-start;
-        height: auto;
-        width: 90vw;
-        position: relative;
-        overflow-x: auto;
-        box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25), 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
-        margin-bottom: 20px;
-        top: 20%;
-        white-space: nowrap;
-        scroll-behavior: smooth;
-        right: 3%;
-    }
-
-.rectangle-text {
-    color: white;
-    font-weight: 500;
-    padding: 29px 40px;
-    font-size: 20px;
-    white-space: nowrap;
-    flex-shrink: 0; /* Evita que se reduzca y permite scroll */
+/* Estilos para miniaturas de categorías */
+.thumbnail-cell {
+    width: 80px;
+    height: 80px;
+    text-align: center;
+    padding: 5px !important;
 }
 
-.hand-header {
-    height: 335px;
-    position: relative;
-    top: 0px;
-    left: -100px;
-    z-index: 999;
-}
-
-    .left-side {
-        position: absolute;
-        top: 20%;
-        left: 5%;
-        width: 90%;
-        max-width: 90%;
-        height: auto;
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: flex-start;
-        background: linear-gradient(90deg, #104F70 0%, #093a58 100%);
-        border-radius: 16px;
-        z-index: 100;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-        backdrop-filter: blur(10px);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        padding: 10px 20px;
-        box-sizing: border-box;
-        overflow-x: auto;
-        overflow-y: hidden;
-        white-space: nowrap;
-        gap: 7%;
-    }
-
-.profile-header {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    margin-right: 20px; /* Espacio entre el perfil y los botones */
-}
-
-.profile-icon-header {
-    width: 40px; /* Reduje el tamaño del icono */
-    height: 40px; /* Reduje el tamaño del icono */
-    border-radius: 50%;
+.categoria-thumbnail {
+    width: 60px;
+    height: 60px;
     object-fit: cover;
-    margin-right: 10px;
-    border: 2px solid rgba(255, 255, 255, 0.2);
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-}
-
-.profile-info-header {
-    display: flex;
-    flex-direction: column;
-}
-
-.profile-info-header h2 {
-    color: #ffffff;
-    font-size: 1rem;
-    font-weight: 600;
-    margin: 0;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
-    white-space: nowrap;
-}
-
-.profile-info-header p {
-    color: #94CEEB;
-    font-size: 0.7rem;
-    font-weight: 500;
-    margin: 0;
-    padding: 2px 6px;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 15px;
-    backdrop-filter: blur(5px);
-    white-space: nowrap;
-}
-
-.left-side-options {
-    display: flex;
-    flex-direction: row;
-    gap: 10px;
-    padding: 10px 0; /* Ajusté el padding vertical */
-    width: auto; /* El ancho se ajustará al contenido */
-    margin-top: 0;
-    box-sizing: border-box;
-}
-
-.left-side-options button {
-    height: auto;
-    width: auto;
-    min-width: 80px;
-    padding: 8px 12px;
     border-radius: 8px;
-    border: none;
-    background: rgba(255, 255, 255, 0.1);
-    color: #ffffff;
-    font-size: 0.8rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 5px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    position: relative;
-    overflow: hidden;
-    backdrop-filter: blur(5px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    word-break: keep-all;
-    white-space: nowrap;
+    transition: transform 0.2s ease;
+    border: 1px solid #ddd;
+    background-color: #f8f8f8;
+}
+
+.categoria-thumbnail:hover {
+    transform: scale(1.1);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+/* Estilos para la visualización de la imagen actual */
+#category-current-image-container {
+    margin: 10px 0;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f9f9f9;
     text-align: center;
 }
 
-.left-side-options button svg {
-    width: 20px;
-    height: 20px;
-    color: #94CEEB;
-    transition: all 0.3s ease;
-    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+#category-current-image {
+    max-width: 200px;
+    max-height: 200px;
+    object-fit: contain;
+    border-radius: 4px;
+    margin-bottom: 10px;
 }
 
-/* Ajusta el margen superior del .right-side si es necesario */
-.right-side {
-    margin-top: 0px; /* Ajusta según la altura del nuevo bloque */
-    margin-left: 10px;
-    width: calc(100vw - 20px);
-    padding-top: 20px;
-    /* Otros estilos */
+#category-current-image-container small {
+    display: block;
+    color: #666;
+    font-size: 0.9em;
+    margin-top: 5px;
 }
 
-/* Oculta el logo y el botón de retroceso originales si están dentro del .left-side */
-.left-side > img, .left-side > a {
+.image-preview {
+    max-width: 200px;
+    max-height: 200px;
+    object-fit: contain;
+    border-radius: 4px;
+    margin-top: 10px;
     display: none;
 }
 
-.content-header {
-    width: auto;
-    max-width: 95%;
-    background: linear-gradient(135deg, rgba(16, 79, 112, 0.85) 0%, rgba(9, 58, 88, 0.9) 100%);
-    backdrop-filter: blur(10px);
-    border-radius: 16px;
-    padding: 25px;
-    margin-bottom: 25px;
-    box-sizing: border-box;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    position: relative;
-    overflow-x: auto; /* Agregamos la barra de desplazamiento horizontal */
-    overflow-y: hidden; /* Ocultamos la barra vertical a menos que sea necesario */
-    transition: all 0.3s ease;
-    left: 35%;
-    margin-top: 20px;
-    margin-left: auto;
-    margin-right: auto;
-    white-space: nowrap; /* Evita que el contenido se rompa en líneas */
-}
-
-/* Si el contenedor padre tiene un padding o margen que causa el problema vertical, podrías necesitar ajustar eso. */
-.right-side { /* Asumiendo que .right-side es el contenedor padre */
-    /* Otros estilos */
-    padding-top: 20px; /* Ejemplo: Ajusta el padding superior si es necesario */
-    padding-bottom: 20px; /* Ejemplo: Ajusta el padding inferior si es necesario */
-    /* Asegúrate de que el height del .right-side sea suficiente para contener el .content-header sin scroll vertical */
-}
-
-.content-body {
-    width: 136%;
-    max-height: 70vh;
-    overflow-y: auto;
-    overflow-x: auto;
-    border-radius: 8px;
-    box-sizing: border-box;
-    position: relative;
-    left: 38%;
+.image-preview.active {
+    display: block;
+    animation: fadeIn 0.3s ease-in-out;
 }
 
 
 
 
-}

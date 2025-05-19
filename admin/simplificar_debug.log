@@ -1,0 +1,108 @@
+[2025-05-18 15:40:47] Información del sistema
+{
+    "php_version": "7.3.10",
+    "upload_max_filesize": "2M",
+    "post_max_size": "8M",
+    "max_execution_time": "300",
+    "max_input_time": "60"
+}
+[2025-05-18 15:40:55] Información del sistema
+{
+    "php_version": "7.3.10",
+    "upload_max_filesize": "2M",
+    "post_max_size": "8M",
+    "max_execution_time": "300",
+    "max_input_time": "60"
+}
+[2025-05-18 15:40:55] Recibida solicitud POST
+[]
+[2025-05-18 15:40:55] Archivos recibidos
+{
+    "imagen": {
+        "name": "JUSTICIAYDERECHOS.jpg",
+        "type": "",
+        "tmp_name": "",
+        "error": 1,
+        "size": 0
+    }
+}
+[2025-05-18 15:40:55] Error en la carga
+{
+    "error_code": 1,
+    "error_message": "El archivo excede el tama\u00f1o m\u00e1ximo permitido por PHP"
+}
+[2025-05-18 15:40:57] Información del sistema
+{
+    "php_version": "7.3.10",
+    "upload_max_filesize": "2M",
+    "post_max_size": "8M",
+    "max_execution_time": "300",
+    "max_input_time": "60"
+}
+[2025-05-18 15:40:57] Recibida solicitud POST
+[]
+[2025-05-18 15:40:57] Archivos recibidos
+{
+    "imagen": {
+        "name": "",
+        "type": "",
+        "tmp_name": "",
+        "error": 4,
+        "size": 0
+    }
+}
+[2025-05-18 15:40:57] Error en la carga
+{
+    "error_code": 4,
+    "error_message": "No se seleccion\u00f3 ning\u00fan archivo"
+}
+[2025-05-18 15:40:57] Información del sistema
+{
+    "php_version": "7.3.10",
+    "upload_max_filesize": "2M",
+    "post_max_size": "8M",
+    "max_execution_time": "300",
+    "max_input_time": "60"
+}
+[2025-05-18 15:40:57] Recibida solicitud POST
+[]
+[2025-05-18 15:40:57] Archivos recibidos
+{
+    "imagen": {
+        "name": "",
+        "type": "",
+        "tmp_name": "",
+        "error": 4,
+        "size": 0
+    }
+}
+[2025-05-18 15:40:57] Error en la carga
+{
+    "error_code": 4,
+    "error_message": "No se seleccion\u00f3 ning\u00fan archivo"
+}
+[2025-05-18 15:40:58] Información del sistema
+{
+    "php_version": "7.3.10",
+    "upload_max_filesize": "2M",
+    "post_max_size": "8M",
+    "max_execution_time": "300",
+    "max_input_time": "60"
+}
+[2025-05-18 15:40:58] Recibida solicitud POST
+[]
+[2025-05-18 15:40:58] Archivos recibidos
+{
+    "imagen": {
+        "name": "",
+        "type": "",
+        "tmp_name": "",
+        "error": 4,
+        "size": 0
+    }
+}
+[2025-05-18 15:40:58] Error en la carga
+{
+    "error_code": 4,
+    "error_message": "No se seleccion\u00f3 ning\u00fan archivo"
+}

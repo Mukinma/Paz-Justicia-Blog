@@ -13,689 +13,665 @@ a {
     text-decoration: none;
 }
 
-header nav {
-    display: flex;
-    gap: 30px;
-    justify-content: flex-end;
-}
-
-header {
-    background: rgba(0, 0, 0, 0.8);
-    padding: 0.3rem 2rem;
-    position: fixed;
+/* Estilos de la página principal */
+.carousel {
+    position: relative;
     width: 100%;
-    top: 0;
-    z-index: 1000;
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-    transition: all 0.3s ease;
+    height: 500px;
+    overflow: hidden;
 }
 
-header.scrolled {
-    padding: 0.2rem 2rem;
-    background: rgba(0, 0, 0, 0.9);
-    box-shadow: 0 4px 25px rgba(0, 0, 0, 0.2);
-}
-
-.header-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    max-width: 1200px;
-    margin: 0 auto;
-    position: relative;
-}
-
-header {
-    width: 100%;
-    height: 60px;
-    padding: 40px;
-    box-sizing: border-box;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 1000;
-    background: rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(8px);
-}
-
-header .logo {
-    height: 40px;
-    cursor: pointer;
-}
-
-.search-bar {
-    position: relative;
-    flex-grow: 1;
-    max-width: 500px;
-    margin-left: 30px;
-    display: flex;
-    align-items: center;
-    padding: 6px 12px;
-    border-radius: 20px;
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.5);
-}
-
-.search-bar input {
-    width: 100%;
-    color: #eee;
-    padding: 6px 36px 6px 12px;
-    border: none;
-    outline: none;
-    font-size: 14px;
-    background-color: transparent;
-    font-weight: 400;
-}
-
-.search-bar .search-icon {
-    position: absolute;
-    right: 12px;
-    top: 50%;
-    transform: translateY(-50%);
-    pointer-events: none;
-    font-size: 16px;
-    color: #555;
-}
-
-
-header nav {
-    display: flex;
-    gap: 30px;
-}
-
-.header-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    max-width: 1200px;
-    margin: 0 auto;
-    position: relative;
-}
-
-header .logo {
-    height: 50px;
-    cursor: pointer;
-    filter: brightness(1.2);
-    transition: transform 0.3s ease, filter 0.3s ease;
-}
-
-header .logo:hover {
-    filter: brightness(1.4);
-    transform: scale(1.02);
-}
-.logo {
-    height: 30px;
-    cursor: pointer;
-    filter: brightness(1.2);
-    transition: transform 0.3s ease, filter 0.3s ease;
-}
-
-.logo:hover {
-    filter: brightness(1.4);
-    transform: scale(1.02);
-}
-
-.profile-section {
-    display: flex;
-    align-items: center;
-}
-
-.login-btn {
-    background: transparent;
-    color: #EEEEEE;
-    padding: 0.6rem 1.2rem;
-    border-radius: 50px;
-    text-decoration: none;
-    font-weight: 500;
-    transition: all 0.3s ease;
-    letter-spacing: 0.5px;
-    font-size: 0.9rem;
-}
-
-.login-btn:hover {
-    background: linear-gradient(135deg, #0077cc, #1e90ff);
-    transform: translateY(-2px);
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
-}
-
-.login-btn:active {
-    transform: translateY(0);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-.profile-dropdown {
-    position: relative;
-    display: inline-block;
-}
-
-.profile-btn {
-    background: none;
-    border: none;
-    cursor: pointer;
-    font-size: 2rem;
-    color: white;
-    padding: 0.5rem;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    transition: transform 0.3s ease;
-}
-
-.profile-btn:hover {
-    transform: translateY(-2px);
-}
-
-.profile-btn img {
-    width: 42px;
-    height: 42px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 2px solid rgba(255, 255, 255, 0.7);
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-    transition: all 0.3s ease;
-}
-
-.profile-btn:hover img {
-    border-color: white;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-    transform: scale(1.05);
-}
-
-.profile-btn i {
-    font-size: 1.8rem;
-    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-}
-
-.dropdown-content {
-    display: none;
-    position: absolute;
-    right: 0;
-    top: calc(100% + 10px);
-    background: rgba(13, 35, 45, 0.95);
-    min-width: 220px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
-    border-radius: 12px;
-    z-index: 1;
-    padding: 0.6rem 0;
-    transform: translateY(10px);
-    opacity: 0;
-    transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.dropdown-content:after {
-    content: '';
-    position: absolute;
-    top: -8px;
-    right: 18px;
-    width: 16px;
-    height: 16px;
-    background: rgba(13, 35, 45, 0.95);
-    transform: rotate(45deg);
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-    border-left: 1px solid rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-}
-
-.profile-dropdown:hover .dropdown-content {
-    display: block;
-    transform: translateY(0);
-    opacity: 1;
-}
-
-.dropdown-content a {
-    color: white;
-    padding: 12px 18px;
-    text-decoration: none;
-    display: flex;
-    align-items: center;
-    gap: 0.8rem;
-    transition: all 0.2s ease;
-    position: relative;
-}
-
-.dropdown-content a i {
-    width: 20px;
-    text-align: center;
-    font-size: 1rem;
-    transition: transform 0.2s ease;
-}
-
-.dropdown-content a:hover {
-    background-color: rgba(255, 255, 255, 0.1);
-    padding-left: 22px;
-}
-
-.dropdown-content a:hover i {
-    transform: translateX(3px);
-}
-
-/* Línea separadora en el dropdown */
-.dropdown-content a:not(:last-child):after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 18px;
-    right: 18px;
-    height: 1px;
-    background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.1), transparent);
-}
-
-/* Media queries para responsive design */
-@media (max-width: 768px) {
-    header {
-        padding: 0.8rem 1.5rem;
-    }
-    
-    .logo {
-        height: 40px;
-    }
-    
-    .login-btn {
-        padding: 0.5rem 1rem;
-        font-size: 0.8rem;
-    }
-    
-    .profile-btn img {
-        width: 36px;
-        height: 36px;
-    }
-    
-    .profile-btn i {
-        font-size: 1.6rem;
-    }
-    
-    .dropdown-content {
-        min-width: 200px;
-        right: -10px;
-    }
-    
-    .dropdown-content:after {
-        right: 22px;
-    }
-}
-
-@media (max-width: 480px) {
-    .logo {
-        height: 35px;
-    }
-    
-    .profile-btn img {
-        width: 32px;
-        height: 32px;
-    }
-}
-
-/* Mensaje de error mejorado */
+/* Error message */
 .error-message {
     position: fixed;
-    top: 90px;
+    top: 80px; /* Ajustado para estar debajo del header fijo */
     left: 50%;
     transform: translateX(-50%);
-    background-color: #ff4444;
+    background-color: #f44336;
     color: white;
-    padding: 15px 30px;
-    border-radius: 8px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
-    z-index: 1000;
-    animation: slideDown 0.5s ease-out, fadeOut 0.5s ease-out 4.5s forwards;
+    padding: 15px 25px;
+    z-index: 999;
+    border-radius: 5px;
+    animation: slideIn 0.3s forwards, fadeOut 0.5s 4.5s forwards;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    font-weight: 500;
+    max-width: 80%;
     text-align: center;
-    font-weight: 500;
-    font-size: 0.95rem;
-    border-left: 4px solid #cc0000;
-    max-width: 90%;
 }
 
-header nav {
-    display: flex;
-    gap: 30px;
-}
-.traductor {
-    background: none;
-    border: 2px solid #eee;
-    color: #eee;
-    padding: 6px 14px;
-    border-radius: 6px;
-    font-weight: 500;
-    font-size: 14px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    position: relative;
-    top: -2px; /* 🔼 Esto lo sube 2px */
-}
+/* Eliminados estilos de header, navbar, logo, menu, etc. para usar nav-fix.css */
 
-
-header nav a {
-    color: #eee;
-    text-decoration: none;
-    font-weight: 500;
-}
-
+/* Estilos de la página principal */
 .carousel {
-    height: 100vh;
-    width: 100vw;
-    overflow: hidden;
     position: relative;
-    margin-top: 0;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+    /* Fondo de respaldo para prevenir pantallas negras */
+    background-color: #000;
+    z-index: 1;
+    /* Mejoras de rendimiento */
+    contain: layout size paint;
+    will-change: transform;
+    transform-style: preserve-3d;
+    backface-visibility: hidden;
+    transform: translateZ(0);
 }
 
-.carousel .list .item {
+/* Contenedor de slides con optimizaciones de rendimiento */
+.carousel .list {
+    position: absolute;
     width: 100%;
     height: 100%;
-    position: absolute;
-    inset: 0 0 0 0;
+    z-index: 1;
+    /* Optimizaciones de rendimiento */
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    perspective: 1000px;
+    will-change: contents;
 }
 
+/* Optimizar cada slide individual */
+.carousel .list .item {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    visibility: hidden;
+    /* Transición suavizada */
+    transition: 
+        opacity 0.8s cubic-bezier(0.33, 1, 0.68, 1),
+        visibility 0.01s linear 0.4s,
+        transform 0.8s cubic-bezier(0.33, 1, 0.68, 1);
+    /* Optimizaciones de rendimiento */
+    backface-visibility: hidden;
+    transform: translateZ(0);
+    will-change: opacity, visibility, transform;
+    /* Asegurar que la imagen de fondo no desaparezca */
+    background-color: #000;
+}
+
+/* Slide activo con mayor especificidad para evitar conflictos */
+.carousel .list .item.active {
+    opacity: 1;
+    visibility: visible;
+    z-index: 5 !important;
+    transition:
+        opacity 0.8s cubic-bezier(0.33, 1, 0.68, 1),
+        visibility 0s linear 0s,
+        transform 0.8s cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+/* Optimizar imágenes para evitar flashes de contenido */
 .carousel .list .item img {
+    position: absolute;
     width: 100%;
     height: 100%;
     object-fit: cover;
+    filter: brightness(0.6);
+    z-index: -1;
+    /* Optimizaciones de rendimiento */
+    backface-visibility: hidden;
+    transform: translateZ(0);
+    will-change: filter;
+    transition: filter 0.8s ease;
 }
 
+/* Contenido con transiciones optimizadas y scroll */
 .carousel .list .item .content {
     position: absolute;
-    top: 25%;
-    width: 1140px;
-    max-width: 80%;
-    left: 50%;
-    transform: translateX(-50%);
-    padding-right: 30%;
-    box-sizing: border-box;
-    color: #fff;
-    text-shadow: 0 5px 10px #0004;
-}
-
-.carousel .list .item .author {
-    font-weight: bold;
-    letter-spacing: 10px;
-}
-
-.carousel .list .item .title,
-.carousel .list .item .topic {
-    font-size: 5em;
-    font-weight: bold;
-    line-height: 1.3em;
-}
-
-.carousel .list .item .topic {
-    color: #fffffff7;
-}
-
-.carousel .list .item .buttons {
-    display: grid;
-    grid-template-columns: repeat(2, 130px);
-    grid-template-rows: 40px;
-    gap: 5px;
-    margin-top: 20px;
-}
-
-.carousel .list .item .buttons button {
-    border: none;
-    background-color: #eee;
-    letter-spacing: 3px;
-    font-family: Poppins;
-    font-weight: 500;
-}
-
-.carousel .list .item .buttons button:nth-child(2) {
-    background-color: transparent;
-    border: 1px solid #fff;
-    color: #eee;
-}
-
-/* thumbail */
-.thumbnail {
-    position: absolute;
-    bottom: 50px;
-    left: 50%;
-    width: max-content;
-    z-index: 100;
-    display: flex;
-    gap: 20px;
-}
-
-.thumbnail .item {
-    width: 150px;
-    height: 220px;
-    flex-shrink: 0;
-    position: relative;
-}
-
-.thumbnail .item img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 20px;
-}
-
-.thumbnail .item .content {
-    color: #fff;
-    position: absolute;
-    bottom: 10px;
-    left: 10px;
-    right: 10px;
-}
-
-.thumbnail .item .content .title {
-    font-weight: 500;
-}
-
-.thumbnail .item .content .description {
-    font-weight: 300;
-}
-
-/* arrows */
-.arrows {
-    position: absolute;
-    top: 80%;
-    right: 52%;
-    z-index: 100;
-    width: 300px;
-    max-width: 30%;
-    display: flex;
-    gap: 10px;
-    align-items: center;
-}
-
-.arrows button {
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    background-color: #eee4;
-    border: none;
-    color: #fff;
-    font-family: monospace;
-    font-weight: bold;
-    transition: .1s;
-}
-
-.arrows button:hover {
-    background-color: #fff;
-    color: #000;
-}
-
-/* animation */
-.carousel .list .item:nth-child(1) {
-    z-index: 1;
-}
-
-/* animation text in first item */
-
-.carousel .list .item:nth-child(1) .content .author,
-.carousel .list .item:nth-child(1) .content .title,
-.carousel .list .item:nth-child(1) .content .topic,
-.carousel .list .item:nth-child(1) .content .des,
-.carousel .list .item:nth-child(1) .content .buttons {
-    transform: translateY(50px);
-    filter: blur(20px);
+    top: 50%;
+    left: 5%;
+    width: 75%;
+    max-width: 1000px;
+    padding: 25px 30px;
+    transform: translateY(-50%) translateX(-30px);
     opacity: 0;
-    animation: showContent .5s 1s linear 1 forwards;
-}
-
-@keyframes showContent {
-    to {
-        transform: translateY(0px);
-        filter: blur(0px);
-        opacity: 1;
-    }
-}
-
-.carousel .list .item:nth-child(1) .content .title {
-    animation-delay: 1.2s !important;
-}
-
-.carousel .list .item:nth-child(1) .content .topic {
-    animation-delay: 1.4s !important;
-}
-
-.carousel .list .item:nth-child(1) .content .des {
-    animation-delay: 1.6s !important;
-}
-
-.carousel .list .item:nth-child(1) .content .buttons {
-    animation-delay: 1.8s !important;
-}
-
-/* create animation when next click */
-.carousel.next .list .item:nth-child(1) img {
-    width: 150px;
-    height: 220px;
-    position: absolute;
-    bottom: 50px;
-    left: 50%;
-    border-radius: 30px;
-    animation: showImage .5s linear 1 forwards;
-}
-
-@keyframes showImage {
-    to {
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        border-radius: 0;
-    }
-}
-
-.carousel.next .thumbnail .item:nth-last-child(1) {
+    z-index: 10;
+    transition: 
+        opacity 0.5s ease,
+        transform 0.5s cubic-bezier(0.33, 1, 0.68, 1);
+    will-change: opacity, transform;
+    background: rgba(14, 47, 90, 0.75);
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    display: flex;
+    flex-direction: column;
+    max-height: 65vh;
     overflow: hidden;
-    animation: showThumbnail .5s linear 1 forwards;
 }
 
-.carousel.prev .list .item img {
-    z-index: 100;
+/* Contenedor con scroll para el contenido principal */
+.carousel .list .item .content .scrollable-content {
+    position: relative;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-right: 10px;
+    margin-right: -10px; /* Compensar el padding para scroll */
+    flex: 1;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
+    /* Estilo para ocultar el scrollbar en webkit browsers pero mantener funcionalidad */
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    mask-image: linear-gradient(to bottom, black 85%, transparent 100%);
+    max-height: calc(100% - 60px);
+    overscroll-behavior: contain;
 }
 
-@keyframes showThumbnail {
-    from {
-        width: 0;
-        opacity: 0;
-    }
+/* Garantiza que el scroll siempre funcione para elementos con la clase scroll-enabled */
+.carousel .list .item .content .scrollable-content.scroll-enabled {
+    overflow: auto !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    max-height: calc(100% - 60px) !important;
+    will-change: scroll-position;
+    -webkit-overflow-scrolling: touch; /* Para mejor desempeño en iOS */
 }
 
-.carousel.next .thumbnail {
-    animation: effectNext .5s linear 1 forwards;
+/* Estilos para scrollbar */
+.carousel .list .item .content .scrollable-content::-webkit-scrollbar {
+    width: 5px;
 }
 
-@keyframes effectNext {
-    from {
-        transform: translateX(150px);
-    }
+.carousel .list .item .content .scrollable-content::-webkit-scrollbar-track {
+    background: transparent;
 }
 
-/* running time */
+.carousel .list .item .content .scrollable-content::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.3);
+    border-radius: 5px;
+}
 
+/* Contenedor para botones fijos en la parte inferior */
+.carousel .list .item .content .button-container {
+    margin-top: 15px;
+    position: relative;
+    z-index: 15;
+}
+
+/* Estilos para botones */
+.carousel .list .item .content .buttons {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    position: relative;
+    z-index: 15;
+}
+
+.carousel .list .item .content .buttons button {
+    background-color: #1976d2;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 30px;
+    font-size: 0.95em;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(25, 118, 210, 0.3);
+    min-width: 100px;
+    text-align: center;
+    position: relative;
+    z-index: 20;
+    opacity: 1 !important;
+    transform: translateY(0) !important;
+}
+
+.carousel .list .item .content .buttons button:first-child {
+    background-color: #1976d2;
+}
+
+.carousel .list .item .content .buttons button:last-child {
+    background-color: rgba(30, 136, 229, 0.3);
+    backdrop-filter: blur(5px);
+}
+
+.carousel .list .item .content .buttons button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(25, 118, 210, 0.4);
+    background-color: #1e88e5;
+}
+
+.carousel .list .item .content .buttons button:last-child:hover {
+    background-color: rgba(30, 136, 229, 0.4);
+}
+
+/* Barra de tiempo como indicador visual */
 .carousel .time {
     position: absolute;
     z-index: 1000;
-    width: 0%;
-    height: 3px;
-    background-color: #63b6f5;
+    height: 4px;
+    background-color: #1e88e5;
     left: 0;
     top: 0;
+    width: 0%;
+    box-shadow: 0 0 8px rgba(30, 136, 229, 0.7);
+    transition: width linear;
+    will-change: width;
 }
 
-.carousel.next .time,
-.carousel.prev .time {
-    animation: runningTime 3s linear 1 forwards;
+/* Asegurar visibilidad durante el preload (estado inicial) */
+.carousel.carousel-initialized {
+    transition: background-color 0.5s ease;
 }
 
-@keyframes runningTime {
-    from {
-        width: 100%
+.carousel.carousel-initialized .list .item.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.carousel.carousel-initialized .list .item.active img {
+    filter: brightness(0.6);
+}
+
+/* Mejoras para las transiciones */
+.carousel.transitioning .list .item.active .content {
+    transition-duration: 0.5s;
+}
+
+/* Evitar parpadeos en slides no activos */
+.carousel .list .item:not(.active) .content {
+    pointer-events: none;
+    visibility: hidden;
+    opacity: 0;
+}
+
+/* Animaciones para entrada y salida con keyframes */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes fadeOut {
+    from { opacity: 1; }
+    to { opacity: 0; }
+}
+
+/* Ajustes para vista móvil */
+@media screen and (max-width: 768px) {
+    .carousel .list .item .content {
+        width: 85%;
+    left: 50%;
+        transform: translate(-50%, -50%) translateX(-30px);
+        top: 50%;
+        padding: 15px;
+        max-height: 70vh;
     }
-
-    to {
-        width: 0
+    
+    .carousel .list .item.active .content {
+        transform: translate(-50%, -50%) translateX(0);
+    }
+    
+    .carousel .list .item .content .scrollable-content .title {
+        font-size: 1.8em;
+    }
+    
+    .carousel .list .item .content .scrollable-content .des {
+        font-size: 0.9em;
+        -webkit-line-clamp: 2;
+        min-height: 3em; /* Asegurar espacio mínimo para 2 líneas */
+    }
+    
+    .carousel .list .item .content .buttons {
+        gap: 8px;
+    }
+    
+    .carousel .list .item .content .buttons button {
+        padding: 8px 12px;
+        font-size: 0.85em;
+        flex: 1;
+    }
+    
+    .carousel .thumbnail {
+        top: auto;
+        right: 0;
+        bottom: 0;
+        left: 0;
+    width: 100%;
+        height: auto;
+        max-height: none;
+        flex-direction: row;
+        justify-content: center;
+        padding: 10px 0;
+        transform: translateY(100%);
+        mask-image: none;
+    }
+    
+    .carousel:hover .thumbnail {
+        transform: translateY(0);
+        right: 0;
+    }
+    
+    .carousel .thumbnail .item {
+        width: 100px;
+        height: 60px;
+        margin: 0 4px;
+    }
+    
+    .carousel .thumbnail .item:hover {
+        transform: translateY(-5px);
+    }
+    
+    .carousel .arrows button {
+        width: 40px;
+        height: 40px;
     }
 }
 
-
-/* prev click */
-
-.carousel.prev .list .item:nth-child(2) {
+.carousel .thumbnail {
+    position: absolute;
+    right: -70px;
+    top: 50%;
+    transform: translateY(-50%);
     z-index: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    transition: all 0.4s ease;
+    max-height: 65vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 10px 5px;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
+    mask-image: linear-gradient(to bottom, transparent 0%, black 5%, black 95%, transparent 100%);
+    width: 180px; /* Ancho fijo para las miniaturas */
 }
 
-.carousel.prev .list .item:nth-child(2) img {
-    animation: outFrame 0.5s linear 1 forwards;
+.carousel .thumbnail::-webkit-scrollbar {
+    width: 4px;
+}
+
+.carousel .thumbnail::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.carousel .thumbnail::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.3);
+    border-radius: 4px;
+}
+
+.carousel:hover .thumbnail {
+    right: 20px;
+}
+
+.carousel .thumbnail .item {
+    width: 160px;
+    height: 90px;
+    flex-shrink: 0;
+    position: relative;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    filter: brightness(0.65) saturate(0.8);
+    border: 2px solid transparent;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    margin-bottom: 10px; /* Espacio entre miniaturas */
+}
+
+.carousel .thumbnail .item:hover {
+    filter: brightness(0.85) saturate(1);
+    transform: translateX(-5px);
+}
+
+.carousel .thumbnail .item.active {
+    filter: brightness(1) saturate(1.2);
+    border-color: #1976d2;
+}
+
+.carousel .thumbnail .item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Nuevo estilo para el contenido de las miniaturas */
+.carousel .thumbnail .item .content {
     position: absolute;
     bottom: 0;
     left: 0;
+    width: 100%;
+    padding: 40px 8px 8px 8px; /* Padding superior mayor para el degradado */
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.7) 50%, transparent 100%); /* Degradado más intenso */
+    height: 100%; /* Altura total */
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end; /* Alinear contenido en la parte inferior */
 }
 
-@keyframes outFrame {
-    to {
-        width: 150px;
-        height: 220px;
-        bottom: 50px;
-        left: 50%;
-        border-radius: 20px;
+/* Estilo para el título de las miniaturas */
+.carousel .thumbnail .item .content .title {
+    color: white;
+    font-size: 0.85em;
+    font-weight: 600;
+    margin-bottom: 4px;
+    line-height: 1.2;
+    max-height: 2.4em; /* Limitar a 2 líneas */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+}
+
+/* Estilo para la descripción de las miniaturas - oculta en dispositivos pequeños */
+.carousel .thumbnail .item .content .description {
+    display: none; /* Por defecto oculta */
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.7em;
+    line-height: 1.3;
+    max-height: 2.6em; /* Limitar a 2 líneas */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    margin-top: 4px;
+}
+
+/* Mostramos la descripción en pantallas grandes */
+@media screen and (min-width: 1400px) {
+    .carousel .thumbnail {
+        width: 220px;
+    }
+    
+    .carousel .thumbnail .item {
+        width: 200px;
+        height: 110px;
+    }
+    
+    .carousel .thumbnail .item .content .description {
+        display: -webkit-box; /* Mostrar en pantallas grandes */
     }
 }
 
-.carousel.prev .thumbnail .item:nth-child(1) {
-    overflow: hidden;
-    opacity: 0;
-    animation: showThumbnail .10s linear 1 forwards;
+/* Ajustes responsivos para tablet */
+@media screen and (max-width: 992px) {
+    .carousel .thumbnail {
+        width: 150px;
+    }
+    
+    .carousel .thumbnail .item {
+        width: 130px;
+        height: 75px;
+    }
 }
 
-.carousel.next .arrows button,
-.carousel.prev .arrows button {
+/* Ajustes responsivos para móvil */
+@media screen and (max-width: 768px) {
+    .carousel .thumbnail {
+    position: absolute;
+        bottom: 10px;
+    left: 50%;
+        transform: translateX(-50%);
+        top: auto;
+        width: 90%;
+        max-width: 500px;
+        flex-direction: row;
+        max-height: 80px;
+        padding: 8px 5px;
+        overflow-x: auto;
+        overflow-y: hidden;
+        justify-content: center;
+        background: rgba(0, 0, 0, 0.4);
+        backdrop-filter: blur(5px);
+        border-radius: 8px;
+        mask-image: linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%);
+    }
+    
+    .carousel:hover .thumbnail {
+        right: auto;
+    }
+    
+    .carousel .thumbnail .item {
+        width: 100px;
+        height: 60px;
+        margin-bottom: 0;
+        margin-right: 8px;
+    }
+    
+    .carousel .thumbnail .item .content .title {
+        font-size: 0px; /* Ocultar el texto en móvil */
+        margin: 0;
+    }
+    
+    .carousel .thumbnail .item.active {
+        border-color: #ffffff;
+        border-width: 2px;
+    }
+}
+
+.carousel .arrows {
+    position: absolute;
+    bottom: 5%;
+    left: 10%;
+    z-index: 3; /* Asegurar que estén por encima de las miniaturas */
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+.carousel .arrows button {
+    background: rgba(0, 0, 0, 0.6);
+    border: 2px solid rgba(255, 255, 255, 0.7);
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    font-size: 1.4em;
+    color: #fff;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+}
+
+.carousel .arrows button:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: white;
+    transform: scale(1.1);
+}
+
+.carousel .arrows button:active {
+    transform: scale(1);
+}
+
+.carousel::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 35%;
+    background: linear-gradient(to top, rgba(0,0,0,0.6), transparent);
+    z-index: 1;
     pointer-events: none;
 }
 
-.carousel.prev .list .item:nth-child(2) .content .author,
-.carousel.prev .list .item:nth-child(2) .content .title,
-.carousel.prev .list .item:nth-child(2) .content .topic,
-.carousel.prev .list .item:nth-child(2) .content .des,
-.carousel.prev .list .item:nth-child(2) .content .buttons {
-    animation: contentOut 1.5s linear 1 forwards !important;
-}
-
-@keyframes contentOut {
-    to {
-        transform: translateY(-150px);
-        filter: blur(20px);
-        opacity: 0;
-    }
-}
-
-@media screen and (max-width: 678px) {
+/* Ajustes responsivos */
+@media screen and (max-width: 1200px) {
     .carousel .list .item .content {
-        padding-right: 0;
+        width: 70%;
+        padding: 20px 25px;
+        left: 2%;
     }
+    
+    .carousel .thumbnail {
+        max-height: 60vh;
+    }
+    
+    .carousel:hover .thumbnail {
+        right: 10px;
+    }
+    
+    .carousel .thumbnail .item {
+        width: 140px;
+        height: 80px;
+    }
+}
 
+@media screen and (max-width: 992px) {
+    .carousel .list .item .content {
+        width: 80%;
+        max-width: 600px;
+        padding: 20px;
+    }
+    
     .carousel .list .item .content .title {
-        font-size: 30px;
+        font-size: 2em;
+    }
+    
+    .carousel .list .item .content .buttons button {
+        padding: 8px 15px;
+        font-size: 0.9em;
+    }
+    
+    .carousel .thumbnail .item {
+        width: 120px;
+        height: 70px;
+    }
+    
+    .carousel .arrows {
+        bottom: 10px;
+    }
+}
+
+@media screen and (max-width: 576px) {
+    .carousel {
+        height: 450px; /* Altura ajustada para móviles */
+    }
+    
+    .carousel .list .item .content {
+        width: 90%;
+        padding: 12px;
+        top: 50%;
+    }
+    
+    .carousel .list .item.active .content {
+        transform: translate(-50%, -50%) translateX(0);
+    }
+    
+    .carousel .thumbnail {
+        padding: 8px 0;
+    }
+    
+    .carousel:hover .thumbnail {
+        transform: translateY(0);
+    }
+    
+    .carousel .thumbnail .item {
+        width: 80px;
+        height: 45px;
+        margin: 0 3px;
+    }
+    
+    .carousel .arrows {
+        bottom: 70px;
     }
 }
 
@@ -742,18 +718,21 @@ header nav a {
 .see-more-button {
     display: inline-block;
     padding: 10px 20px;
-    background-color: #eee;
+    background-color: #7cbcbc;
     color: #000;
     font-weight: 500;
     border-radius: 4px;
-    text-align: center;
     text-decoration: none;
-    transition: background 0.3s;
+    transition: all 0.3s ease;
+    font-size: 0.95rem;
+    border: none;
+    cursor: pointer;
+    text-align: center;
 }
 
 .see-more-button:hover {
-    background-color: #94CEEB;
-    color: #fff;
+    background-color: #d2e7e7;
+    transform: translateY(-2px);
 }
 
 .login-button {
@@ -1002,87 +981,642 @@ header nav a {
     }
 }
 @media (max-width: 480px) {
-    
     .thumbnail {
-    position: relative;
-    top: 73%;
-    width: max-content;
-    z-index: 100;
-    display: flex;
-    gap: 18px;
-    left: 60%;
+        padding-bottom: 2rem; 
     }
-
+    
     .thumbnail .item {
-    width: 140px;
-    height: 170px;
-    flex-shrink: 0;
-    position: relative;
+        width: 60px;
+        margin-right: 10px;
     }
-
-    header {
-    background: linear-gradient(to bottom, rgba(13, 35, 45, 0.9) 0%, rgba(13, 35, 45, 0.8) 100%);
-    padding: 0.8rem 2rem;
-    position: fixed;
-    width: 100vw;
-    top: 0;
-    z-index: 100;
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-    transition: all 0.3s ease;
-    }
-
-    .logo {
-    position: relative;
-    height: 35px;
-    left: -18px;
-    top: -5px;
-    }
-
+    
+    /* Eliminados estilos de header para usar nav-fix.css */
+    
     .destacados-section {
-    padding: 60px;
-    font-family: 'Arial', sans-serif;
-    color: #0C3958;
+        padding: 3.5rem 1rem 2rem;
     }
-
+    
     .destacados-section h2 {
-    font-size: 35px;
-    font-weight: bold;
-    margin-bottom: 20px;
-    border-bottom: 1px solid #022d52;
-    padding-bottom: 10px;
-    text-align: center;
+        font-size: 1.4rem;
+        text-align: center;
+        margin-bottom: 1.5rem;
     }
-
+    
     .destacados-container {
-    display: flex; /* Lo mantenemos para las noticias secundarias */
-    flex-wrap: wrap; /* Permite que las noticias secundarias pasen a la siguiente línea en pantallas pequeñas */
-    gap: 30px;
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
     }
-
+    
     .carousel .list .item .content .topic {
-    font-size: 2rem;
+        font-size: 0.65rem;
     }
+}
 
-    .arrows {
-    position: absolute;
-    top: 88%;
-    right: 60%;
-    z-index: 100;
-    width: 300px;
-    max-width: 30%;
+/* Eliminados estilos de header y navegación para usar nav-fix.css */
+
+.carousel .list .item {
+    display: none;
+}
+
+.carousel .list .item.active,
+.carousel .list .item[style*="z-index: 1"] {
+    display: block;
+}
+
+/* Estilos de la cabecera principal */
+.main-header {
+    background-color: rgba(0, 0, 0, 0.7);
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(8px);
+}
+
+.header-container {
     display: flex;
-    gap: 10px;
     align-items: center;
-    }
+    justify-content: space-between;
+    padding: 0.4rem 5%;
+    max-width: 1400px;
+    margin: 0 auto;
+}
 
-    header .logo {
-    height: 30px;
+.logo-container img {
+    height: 38px;
     cursor: pointer;
-    filter: brightness(1.2);
-    transition: transform 0.3s ease, filter 0.3s ease;
-    transform: translate(-15%, -50%);
+    transition: transform 0.3s ease;
+}
+
+.logo-container img:hover {
+    transform: scale(1.05);
+}
+
+.main-nav {
+    display: flex;
+    align-items: center;
+}
+
+.nav-menu {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.nav-menu li {
+    position: relative;
+    margin: 0 0.6rem;
+}
+
+.nav-menu a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 0.95rem;
+    font-weight: 500;
+    padding: 0.4rem 0.7rem;
+    transition: color 0.3s ease;
+    display: block;
+}
+
+.nav-menu a:hover {
+    color: #7cbcbc;
+}
+
+.dropdown-toggle {
+    display: flex;
+    align-items: center;
+}
+
+.dropdown-toggle i {
+    margin-left: 5px;
+    font-size: 0.8rem;
+    transition: transform 0.3s ease;
+}
+
+.dropdown:hover .dropdown-toggle i {
+    transform: rotate(180deg);
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: calc(100% + 0.3rem);
+    left: 0;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(10px);
+    min-width: 220px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    padding: 0.6rem 0;
+    border-radius: 0.5rem;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: all 0.3s ease;
+    z-index: 1001;
+    list-style: none;
+}
+
+.dropdown:hover .dropdown-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.dropdown-menu li {
+    margin: 0;
+    width: 100%;
+}
+
+.dropdown-menu a {
+    padding: 0.5rem 1.5rem;
+    color: #e0e0e0;
+    font-weight: 400;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.dropdown-menu a:hover {
+    background-color: rgba(124, 188, 188, 0.2);
+    color: #fff;
+}
+
+.profile-section {
+    display: flex;
+    align-items: center;
+}
+
+.login-btn {
+    background-color: #7cbcbc;
+    color: #000;
+    padding: 0.4rem 1rem;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    font-size: 0.9rem;
+}
+
+.login-btn:hover {
+    background-color: #d2e7e7;
+    transform: translateY(-2px);
+}
+
+.profile-dropdown {
+    position: relative;
+}
+
+.profile-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.profile-btn img, .profile-btn i {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    object-fit: cover;
+    color: #fff;
+    font-size: 1.6rem;
+    transition: transform 0.3s ease;
+}
+
+.profile-btn:hover img, .profile-btn:hover i {
+    transform: scale(1.1);
+}
+
+.dropdown-content {
+    position: absolute;
+    right: 0;
+    top: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(10px);
+    min-width: 180px;
+    border-radius: 0.5rem;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    padding: 0.6rem 0;
+    z-index: 1002;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: all 0.3s ease;
+}
+
+.profile-dropdown:hover .dropdown-content {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(5px);
+}
+
+.dropdown-content a {
+    color: #e0e0e0;
+    padding: 0.5rem 1.5rem;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    transition: all 0.2s ease;
+}
+
+.dropdown-content a:hover {
+    background-color: rgba(124, 188, 188, 0.2);
+    color: #fff;
+}
+
+.dropdown-content a i {
+    margin-right: 10px;
+    font-size: 1rem;
+}
+
+.mobile-menu-toggle {
+    display: none;
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+/* Estilos para scroll */
+.main-header.scrolled {
+    background-color: rgba(0, 0, 0, 0.9);
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Media Queries */
+@media screen and (max-width: 992px) {
+    .mobile-menu-toggle {
+        display: block;
+    }
+    
+    .main-nav {
+        position: fixed;
+        top: 60px;
+        left: 0;
+        width: 100%;
+        background-color: rgba(0, 0, 0, 0.95);
+        backdrop-filter: blur(10px);
+        height: 0;
+        overflow: hidden;
+        transition: height 0.4s ease;
+    }
+    
+    .main-nav.active {
+        height: calc(100vh - 60px);
+        overflow-y: auto;
+    }
+    
+    .nav-menu {
+        flex-direction: column;
+        width: 100%;
+        padding: 1.5rem 0;
+    }
+    
+    .nav-menu li {
+        width: 100%;
+        margin: 0;
+    }
+    
+    .nav-menu a {
+        padding: 0.8rem 2rem;
+        font-size: 1.1rem;
+    }
+    
+    .dropdown-menu {
+        position: static;
+        background: transparent;
+        box-shadow: none;
+        min-width: 100%;
+        opacity: 1;
+        visibility: visible;
+        transform: none;
+        height: 0;
+        overflow: hidden;
+        transition: height 0.3s ease;
+        display: none;
+    }
+    
+    .dropdown.active .dropdown-menu {
+        height: auto;
+        display: block;
+        padding-left: 2rem;
+    }
+    
+    .dropdown-menu a {
+        padding: 0.6rem 2rem;
+    }
+    
+    .dropdown-toggle i {
+        transition: transform 0.3s ease;
+    }
+    
+    .dropdown.active .dropdown-toggle i {
+        transform: rotate(180deg);
+    }
+    
+    .carousel {
+        margin-top: 60px;
+    }
+}
+
+@media screen and (max-width: 576px) {
+    .header-container {
+        padding: 0.4rem 1rem;
+    }
+    
+    .logo-container img {
+        height: 34px;
+    }
+    
+    .login-btn {
+        padding: 0.4rem 0.9rem;
+        font-size: 0.85rem;
+    }
+    
+    .profile-btn img, .profile-btn i {
+        width: 32px;
+        height: 32px;
+        font-size: 1.5rem;
+    }
+}
+
+/* Estilos adicionales para el carousel */
+.carousel .list .item {
+    transition: opacity 0.5s ease;
+}
+
+.carousel .list .item.active,
+.thumbnail .item.active {
+    opacity: 1;
+    z-index: 1;
+}
+
+.carousel .time {
+    position: absolute;
+    z-index: 1000;
+    height: 4px;
+    background: linear-gradient(to right, #3a7bd5, #63b6f5);
+    left: 0;
+    top: 0;
+    width: 0%;
+    box-shadow: 0 0 10px rgba(99, 182, 245, 0.8);
+    transition: width linear;
+    border-top-right-radius: 2px;
+    border-bottom-right-radius: 2px;
+}
+
+.carousel .thumbnail .item {
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.carousel .thumbnail .item:hover {
+    transform: scale(1.05);
+}
+
+.carousel .thumbnail .item.active {
+    transform: scale(1.08);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    border: 2px solid #63b6f5;
+}
+
+.carousel .arrows button {
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Animaciones para las transiciones del carousel */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes fadeOut {
+    from { opacity: 1; }
+    to { opacity: 0; }
+}
+
+.carousel.next .list .item[style*="z-index: 1"],
+.carousel.prev .list .item[style*="z-index: 1"] {
+    animation: fadeIn 0.5s forwards;
+}
+
+.carousel.next .thumbnail .item.active,
+.carousel.prev .thumbnail .item.active {
+    border-color: #63b6f5;
+}
+
+/* Media queries para mejorar la responsividad */
+@media screen and (max-width: 768px) {
+    .carousel .list .item .content {
+        padding-right: 10%;
+        top: 12%;
+        max-height: 75vh;
     }
 
+    .carousel .list .item[style*="z-index: 1"] .content {
+        left: 45%;
+        padding-right: 20%;
+    }
+
+    .carousel .list .item .title,
+    .carousel .list .item .topic {
+        font-size: 2.2em;
+    }
+
+    .carousel .list .item .des {
+        font-size: 1em;
+        max-height: 5em;
+    }
+
+    .carousel .thumbnail {
+        bottom: 30px;
+    }
+
+    .carousel .thumbnail .item {
+        width: 120px;
+        height: 180px;
+    }
+}
+
+@media screen and (max-width: 576px) {
+    .carousel .list .item .content {
+        top: 8%;
+        max-height: 80vh;
+    }
+
+    .carousel .list .item[style*="z-index: 1"] .content {
+        left: 48%;
+        padding-right: 15%;
+    }
+
+    .carousel .list .item .title,
+    .carousel .list .item .topic {
+        font-size: 1.8em;
+    }
+
+    .carousel .list .item .des {
+        font-size: 0.9em;
+        max-height: 4.5em;
+    }
+
+    .see-more-button {
+        padding: 8px 16px;
+        font-size: 0.85rem;
+    }
+
+    .carousel .thumbnail .item {
+        width: 90px;
+        height: 140px;
+    }
+
+    .carousel .thumbnail .item .content .title {
+        font-size: 0.8em;
+    }
+
+    .carousel .thumbnail .item .content .description {
+        font-size: 0.7em;
+    }
+}
+
+.carousel.transitioning .list .item.active .content {
+    animation: fadeInContent 0.8s ease forwards;
+}
+
+@keyframes fadeInContent {
+    from {
+        opacity: 0;
+        transform: translateY(-50%) translateX(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(-50%) translateX(0);
+    }
+}
+
+/* Evitar que el contenido inactivo sea visible */
+.carousel .list .item:not(.active) .content {
+    display: none;
+}
+
+/* Estado inicial optimizado para evitar parpadeos y pantallas negras */
+.carousel.carousel-initialized {
+    transition: background-color 0.5s ease;
+}
+
+.carousel.carousel-initialized .list .item.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.carousel.carousel-initialized .list .item.active img {
+    filter: brightness(0.6); /* Filtro inicial más brillante para la carga */
+}
+
+/* Asegurar que la barra de tiempo aparezca suavemente */
+.carousel.carousel-initialized .time {
+    transition: width 0.5s ease-in; /* Transición suave al inicio */
+}
+
+/* Evitar que el contenido inactivo sea visible pero manteniendo su espacio en el DOM */
+.carousel .list .item:not(.active) .content {
+    pointer-events: none;
+    visibility: hidden;
+}
+
+/* Estilos para métricas de popularidad */
+.carousel .list .item .content .scrollable-content .metrics {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 15px;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 0.9em;
+    background: rgba(14, 47, 90, 0.5);
+    padding: 8px 12px;
+    border-radius: 8px;
+    align-self: flex-start;
+}
+
+.carousel .list .item .content .scrollable-content .metrics span {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.carousel .list .item .content .scrollable-content .metrics .views i {
+    color: #64b5f6;
+}
+
+.carousel .list .item .content .scrollable-content .metrics .likes i {
+    color: #e91e63;
+}
+
+/* Estilos para la categoría */
+.carousel .list .item .content .scrollable-content .topic {
+    display: inline-block;
+    background-color: #1e88e5;
+    color: #fff;
+    font-size: 0.9em;
+    font-weight: 600;
+    padding: 6px 15px;
+    border-radius: 20px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+    box-shadow: 0 2px 10px rgba(30, 136, 229, 0.3);
+}
+
+/* Estilos para el título */
+.carousel .list .item .content .scrollable-content .title {
+    font-size: 2.4em;
+    font-weight: 700;
+    color: #fff;
+    line-height: 1.2;
+    margin-bottom: 5px;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+/* Estilos para la descripción */
+.carousel .list .item .content .scrollable-content .des {
+    font-size: 1em;
+    font-weight: 300;
+    line-height: 1.5;
+    margin: 10px 0 15px 0;
+    color: rgba(255, 255, 255, 0.95);
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    min-height: 4.5em; /* Asegurar espacio mínimo para 3 líneas */
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+/* Contenido activo */
+.carousel .list .item.active .content {
+    opacity: 1;
+    transform: translateY(-50%) translateX(0);
+}
+
+.categoria-icono {
+    width: 20px;
+    height: 20px;
+    margin-right: 8px;
+    vertical-align: middle;
+    border-radius: 4px;
+    object-fit: cover;
+}
+
+.dropdown-menu li a {
+    display: flex;
+    align-items: center;
+    padding: 8px 15px;
+}
+
+.dropdown-menu li a:hover .categoria-icono {
+    transform: scale(1.1);
+    transition: transform 0.2s ease;
 }

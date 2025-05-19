@@ -1,594 +1,710 @@
-/* ======= FONDO GENERAL ======= */
-body {
-    margin: 0;
-    font-family: 'Rubik', sans-serif;
-    background: linear-gradient(to bottom, #0a1e35, #82aed0);
-    padding-top: 100px;
-}
+/* Estilos para la página Acerca de Nosotros */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
 
-/* Estilos para el header basado en style.css */
-header {
-    width: 100%;
-    height: 60px;
-    padding: 40px;
-    box-sizing: border-box;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 1000;
-    background: rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(8px);
-}
-
-header .logo {
-    height: 40px;
-    cursor: pointer;
-}
-
-.search-bar {
-    position: relative;
-    flex-grow: 1;
-    max-width: 500px;
-    margin-left: 30px;
-    display: flex;
-    align-items: center;
-    padding: 6px 12px;
-    border-radius: 20px;
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.5);
-}
-
-.search-bar input {
-    width: 100%;
-    color: #eee;
-    padding: 6px 36px 6px 12px;
-    border: none;
-    outline: none;
-    font-size: 14px;
-    background-color: transparent;
-    font-weight: 400;
-}
-
-.search-bar .search-icon {
-    position: absolute;
-    right: 12px;
-    top: 50%;
-    transform: translateY(-50%);
-    pointer-events: none;
-    font-size: 16px;
-    color: #555;
-}
-
-
-header nav {
-    display: flex;
-    gap: 30px;
-}
-
-.header-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    max-width: 1200px;
-    margin: 0 auto;
-    position: relative;
-}
-
-header .logo {
-    height: 50px;
-    cursor: pointer;
-    filter: brightness(1.2);
-    transition: transform 0.3s ease, filter 0.3s ease;
-}
-
-header .logo:hover {
-    filter: brightness(1.4);
-    transform: scale(1.02);
-}
-
-.profile-section {
-    display: flex;
-    align-items: center;
-}
-
-.login-btn {
-    background: linear-gradient(135deg, #1e90ff, #0077cc);
-    color: white;
-    padding: 0.6rem 1.2rem;
-    border-radius: 50px;
-    text-decoration: none;
-    font-weight: 500;
-    transition: all 0.3s ease;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    letter-spacing: 0.5px;
-    font-size: 0.9rem;
-}
-
-.login-btn:hover {
-    background: linear-gradient(135deg, #0077cc, #1e90ff);
-    transform: translateY(-2px);
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
-}
-
-.profile-dropdown {
-    position: relative;
-    display: inline-block;
-}
-
-.profile-btn {
-    background: none;
-    border: none;
-    cursor: pointer;
-    font-size: 2rem;
-    color: white;
-    padding: 0.5rem;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    transition: transform 0.3s ease;
-}
-
-.profile-btn:hover {
-    transform: translateY(-2px);
-}
-
-.profile-btn img {
-    width: 42px;
-    height: 42px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 2px solid rgba(255, 255, 255, 0.7);
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-    transition: all 0.3s ease;
-}
-
-.profile-btn i {
-    font-size: 1.8rem;
-    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-}
-
-.dropdown-content {
-    display: none;
-    position: absolute;
-    right: 0;
-    top: calc(100% + 10px);
-    background: rgba(13, 35, 45, 0.95);
-    min-width: 220px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
-    border-radius: 12px;
-    z-index: 1;
-    padding: 0.6rem 0;
-    transform: translateY(10px);
-    opacity: 0;
-    transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.dropdown-content:after {
-    content: '';
-    position: absolute;
-    top: -8px;
-    right: 18px;
-    width: 16px;
-    height: 16px;
-    background: rgba(13, 35, 45, 0.95);
-    transform: rotate(45deg);
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-    border-left: 1px solid rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-}
-
-.profile-dropdown:hover .dropdown-content {
-    display: block;
-    transform: translateY(0);
-    opacity: 1;
-}
-
-.dropdown-content a {
-    color: white;
-    padding: 12px 18px;
-    text-decoration: none;
-    display: flex;
-    align-items: center;
-    gap: 0.8rem;
-    transition: all 0.2s ease;
-    position: relative;
-}
-
-.dropdown-content a i {
-    width: 20px;
-    text-align: center;
-    font-size: 1rem;
-    transition: transform 0.2s ease;
-}
-
-.dropdown-content a:hover {
-    background-color: rgba(255, 255, 255, 0.1);
-    padding-left: 22px;
-}
-
-.dropdown-content a:hover i {
-    transform: translateX(3px);
-}
-
-.dropdown-content a:not(:last-child):after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 18px;
-    right: 18px;
-    height: 1px;
-    background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.1), transparent);
-}
-
-.error-message {
-    position: fixed;
-    top: 80px;
-    left: 50%;
-    transform: translateX(-50%);
-    background-color: #ff5252;
-    color: white;
-    padding: 12px 20px;
-    border-radius: 8px;
-    z-index: 1000;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-    animation: slideDown 0.5s ease, fadeOut 0.5s ease 4.5s forwards;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    max-width: 80%;
-}
-
-@keyframes slideDown {
-    from {
-        transform: translate(-50%, -20px);
-        opacity: 0;
-    }
-    to {
-        transform: translate(-50%, 0);
-        opacity: 1;
-    }
-}
-
-@keyframes fadeOut {
-    from {
-        opacity: 1;
-    }
-    to {
-        opacity: 0;
-    }
-}
-
-/* Responsive del header */
-@media (max-width: 768px) {
-    header {
-        padding: 0.8rem 1.5rem;
-    }
-    
-    .logo {
-        height: 40px;
-    }
-    
-    .login-btn {
-        padding: 0.5rem 1rem;
-        font-size: 0.8rem;
-    }
-    
-    .profile-btn img {
-        width: 36px;
-        height: 36px;
-    }
-    
-    .profile-btn i {
-        font-size: 1.6rem;
-    }
-    
-    .dropdown-content {
-        min-width: 200px;
-        right: -10px;
-    }
-    
-    .dropdown-content:after {
-        right: 22px;
-    }
-}
-
-@media (max-width: 480px) {
-    .logo {
-        height: 35px;
-    }
-    
-    .profile-btn img {
-        width: 32px;
-        height: 32px;
-    }
-}
-
-/* ======= HEADER ORIGINAL ======= */
-.search-bar {
-    position: relative;
-    flex-grow: 1;
-    max-width: 500px;
-    margin-left: 30px;
-    display: flex;
-    align-items: center;
-    padding: 6px 12px;
-    border-radius: 20px;
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.5);
-}
-
-.search-bar input {
-    width: 100%;
-    color: #eee;
-    padding: 6px 36px 6px 12px;
-    border: none;
-    outline: none;
-    font-size: 14px;
-    background-color: transparent;
-    font-weight: 400;
-}
-
-.search-bar .search-icon {
-    position: absolute;
-    right: 12px;
-    top: 50%;
-    transform: translateY(-50%);
-    pointer-events: none;
-    font-size: 16px;
-    color: #555;
-}
-
-header nav {
-    display: flex;
-    gap: 30px;
-}
-
-.traductor {
-    background: none;
-    border: 2px solid #eee;
-    color: #eee;
-    padding: 6px 14px;
-    border-radius: 6px;
-    font-weight: 500;
-    font-size: 14px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    position: relative;
-    top: -2px;
-}
-
-header nav a {
-    color: #eee;
-    text-decoration: none;
-    font-weight: 500;
-}
-
-/* ======= CARRUSEL ======= */
-.news-carousel {
-    width: 100%;
-    max-width: 1200px;
-    margin: 4rem auto 2rem;
-    text-align: center;
-}
-
-.news-carousel h2 {
-    color: #003366;
-    font-size: 2rem;
-    margin-bottom: 1.5rem;
-    text-transform: uppercase;
-}
-
-.carousel-wrapper {
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.carousel-container {
-    overflow: hidden;
-    width: 100%;
-    max-width: 1000px;
-}
-
-.carousel-track {
-    display: flex;
-    gap: 20px;
-    transition: transform 0.4s ease-in-out;
-    width: 100%;
-}
-
-/* Tarjeta del equipo */
-.team-card {
-    background-color: #c2e6fb;
-    border-radius: 20px;
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-    flex: 0 0 calc(33.333% - 20px);
-    overflow: hidden;
-    text-align: left;
-    display: flex;
-    flex-direction: column;
-}
-
-.team-card img {
-    width: 100%;
-    height: 200px;
-    object-fit: cover;
-    border-top-left-radius: 20px;
-    border-top-right-radius: 20px;
-}
-
-.card-info {
-    padding: 1rem;
-}
-
-.card-info h3 {
-    font-size: 1.2rem;
-    margin: 0.5rem 0;
-    color: #003366;
-}
-
-.card-info .role {
-    font-size: 0.95rem;
-    color: #004080;
-    font-weight: bold;
-    margin-bottom: 0.5rem;
-}
-
-.card-info p {
-    font-size: 0.9rem;
+/* Ajustes Generales */
+.about {
+    padding-top: 80px;
+    min-height: 100vh;
     color: #333;
+    line-height: 1.6;
+    font-family: 'Poppins', sans-serif;
+    background-color: #94CEEB;
 }
 
-/* Flechas */
-.arrow {
-    background-color: #004080;
-    color: white;
-    border: none;
-    border-radius: 50%;
-    font-size: 24px;
-    width: 40px;
-    height: 40px;
-    cursor: pointer;
-    z-index: 5;
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    transition: background 0.3s ease;
-}
-
-.arrow:hover {
-    background-color: #002244;
-}
-
-.arrow.left {
-    left: 10px;
-}
-
-.arrow.right {
-    right: 10px;
-}
-
-/* Puntos de navegación */
-.carousel-dots {
-    margin-top: 1rem;
-}
-
-.dot {
-    height: 12px;
-    width: 12px;
-    margin: 0 5px;
-    background-color: #bbb;
-    border-radius: 50%;
-    display: inline-block;
-    cursor: pointer;
-}
-
-.dot.active {
-    background-color: #004080;
-}
-
-/* Responsive */
-@media (max-width: 900px) {
-    .team-card {
-        flex: 0 0 calc(50% - 20px);
-    }
-}
-
-@media (max-width: 600px) {
-    .team-card {
-        flex: 0 0 100%;
-    }
-
-    .arrow {
-        display: none;
-    }
-
-    .carousel-track {
-        scroll-behavior: smooth;
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
-    }
-
-    .carousel-container {
-        overflow-x: scroll;
-    }
-}
-
-/* Estilos adicionales para About Us */
-section.about {
-    background: linear-gradient(to bottom, #1f3b5b, #6ca0c6);
-    padding: 3rem 1.5rem;
-    color: white;
-}
-
+/* Sección About */
 .about-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
     max-width: 1200px;
     margin: 0 auto;
+    padding: 5rem 2rem 4rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 3rem;
+    align-items: center;
+    justify-content: space-between;
+    background-color: rgba(0, 0, 0, 0.7);
+    border-radius: 20px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+    color: #ffffff;
 }
 
 .about-text {
     flex: 1;
     min-width: 300px;
-    padding: 1rem;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.8s ease;
 }
 
 .about-text h1 {
-    font-size: 2.5rem;
-    letter-spacing: 3px;
-    margin-bottom: 1rem;
-    text-transform: uppercase;
-    color: #e0f2ff;
+    font-size: 3rem;
+    color: #ffffff;
+    margin-bottom: 1.5rem;
+    font-weight: 700;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+    position: relative;
+}
+
+.about-text h1:after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 0;
+    width: 80px;
+    height: 5px;
+    background: linear-gradient(90deg, #1e90ff, #0077cc);
+    border-radius: 10px;
 }
 
 .about-text p {
-    font-size: 1.05rem;
-    line-height: 1.6;
-    color: #e6eef5;
+    font-size: 1.1rem;
+    color: #f0f0f0;
+    margin-bottom: 2rem;
+    line-height: 1.8;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.15);
+}
+
+.about-text p strong {
+    color: #1e90ff;
+    font-weight: 700;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
 }
 
 .about-images {
-    flex: 0 0 250px;
-    padding: 1rem;
+    flex: 1;
+    min-width: 300px;
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: 2rem;
+    align-items: center;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.8s ease 0.2s;
 }
 
 .about-images img {
+    max-width: 100%;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    transition: transform 0.3s ease;
+}
+
+.about-images img:first-child {
     width: 100%;
     border-radius: 12px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+}
+
+.about-images img:last-child {
+    width: 180px;
+    transform: translateY(-30px);
+    filter: drop-shadow(0 10px 15px rgba(0, 0, 0, 0.2));
+    animation: float 4s ease-in-out infinite;
+}
+
+.about-images img:hover {
+    transform: scale(1.02);
+}
+
+/* Nueva sección del equipo con tarjetas fijas */
+.news-carousel {
+    padding: 4rem 2rem;
+    background: linear-gradient(135deg, #051937, #004d7a, #008793, #00bf72);
+    background-size: 400% 400%;
+    animation: gradientBG 15s ease infinite;
+    max-width: 1200px;
+    margin: 4rem auto;
+    border-radius: 20px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.8s ease 0.4s;
+    position: relative;
+    overflow: hidden;
+}
+
+@keyframes gradientBG {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+.news-carousel::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('../../assets/team/pattern.png');
+    background-size: cover;
+    opacity: 0.08;
+    z-index: 0;
+}
+
+.news-carousel h2 {
+    text-align: center;
+    font-size: 2.8rem;
+    color: #ffffff;
+    margin-bottom: 3rem;
+    position: relative;
+    font-weight: 700;
+    z-index: 1;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+.news-carousel h2:after {
+    content: '';
+    position: absolute;
+    bottom: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 120px;
+    height: 5px;
+    background: linear-gradient(90deg, #3bb2ff, #0077cc);
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(59, 178, 255, 0.5);
+}
+
+/* Contenedor de tarjetas fijo en grid */
+.team-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 40px;
+    max-width: 1100px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+    perspective: 1000px;
+}
+
+/* Estilo de tarjetas de equipo */
+.team-card {
+    position: relative;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+    transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1), box-shadow 0.6s;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transform-style: preserve-3d;
+    height: 450px;
+}
+
+.team-card:hover {
+    transform: translateY(-15px) rotateX(5deg) rotateY(-5deg);
+    box-shadow: 0 35px 60px rgba(0, 0, 0, 0.5), 
+                20px 20px 30px rgba(0, 119, 204, 0.2),
+                -20px -20px 30px rgba(0, 119, 204, 0.2);
+}
+
+.team-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom, 
+                rgba(0, 0, 0, 0.1) 0%, 
+                rgba(0, 0, 0, 0.5) 50%, 
+                rgba(0, 0, 0, 0.8) 100%);
+    z-index: 1;
+    opacity: 0.7;
+    transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.team-card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, 
+                rgba(59, 178, 255, 0.3) 0%, 
+                rgba(0, 119, 204, 0.3) 100%);
+    z-index: 1;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    mix-blend-mode: overlay;
+}
+
+.team-card:hover::before {
+    transform: translateY(-10px);
+}
+
+.team-card:hover::after {
+    opacity: 1;
+}
+
+.team-card img {
+    width: 100%;
+    height: 320px;
     object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.team-card:hover img {
+    transform: scale(1.1);
+}
+
+.team-content {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 30px;
+    z-index: 2;
+    transform: translateY(10px);
+    transition: transform 0.5s ease, padding 0.5s ease;
+}
+
+.team-card:hover .team-content {
+    transform: translateY(-10px) translateZ(30px);
+    padding: 25px 30px 40px;
+}
+
+.team-card h3 {
+    color: #ffffff;
+    font-size: 1.6rem;
+    margin-bottom: 5px;
+    font-weight: 700;
+    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+    transform: translateZ(20px);
+    transition: transform 0.5s ease;
+}
+
+.team-card:hover h3 {
+    transform: translateZ(50px);
+}
+
+.team-card .role {
+    display: inline-block;
+    background: linear-gradient(90deg, #00c3ff, #0077cc);
+    color: white;
+    padding: 6px 15px;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    margin-bottom: 15px;
+    box-shadow: 0 5px 15px rgba(59, 178, 255, 0.4);
+    transform: translateZ(10px);
+    transition: transform 0.5s ease, box-shadow 0.5s ease;
+}
+
+.team-card:hover .role {
+    box-shadow: 0 8px 20px rgba(59, 178, 255, 0.6);
+    transform: translateZ(40px);
+}
+
+.team-card p {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 0.95rem;
+    margin-bottom: 20px;
+    line-height: 1.6;
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: max-height 0.5s ease, opacity 0.5s ease, margin-bottom 0.5s ease, transform 0.5s ease;
+    transform: translateZ(0);
+}
+
+.team-card:hover p {
+    max-height: 100px;
+    opacity: 1;
+    margin-bottom: 20px;
+    transform: translateZ(30px);
+}
+
+.social-links {
+    display: flex;
+    gap: 12px;
+    transform: translateZ(20px);
+    transition: transform 0.5s ease;
+}
+
+.team-card:hover .social-links {
+    transform: translateZ(40px);
+}
+
+.social-links a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(5px);
+    border-radius: 50%;
+    color: white;
+    font-size: 1.1rem;
+    transition: all 0.3s ease, transform 0.5s ease;
+    text-decoration: none;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    position: relative;
+    overflow: hidden;
+}
+
+.social-links a::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, #00c3ff, #0077cc);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: -1;
+}
+
+.social-links a:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 10px 20px rgba(59, 178, 255, 0.6);
+    border-color: transparent;
+}
+
+.social-links a:hover::before {
+    opacity: 1;
+}
+
+.social-links a i {
+    position: relative;
+    z-index: 1;
+}
+
+/* Efecto de imagen de placeholder */
+.image-placeholder {
+    position: relative;
+    width: 100%;
+    height: 320px;
+    background: linear-gradient(45deg, #0c3b5f, #013369);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+.image-placeholder::after {
+    content: '';
+    position: absolute;
+    color: rgba(255, 255, 255, 0.3);
+    font-size: 1.2rem;
+    font-weight: 500;
+    letter-spacing: 2px;
+}
+
+.image-placeholder::before {
+    content: '';
+    position: absolute;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(
+        45deg,
+        transparent,
+        rgba(59, 178, 255, 0.4),
+        transparent
+    );
+    transform: rotate(45deg);
+    animation: shimmer 3s linear infinite;
+}
+
+/* Efecto 3D para el placeholder */
+.image-placeholder {
+    transform-style: preserve-3d;
+    transition: transform 0.5s ease;
+}
+
+.team-card:hover .image-placeholder {
+    transform: translateZ(10px);
+}
+
+/* Efecto de partículas en el fondo */
+.sparkle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.6);
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+    animation: sparkle-animation 20s linear infinite;
+    z-index: 1;
+    pointer-events: none;
+}
+
+@keyframes sparkle-animation {
+    0% {
+        transform: scale(0) translateY(0);
+        opacity: 0;
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        transform: scale(1.5) translateY(-100px);
+        opacity: 0;
+    }
+}
+
+/* Añadir 20 partículas distribuidas aleatoriamente */
+.news-carousel::after {
+    content: '';
+    position: absolute;
+    top: -50px;
+    left: -50px;
+    right: -50px;
+    bottom: -50px;
+    background-image: 
+        radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0) 3%),
+        radial-gradient(circle at 80% 10%, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0) 3%),
+        radial-gradient(circle at 40% 60%, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0) 3%),
+        radial-gradient(circle at 10% 90%, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0) 3%),
+        radial-gradient(circle at 90% 80%, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0) 3%),
+        radial-gradient(circle at 70% 50%, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0) 3%),
+        radial-gradient(circle at 30% 20%, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0) 3%),
+        radial-gradient(circle at 60% 30%, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0) 3%),
+        radial-gradient(circle at 50% 80%, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0) 3%);
+    pointer-events: none;
+    z-index: 1;
+}
+
+@keyframes shimmer {
+    0% {
+        transform: translateX(-100%) rotate(45deg);
+    }
+    100% {
+        transform: translateX(100%) rotate(45deg);
+    }
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(-30px);
+    }
+    50% {
+        transform: translateY(-40px);
+    }
+}
+
+.about-text, .about-images, .news-carousel {
+    opacity: 0;
+    transform: translateY(30px);
+}
+
+.about-text.animate, .about-images.animate, .news-carousel.animate {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.error-message {
+    position: fixed;
+    top: 70px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(220, 53, 69, 0.95);
+    color: white;
+    padding: 15px 30px;
+    border-radius: 10px;
+    z-index: 1000;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    animation: slideIn 0.5s forwards, fadeOut 0.5s 4.5s forwards;
+}
+
+@keyframes slideIn {
+    0% {
+        top: -50px;
+        opacity: 0;
+    }
+    100% {
+        top: 70px;
+        opacity: 1;
+    }
+}
+
+@keyframes fadeOut {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
+/* Responsivo */
+@media (max-width: 992px) {
+    .about-container {
+        padding: 3rem 2rem;
+    }
+    
+    .about-text, .about-images {
+        flex: 100%;
+    }
+    
+    .about-text h1 {
+        font-size: 2.5rem;
+    }
+    
+    .about-text p {
+        font-size: 1rem;
+    }
+    
+    .news-carousel h2 {
+        font-size: 2.3rem;
+    }
+    
+    .team-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
 }
 
 @media (max-width: 768px) {
+    .about-text h1 {
+        font-size: 2rem;
+    }
+    
+    .about-images img:last-child {
+        width: 150px;
+    }
+    
+    .team-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+    }
+    
+    .news-carousel {
+        padding: 3rem 1.5rem;
+    }
+    
+    .team-card h3 {
+        font-size: 1.3rem;
+    }
+}
+
+@media (max-width: 576px) {
     .about-container {
-        flex-direction: column;
-        align-items: flex-start;
+        padding: 2rem 1.5rem;
     }
-
-    .about-images {
-        width: 100%;
-        flex-direction: row;
-        justify-content: center;
-        flex-wrap: wrap;
+    
+    .about-text h1 {
+        font-size: 1.8rem;
     }
+    
+    .about-text p {
+        font-size: 0.95rem;
+    }
+    
+    .news-carousel {
+        padding: 2rem 1rem;
+        margin: 2rem auto;
+    }
+    
+    .news-carousel h2 {
+        font-size: 1.8rem;
+    }
+    
+    .team-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .team-card {
+        max-width: 350px;
+        margin: 0 auto;
+        height: 420px;
+    }
+    
+    .image-placeholder {
+        height: 280px;
+    }
+    
+    .team-card h3 {
+        font-size: 1.4rem;
+    }
+}
 
-    .about-images img {
-        width: 45%;
-        margin: 0.5rem;
+/* Estilos para página Acerca de Nosotros - Sección Partículas */
+
+/* Contenedor de partículas */
+#particles-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: 1;
+    pointer-events: none;
+}
+
+/* Estilo para partículas */
+.sparkle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.6);
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+    animation: sparkle-animation 20s linear infinite;
+    z-index: 1;
+    pointer-events: none;
+}
+
+/* Ajustes para mejorar la sección de equipo */
+.news-carousel {
+    position: relative;
+    z-index: 2;
+}
+
+.news-carousel h2 {
+    position: relative;
+    z-index: 5;
+}
+
+.team-grid {
+    position: relative;
+    z-index: 5;
+}
+
+/* Mejora del efecto hover para tarjetas */
+.team-card::before {
+    transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.team-card:hover::before {
+    transform: translateY(-10px);
+}
+
+/* Adaptar altura de las tarjetas para móviles */
+@media (max-width: 576px) {
+    .team-card {
+        height: 420px;
+    }
+    
+    .image-placeholder {
+        height: 280px;
+    }
+    
+    .team-card h3 {
+        font-size: 1.4rem;
     }
 }
