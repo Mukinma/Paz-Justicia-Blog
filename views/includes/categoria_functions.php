@@ -30,7 +30,17 @@ function obtenerPostsPorCategoria($pdo, $id_categoria, $limit = 6, $offset = 0) 
         $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
         $stmt->execute();
         
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $posts = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        
+        // Normalizar las rutas de las imágenes
+        foreach ($posts as &$post) {
+            // Si la imagen ya tiene '../' al principio, no añadirlo nuevamente
+            if (!empty($post['imagen']) && strpos($post['imagen'], '../') !== 0) {
+                $post['imagen'] = $post['imagen'];
+            }
+        }
+        
+        return $posts;
     } catch (PDOException $e) {
         error_log("Error al obtener posts: " . $e->getMessage());
         return [];
@@ -46,12 +56,12 @@ function obtenerPostsPorCategoria($pdo, $id_categoria, $limit = 6, $offset = 0) 
  */
 function obtenerCategoriaPorSlug($pdo, $slug) {
     try {
-        $sql = "SELECT c.id_categoria, c.nombre, c.descripcion, c.imagen, c.slug, 
+        $sql = "SELECT c.id_categoria, c.nombre, c.descripcion, c.imagen, c.slug, c.imagen_fondo,
                       COUNT(p.id_post) AS total_posts
                FROM categorias c
                LEFT JOIN posts p ON c.id_categoria = p.id_categoria AND p.estado = 'publicado'
                WHERE c.slug = :slug
-               GROUP BY c.id_categoria, c.nombre, c.descripcion, c.imagen, c.slug";
+               GROUP BY c.id_categoria, c.nombre, c.descripcion, c.imagen, c.slug, c.imagen_fondo";
         
         $stmt = $pdo->prepare($sql);
         $stmt->execute([':slug' => $slug]);
@@ -84,7 +94,11 @@ function getProfileSectionHTML() {
     session_start();
     
     if (!isset($_SESSION['usuario'])) {
-        return '<a href="../admin/usuario.php" class="login-btn">Iniciar Sesión</a>';
+        return '<a href="../admin/usuario.php" class="login-btn">
+            <svg class="login-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="m14 6c0 3.309-2.691 6-6 6s-6-2.691-6-6 2.691-6 6-6 6 2.691 6 6zm1 15v-6c0-.551.448-1 1-1h2v-2h-2c-1.654 0-3 1.346-3 3v6c0 1.654 1.346 3 3 3h2v-2h-2c-.552 0-1-.449-1-1zm8.583-3.841-3.583-3.159v3h-3v2h3v3.118l3.583-3.159c.556-.48.556-1.32 0-1.8zm-12.583-2.159c0-.342.035-.677.101-1h-6.601c-2.481 0-4.5 2.019-4.5 4.5v5.5h12.026c-.635-.838-1.026-1.87-1.026-3z"/>
+            </svg>
+        </a>';
     } else {
         $html = '<div class="profile-dropdown">
                   <button class="profile-btn">';

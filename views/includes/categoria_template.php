@@ -34,7 +34,8 @@ $posts = obtenerPostsPorCategoria($pdo, $categoria['id_categoria']);
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="css/style.css" />
     <link rel="stylesheet" href="css/categorias.css">
-    <link rel="stylesheet" href="css/header.css">
+    <link rel="stylesheet" href="css/nav-fix.css">
+    <link rel="stylesheet" href="css/footer.css">
     <link rel="icon" href="../assets/minilogo.png">
     <meta name="description" content="<?php echo htmlspecialchars(substr($categoria['descripcion'], 0, 160)); ?>">
     <meta property="og:title" content="<?php echo htmlspecialchars($categoria['nombre']); ?> - Peace in Progress">
@@ -106,7 +107,8 @@ $posts = obtenerPostsPorCategoria($pdo, $categoria['id_categoria']);
 
     <!-- Hero principal con efecto parallax -->
     <section class="hero-section" style="background-image: url('<?php 
-        $imagen_bg = isset($categoria_imagen) ? $categoria_imagen : 
+        // Determinar qué imagen usar como fondo, priorizando imagen_fondo
+        $imagen_bg = !empty($categoria['imagen_fondo']) ? '../' . $categoria['imagen_fondo'] : 
             (!empty($categoria['imagen']) ? '../' . $categoria['imagen'] : '../assets/image-placeholder.png');
         echo htmlspecialchars($imagen_bg); 
     ?>');">

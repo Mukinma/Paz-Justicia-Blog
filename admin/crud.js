@@ -250,73 +250,186 @@ document.addEventListener('DOMContentLoaded', function() {
     .then(response => response.json())
     .then(data => {
         if (data.success) {
+            console.log('Datos de categoría recibidos:', data.categoria);
                             // Llenar el formulario con los datos
                             document.getElementById('edit-category-id').value = data.categoria.id_categoria;
                             document.getElementById('edit-category-nombre').value = data.categoria.nombre;
                             document.getElementById('edit-category-descripcion').value = data.categoria.descripcion || '';
-                            
-                            // Manejar la imagen de la categoría si existe
-                            const imagenContainer = document.getElementById('category-current-image-container');
-                            const imagenElement = document.getElementById('category-current-image');
-                            const imagenActualInput = document.getElementById('edit-category-imagen-actual');
-                            
-                            if (data.categoria.imagen) {
-                                // Asignar la imagen actual al campo oculto
-                                imagenActualInput.value = data.categoria.imagen;
-                                
-                                // Mostrar la imagen actual
-                                // Verificar si la ruta ya contiene "../" para evitar rutas duplicadas
-                                let rutaImagen = data.categoria.imagen;
-                                if (rutaImagen.startsWith('../')) {
-                                    imagenElement.src = rutaImagen;
-                                } else {
-                                    imagenElement.src = '../' + rutaImagen;
-                                }
-                                
-                                imagenContainer.style.display = 'block';
-                                
-                                // Añadir manejador de errores para la imagen
-                                imagenElement.onerror = function() {
-                                    console.error('Error al cargar la imagen de categoría:', this.src);
-                                    this.onerror = null;
-                                    this.src = '../assets/image-placeholder.png';
-                                    imagenContainer.querySelector('small').textContent = 'No se pudo cargar la imagen';
-                                };
-                            } else {
-                                // Si no hay imagen, ocultar el contenedor
-                                imagenContainer.style.display = 'none';
-                            }
-                            
-                            // Configurar la previsualización de la nueva imagen
-                            const imageInput = document.getElementById('edit-category-imagen');
-                            const imagePreview = document.getElementById('preview_category_image');
-                            
-                            if (imageInput && imagePreview) {
-                                imageInput.addEventListener('change', function() {
-                                    if (this.files && this.files[0]) {
-                                        const reader = new FileReader();
-                                        reader.onload = function(e) {
-                                            imagePreview.src = e.target.result;
-                                            imagePreview.style.display = 'block';
-                                            imagePreview.classList.add('active');
-                                        }
-                                        reader.readAsDataURL(this.files[0]);
-                                    } else {
-                                        imagePreview.src = '';
-                                        imagePreview.style.display = 'none';
-                                        imagePreview.classList.remove('active');
-                                    }
-                                });
-                            }
+            
+            // Manejar la imagen de la categoría si existe
+            const imagenContainer = document.getElementById('category-current-image-container');
+            const imagenElement = document.getElementById('category-current-image');
+            const imagenActualInput = document.getElementById('edit-category-imagen-actual');
+            
+            // Manejar la imagen de fondo de la categoría si existe
+            const imagenFondoContainer = document.getElementById('category-current-bg-container');
+            const imagenFondoElement = document.getElementById('category-current-bg');
+            const imagenFondoActualInput = document.getElementById('edit-category-imagen-fondo-actual');
+            
+            if (data.categoria.imagen) {
+                console.log('Imagen encontrada:', data.categoria.imagen);
+                // Asignar la imagen actual al campo oculto
+                imagenActualInput.value = data.categoria.imagen;
+                
+                // Mostrar la imagen actual
+                let rutaImagen = data.categoria.imagen;
+                if (rutaImagen.startsWith('../')) {
+                    imagenElement.src = rutaImagen;
+                    console.log('Usando ruta relativa existente:', rutaImagen);
+                } else {
+                    imagenElement.src = '../' + rutaImagen;
+                    console.log('Prefijando ruta con "../":', '../' + rutaImagen);
+                }
+                
+                imagenContainer.style.display = 'block';
+                
+                // Añadir manejador de errores para la imagen
+                imagenElement.onerror = function() {
+                    console.error('Error al cargar la imagen de categoría:', this.src);
+                    this.onerror = null;
+                    this.src = '../assets/image-placeholder.png';
+                    imagenContainer.querySelector('small').textContent = 'No se pudo cargar la imagen';
+                };
+                
+                // Añadir manejador para verificar que la imagen se cargó correctamente
+                imagenElement.onload = function() {
+                    console.log('Imagen cargada correctamente:', this.src);
+                    imagenContainer.querySelector('small').textContent = 'Esta es la imagen actual de la categoría';
+                };
+            } else {
+                console.log('La categoría no tiene imagen');
+                // Si no hay imagen, ocultar el contenedor
+                imagenContainer.style.display = 'none';
+                // Limpiar el campo oculto
+                imagenActualInput.value = '';
+            }
+            
+            // Manejar la imagen de fondo si existe
+            if (data.categoria.imagen_fondo) {
+                console.log('Imagen de fondo encontrada:', data.categoria.imagen_fondo);
+                // Asignar la imagen de fondo actual al campo oculto
+                imagenFondoActualInput.value = data.categoria.imagen_fondo;
+                
+                // Mostrar la imagen de fondo actual
+                let rutaImagenFondo = data.categoria.imagen_fondo;
+                if (rutaImagenFondo.startsWith('../')) {
+                    imagenFondoElement.src = rutaImagenFondo;
+                    console.log('Usando ruta relativa existente para fondo:', rutaImagenFondo);
+                } else {
+                    imagenFondoElement.src = '../' + rutaImagenFondo;
+                    console.log('Prefijando ruta de fondo con "../":', '../' + rutaImagenFondo);
+                }
+                
+                imagenFondoContainer.style.display = 'block';
+                
+                // Añadir manejador de errores para la imagen de fondo
+                imagenFondoElement.onerror = function() {
+                    console.error('Error al cargar la imagen de fondo:', this.src);
+                    this.onerror = null;
+                    this.src = '../assets/image-placeholder.png';
+                    imagenFondoContainer.querySelector('small').textContent = 'No se pudo cargar la imagen de fondo';
+                };
+                
+                // Añadir manejador para verificar que la imagen de fondo se cargó correctamente
+                imagenFondoElement.onload = function() {
+                    console.log('Imagen de fondo cargada correctamente:', this.src);
+                    imagenFondoContainer.querySelector('small').textContent = 'Esta es la imagen de fondo actual de la categoría';
+                };
+            } else {
+                console.log('La categoría no tiene imagen de fondo');
+                // Si no hay imagen de fondo, ocultar el contenedor
+                imagenFondoContainer.style.display = 'none';
+                // Limpiar el campo oculto
+                imagenFondoActualInput.value = '';
+            }
+            
+            // Configurar la previsualización de la nueva imagen
+            const imageInput = document.getElementById('edit-category-imagen');
+            const imagePreview = document.getElementById('preview_category_image');
+            
+            // Configurar la previsualización de la nueva imagen de fondo
+            const imageFondoInput = document.getElementById('edit-category-imagen-fondo');
+            const imageFondoPreview = document.getElementById('preview_category_bg');
+            
+            // Limpiar previsualización anterior
+            imagePreview.src = '';
+            imagePreview.style.display = 'none';
+            imagePreview.classList.remove('active');
+            
+            imageFondoPreview.src = '';
+            imageFondoPreview.style.display = 'none';
+            imageFondoPreview.classList.remove('active');
+            
+            // Limpiar el input de archivo
+            imageInput.value = '';
+            imageFondoInput.value = '';
+            
+            if (imageInput && imagePreview) {
+                // Remover oyentes anteriores para evitar duplicados
+                imageInput.removeEventListener('change', handleImagePreview);
+                
+                // Función para manejar la previsualización
+                function handleImagePreview() {
+                    if (this.files && this.files.length > 0) {
+                        console.log('Nueva imagen seleccionada:', this.files[0].name);
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            imagePreview.src = e.target.result;
+                            imagePreview.style.display = 'block';
+                            imagePreview.classList.add('active');
+                            console.log('Previsualización generada');
+                        }
+                        reader.readAsDataURL(this.files[0]);
+                    } else {
+                        imagePreview.src = '';
+                        imagePreview.style.display = 'none';
+                        imagePreview.classList.remove('active');
+                        console.log('No hay imagen seleccionada');
+                    }
+                }
+                
+                // Añadir el oyente
+                imageInput.addEventListener('change', handleImagePreview);
+            }
+            
+            // Manejar previsualización de imagen de fondo
+            if (imageFondoInput && imageFondoPreview) {
+                // Remover oyentes anteriores para evitar duplicados
+                imageFondoInput.removeEventListener('change', handleBgImagePreview);
+                
+                // Función para manejar la previsualización de imagen de fondo
+                function handleBgImagePreview() {
+                    if (this.files && this.files.length > 0) {
+                        console.log('Nueva imagen de fondo seleccionada:', this.files[0].name);
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            imageFondoPreview.src = e.target.result;
+                            imageFondoPreview.style.display = 'block';
+                            imageFondoPreview.classList.add('active');
+                            console.log('Previsualización de fondo generada');
+                        }
+                        reader.readAsDataURL(this.files[0]);
+                    } else {
+                        imageFondoPreview.src = '';
+                        imageFondoPreview.style.display = 'none';
+                        imageFondoPreview.classList.remove('active');
+                        console.log('No hay imagen de fondo seleccionada');
+                    }
+                }
+                
+                // Añadir el oyente
+                imageFondoInput.addEventListener('change', handleBgImagePreview);
+            }
                             
                             // Mostrar el modal
                             openModal(modalEditCategory);
         } else {
+            console.error('Error al obtener datos de la categoría:', data.message);
                             showNotification(data.message || 'Error al cargar la categoría', 'error');
         }
     })
     .catch(error => {
-        console.error('Error:', error);
+        console.error('Error en la petición:', error);
                         showNotification('Error al cargar la categoría', 'error');
                     });
             });
@@ -362,19 +475,52 @@ document.addEventListener('DOMContentLoaded', function() {
                 console.log('Datos a enviar:', { 
                     id, 
                     nombre, 
-                    descripcion: editCategoryForm.querySelector('#edit-category-descripcion').value 
+                    descripcion: editCategoryForm.querySelector('#edit-category-descripcion').value,
+                    imagen_actual: editCategoryForm.querySelector('#edit-category-imagen-actual').value,
+                    imagen_fondo_actual: editCategoryForm.querySelector('#edit-category-imagen-fondo-actual').value
                 });
+                
+                // Verificar si se está enviando una nueva imagen
+                const imagenInput = editCategoryForm.querySelector('#edit-category-imagen');
+                if (imagenInput.files && imagenInput.files.length > 0) {
+                    console.log('Nueva imagen a enviar:', imagenInput.files[0].name, 'tamaño:', imagenInput.files[0].size);
+                } else {
+                    console.log('No hay nueva imagen, se mantendrá la actual');
+                }
+                
+                // Verificar si se está enviando una nueva imagen de fondo
+                const imagenFondoInput = editCategoryForm.querySelector('#edit-category-imagen-fondo');
+                if (imagenFondoInput.files && imagenFondoInput.files.length > 0) {
+                    console.log('Nueva imagen de fondo a enviar:', imagenFondoInput.files[0].name, 'tamaño:', imagenFondoInput.files[0].size);
+                    
+                    // Verificar si el tamaño del archivo supera el límite permitido (20MB)
+                    if (imagenFondoInput.files[0].size > 20 * 1024 * 1024) {
+                        console.error('El tamaño del archivo de imagen de fondo excede el límite de 20MB');
+                        showNotification('La imagen de fondo es demasiado grande. El tamaño máximo es 20MB', 'error');
+                        return;
+                    }
+                } else {
+                    console.log('No hay nueva imagen de fondo, se mantendrá la actual');
+                }
                 
                 // Crear FormData (esto conserva los nombres de los campos del formulario)
                 const formData = new FormData(editCategoryForm);
                 
-                // Enviar la solicitud con modo de depuración
+                // Depurar los datos que se enviarán
+                console.log('Datos FormData a enviar:');
+                for (const [key, value] of formData.entries()) {
+                    if ((key === 'imagen' || key === 'imagen_fondo') && value instanceof File) {
+                        console.log(`${key}: Archivo ${value.name} (${value.size} bytes)`);
+                    } else {
+                        console.log(`${key}: ${value}`);
+                    }
+                }
+                
+                // Enviar la solicitud
+                console.log('Enviando solicitud a editar_categoria.php');
                 const response = await fetch('editar_categoria.php', {
                     method: 'POST',
-                    body: formData,
-                    headers: {
-                        // No agregar Content-Type para FormData, el navegador lo establece automáticamente
-                    }
+                    body: formData
                 });
                 
                 console.log('Estado de la respuesta:', response.status, response.statusText);
@@ -401,6 +547,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         closeAllModals();
                         window.location.reload();
     } else {
+                        console.error('Error en la respuesta:', data.message);
                         showNotification(data.message || 'Error al editar la categoría', 'error');
                     }
                 } catch (jsonError) {
@@ -648,8 +795,14 @@ document.addEventListener('DOMContentLoaded', function() {
         const newCategoryImage = document.getElementById('categoria_imagen');
         const previewNewCategoryImage = document.getElementById('preview_new_category_image');
         
+        const newCategoryBgImage = document.getElementById('categoria_imagen_fondo');
+        const previewNewCategoryBgImage = document.getElementById('preview_new_category_bg');
+        
         const editCategoryImage = document.getElementById('edit-category-imagen');
         const previewEditCategoryImage = document.getElementById('preview_category_image');
+        
+        const editCategoryBgImage = document.getElementById('edit-category-imagen-fondo');
+        const previewEditCategoryBgImage = document.getElementById('preview_category_bg');
         
         // Configurar cada input de archivo para mostrar una previsualización
         setupImagePreview(imagenIlustrativa, previewIlustrativa);
@@ -657,7 +810,9 @@ document.addEventListener('DOMContentLoaded', function() {
         setupImagePreview(editImagenIlustrativa, previewEditIlustrativa);
         setupImagePreview(editImagenBackground, previewEditBackground);
         setupImagePreview(newCategoryImage, previewNewCategoryImage);
+        setupImagePreview(newCategoryBgImage, previewNewCategoryBgImage);
         setupImagePreview(editCategoryImage, previewEditCategoryImage);
+        setupImagePreview(editCategoryBgImage, previewEditCategoryBgImage);
     }
     
     // Función auxiliar para configurar la previsualización de imagen

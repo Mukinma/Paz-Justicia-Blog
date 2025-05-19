@@ -1,0 +1,446 @@
+/* 
+ * ========================================================================
+ * ESTILOS PRINCIPALES PARA HEADER Y NAVEGACIÓN - PEACE IN PROGRESS
+ * ========================================================================
+ * Este archivo contiene todos los estilos para:
+ * - Header principal
+ * - Barra de navegación
+ * - Menús desplegables
+ * - Botón de perfil y su menú
+ * - Iconos y logos
+ * - Adaptación responsive
+ * 
+ * IMPORTANTE: Este es el único archivo que debe contener estilos relacionados
+ * con la navegación para mantener la consistencia en todas las páginas.
+ * ========================================================================
+ */
+
+/* Estilos para corregir el header y el menú desplegable */
+header.main-header {
+    width: 100%;
+    height: 70px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    transition: all 0.3s ease;
+}
+
+header.main-header.scrolled {
+    height: 60px;
+    background-color: rgba(0, 0, 0, 0.8);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.header-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 40px;
+    max-width: 1400px;
+    margin: 0 auto;
+    height: 100%;
+}
+
+.logo-container {
+    display: flex;
+    align-items: center;
+    height: 100%;
+}
+
+.logo {
+    height: 40px;
+    width: auto;
+    transition: all 0.3s ease;
+}
+
+header.main-header.scrolled .logo {
+    height: 35px;
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: calc(100% + 0.3rem);
+    left: 0;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(10px);
+    min-width: 220px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    padding: 0.6rem 0;
+    border-radius: 0.5rem;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: all 0.3s ease;
+    z-index: 1001;
+    list-style: none;
+    display: block;
+    flex-direction: column;
+}
+
+.dropdown:hover .dropdown-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.dropdown-menu li {
+    margin: 0;
+    width: 100%;
+    display: block;
+    margin-bottom: 2px;
+}
+
+.dropdown-menu li + li {
+    margin-top: 2px;
+}
+
+.dropdown-menu a {
+    padding: 0.5rem 1.5rem;
+    color: #e0e0e0;
+    font-weight: 400;
+    width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+}
+
+.dropdown-menu a:hover, .dropdown-menu a.active {
+    background-color: rgba(124, 188, 188, 0.2);
+    color: #fff;
+}
+
+.categoria-icono {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+    object-fit: contain;
+}
+
+.dropdown-content {
+    position: absolute;
+    top: calc(100% + 10px);
+    right: 0;
+    background-color: rgba(0, 0, 0, 0.85);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    border-radius: 8px;
+    min-width: 200px;
+    z-index: 1002;
+    visibility: hidden;
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+    padding: 0;
+}
+
+.dropdown-content::before {
+    content: '';
+    position: absolute;
+    top: -10px;
+    right: 10px;
+    width: 20px;
+    height: 10px;
+    background-color: transparent;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom: 10px solid rgba(0, 0, 0, 0.85);
+    z-index: 1003;
+    pointer-events: none;
+}
+
+.dropdown-content a {
+    color: #fff;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.95rem;
+    transition: all 0.2s ease;
+}
+
+.dropdown-content a i {
+    width: 18px;
+    text-align: center;
+    font-size: 0.9rem;
+    color: #7cbcbc;
+}
+
+.dropdown-content a:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.dropdown-content a:first-child {
+    border-radius: 8px 8px 0 0;
+}
+
+.dropdown-content a:last-child {
+    border-radius: 0 0 8px 8px;
+}
+
+.profile-dropdown:hover .dropdown-content,
+.dropdown-content.active {
+    visibility: visible;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Área invisible ampliada para el hover */
+.profile-dropdown::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: -30px;
+    width: calc(100% + 60px);
+    height: 25px;
+    background: transparent;
+    z-index: 1000;
+}
+
+/* Estilos para el icono de login */
+.login-btn {
+    background-color: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: #fff;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    text-decoration: none;
+}
+
+.login-btn .login-icon {
+    width: 20px;
+    height: 20px;
+    fill: white;
+    transition: all 0.3s ease;
+}
+
+.login-btn:hover {
+    background-color: #7cbcbc;
+    border-color: #7cbcbc;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(124, 188, 188, 0.3);
+}
+
+.login-btn:hover .login-icon {
+    transform: scale(1.1);
+}
+
+.main-nav {
+    display: flex;
+    align-items: center;
+}
+
+.nav-menu {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    gap: 30px;
+}
+
+.nav-menu li {
+    position: relative;
+    margin: 0;
+}
+
+.nav-menu a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 0.95rem;
+    font-weight: 500;
+    padding: 8px 0;
+    position: relative;
+    transition: all 0.3s ease;
+    display: block;
+    margin-left: 8px;
+}
+
+.nav-menu a:hover, .nav-menu a.active {
+    color: #7cbcbc;
+}
+
+.dropdown-toggle {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.dropdown-toggle i {
+    font-size: 12px;
+    transition: transform 0.3s ease;
+    opacity: 0.7;
+}
+
+/* Sección de perfil mejorada */
+.profile-section {
+    position: relative;
+    display: flex;
+    align-items: center;
+    height: 100%;
+    margin-left: 10px;
+}
+
+/* Contenedor del dropdown de perfil */
+.profile-dropdown {
+    position: relative;
+    display: block; 
+}
+
+/* Botón de perfil mejorado */
+.profile-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px;
+    margin: 0;
+    width: 44px;
+    height: 44px;
+    position: relative;
+    z-index: 1003;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+}
+
+.profile-btn:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Imagen de perfil */
+.profile-btn img {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid rgba(255, 255, 255, 0.7);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+}
+
+/* Icono de usuario (cuando no hay avatar) */
+.profile-btn .fa-user-circle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 38px;
+    width: 38px;
+    height: 38px;
+    color: #ffffff;
+    transition: all 0.3s ease;
+}
+
+.profile-btn:hover img,
+.profile-btn:hover .fa-user-circle {
+    transform: scale(1.05);
+}
+
+.profile-btn:hover img {
+    border-color: #7cbcbc;
+}
+
+.avatar-initial {
+    background-color: #7cbcbc;
+    color: #fff;
+    font-weight: bold;
+}
+
+.mobile-menu-toggle {
+    display: none;
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+/* Estilos específicos para páginas */
+.about {
+    padding-top: 90px !important;
+}
+
+.contact-section {
+    padding-top: 90px !important;
+}
+
+.category-header {
+    padding-top: 90px !important;
+}
+
+/* Media queries */
+@media screen and (max-width: 992px) {
+    .mobile-menu-toggle {
+        display: block;
+    }
+    
+    .main-nav {
+        position: fixed;
+        top: 70px;
+        left: 0;
+        right: 0;
+        background-color: rgba(0, 0, 0, 0.9);
+        padding: 20px;
+        flex-direction: column;
+        transform: translateY(-100%);
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
+    }
+    
+    .main-nav.active {
+        transform: translateY(0);
+        opacity: 1;
+        visibility: visible;
+    }
+    
+    .nav-menu {
+        flex-direction: column;
+        width: 100%;
+        gap: 15px;
+    }
+    
+    .nav-menu li {
+        width: 100%;
+        text-align: center;
+    }
+    
+    .dropdown-menu {
+        position: static;
+        background: rgba(0, 0, 0, 0.2);
+        width: 100%;
+        display: none;
+        box-shadow: none;
+        padding: 0;
+        transform: none;
+        opacity: 1;
+        visibility: visible;
+    }
+    
+    .dropdown.active .dropdown-menu {
+        display: block;
+    }
+    
+    .dropdown-menu li {
+        display: block;
+        width: 100%;
+        margin-bottom: 0;
+    }
+    
+    .dropdown-menu a {
+        padding: 12px 15px 12px 30px;
+        font-size: 0.9rem;
+        display: flex;
+        color: rgba(255, 255, 255, 0.9);
+    }
+} 

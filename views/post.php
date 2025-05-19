@@ -135,7 +135,22 @@ if (strpos($background_image, '../') === 0) {
     <title><?php echo htmlspecialchars($post['titulo']); ?> - Peace In Progress</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/post_style.css">
+    <link rel="stylesheet" href="css/nav-fix.css">
+    <link rel="stylesheet" href="css/footer.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Estilos para el icono de login */
+        .login-icon {
+            width: 20px;
+            height: 20px;
+            fill: white;
+            transition: all 0.3s ease;
+        }
+        
+        .login-btn:hover .login-icon {
+            transform: scale(1.1);
+        }
+    </style>
     <!-- Meta tags -->
     <meta property="og:title" content="<?php echo htmlspecialchars($post['titulo']); ?> - Peace in Progress">
     <meta property="og:description" content="<?php echo htmlspecialchars(substr($post['resumen'], 0, 160)); ?>">
@@ -156,22 +171,10 @@ if (strpos($background_image, '../') === 0) {
         echo '<div class="notification error"><i class="fas fa-exclamation-circle"></i>' . htmlspecialchars($_SESSION['error']) . '</div>';
         unset($_SESSION['error']);
     }
+    
+    // Incluir el encabezado estandarizado
+    include 'includes/header.php';
     ?>
-
-    <header>
-        <img src="../assets/logo.png" alt="Logo Peace In Progress" class="logo">
-
-        <div class="search-bar">
-            <input type="text" placeholder="Buscar artículos...">
-            <i class="fas fa-search search-icon"></i>
-        </div>
-
-        <nav>
-            <a href="../index.php">Inicio</a>
-            <a href="#">Categorías</a>
-            <a href="#">Contacto</a>
-        </nav>
-    </header>
 
     <div class="article-header" style="background-image: url('../<?php echo htmlspecialchars($background_image); ?>');">
         <h1><?php echo htmlspecialchars($post['titulo']); ?></h1>
@@ -197,24 +200,30 @@ if (strpos($background_image, '../') === 0) {
                 if (strpos($ruta_img, '../') === 0) {
                     $ruta_img = substr($ruta_img, 3);
                 }
+                
+                // Intentar verificar la existencia del archivo
                 if (file_exists("../{$ruta_img}")) {
                     $mostrar_imagen_destacada = true;
                 } else {
-                    error_log("Imagen destacada no encontrada: ../{$ruta_img}");
+                    // Si no existe en la ruta absoluta, intentar buscar en assets/
+                    $ruta_alternativa = "assets/" . basename($ruta_img);
+                    if (file_exists("../{$ruta_alternativa}")) {
+                        $ruta_img = $ruta_alternativa;
+                        $mostrar_imagen_destacada = true;
+                    } else {
+                        error_log("Imagen destacada no encontrada: ../{$ruta_img} ni ../{$ruta_alternativa}");
+                    }
                 }
             }
             ?>
             
             <?php if ($mostrar_imagen_destacada): ?>
             <?php 
-            // Eliminamos "../" al principio si existe para evitar doble ruta
-            $ruta_img_destacada = $post['imagen_destacada'];
-            if (strpos($ruta_img_destacada, '../') === 0) {
-                $ruta_img_destacada = substr($ruta_img_destacada, 3);
-            }
+            // Preparar la ruta para mostrar
+            $ruta_img_destacada = $ruta_img;
             ?>
             <figure>
-                <img src="../<?php echo htmlspecialchars($ruta_img_destacada); ?>" alt="<?php echo htmlspecialchars($post['titulo']); ?>" class="featured-image">
+                <img src="../<?php echo htmlspecialchars($ruta_img_destacada); ?>" alt="<?php echo htmlspecialchars($post['titulo']); ?>" class="featured-image" onerror="this.src='../assets/image-placeholder.png'">
                 <figcaption>Imagen destacada: <?php echo htmlspecialchars($post['titulo']); ?></figcaption>
             </figure>
             <?php endif; ?>
@@ -230,7 +239,7 @@ if (strpos($background_image, '../') === 0) {
                 </div>
             </div>
 
-            <a href="../index.php" class="back">← Volver al inicio</a>
+            <a href="../views/blog.php" class="back">← Volver al blog</a>
             
             <!-- Sección de comentarios -->
             <div class="comments-section">
@@ -254,15 +263,15 @@ if (strpos($background_image, '../') === 0) {
                             </div>
                             <div class="comment-text">
                                 <?php echo htmlspecialchars($comentario['contenido']); ?>
-                            </div>
-                        </div>
+        </div>
+            </div>
                     </div>
                     <?php endforeach; ?>
                 </div>
                 <?php else: ?>
                 <div class="no-comments">
                     <p>No hay comentarios todavía. ¡Sé el primero en comentar!</p>
-                </div>
+                    </div>
                 <?php endif; ?>
                 
                 <!-- Formulario para añadir comentarios -->
@@ -279,9 +288,9 @@ if (strpos($background_image, '../') === 0) {
                         <p>Debes <a href="../admin/usuario.php">iniciar sesión</a> para comentar.</p>
                     </div>
                     <?php endif; ?>
+                    </div>
                 </div>
             </div>
-        </div>
 
         <div class="sidebar">
             <div class="card">
@@ -295,29 +304,36 @@ if (strpos($background_image, '../') === 0) {
                     <?php foreach ($posts_relacionados as $relacionado): ?>
                     <?php 
                     $mostrar_imagen_relacionada = false;
+                    $ruta_img_rel = '';
+                    
                     if (!empty($relacionado['imagen_destacada'])) {
                         $ruta_rel = $relacionado['imagen_destacada'];
                         // Si la ruta ya incluye "../assets/", eliminamos el "../" al verificar la existencia
                         if (strpos($ruta_rel, '../') === 0) {
                             $ruta_rel = substr($ruta_rel, 3);
                         }
+                        
+                        // Intentar verificar la existencia del archivo
                         if (file_exists("../{$ruta_rel}")) {
                             $mostrar_imagen_relacionada = true;
+                            $ruta_img_rel = $ruta_rel;
                         } else {
-                            error_log("Imagen de post relacionado no encontrada: ../{$ruta_rel}");
+                            // Si no existe en la ruta absoluta, intentar buscar en assets/
+                            $ruta_alternativa = "assets/" . basename($ruta_rel);
+                            if (file_exists("../{$ruta_alternativa}")) {
+                                $ruta_img_rel = $ruta_alternativa;
+                                $mostrar_imagen_relacionada = true;
+                    } else {
+                                error_log("Imagen de post relacionado no encontrada: ../{$ruta_rel} ni ../{$ruta_alternativa}");
+                            }
                         }
                     }
                     ?>
                     <div class="carousel-card">
                         <?php if ($mostrar_imagen_relacionada): ?>
-                        <?php 
-                        // Eliminamos "../" al principio si existe para evitar doble ruta
-                        $ruta_img_rel = $relacionado['imagen_destacada'];
-                        if (strpos($ruta_img_rel, '../') === 0) {
-                            $ruta_img_rel = substr($ruta_img_rel, 3);
-                        }
-                        ?>
                         <div class="carousel-img" style="background-image: url('../<?php echo htmlspecialchars($ruta_img_rel); ?>');"></div>
+                        <?php else: ?>
+                        <div class="carousel-img" style="background-image: url('../assets/image-placeholder.png');"></div>
                         <?php endif; ?>
                         <h4><?php echo htmlspecialchars($relacionado['titulo']); ?></h4>
                         <p><?php echo substr(htmlspecialchars($relacionado['resumen']), 0, 50) . '...'; ?></p>
@@ -337,124 +353,15 @@ if (strpos($background_image, '../') === 0) {
                 <a href="#"><i class="fab fa-instagram"></i></a>
             </div>
             </div>
-    </div>
+        </div>
 
     <div id="message" class="message">Enlace copiado al portapapeles</div>
 
-    <footer class="footer">
-        <div class="container-footer">
-                <div class="menu-footer">
-                    <div class="contact-info">
-                        <p class="title-footer">Información de Contacto</p>
-                        <ul>
-                        <li>Dirección: 123 Calle Principal, Ciudad</li>
-                        <li>Teléfono: 123-456-789</li>
-                        <li>Email: info@peaceinprogress.com</li>
-                        </ul>
-                    </div>
-                    <div class="information">
-                        <p class="title-footer">Información</p>
-                        <ul>
-                            <li><a href="#">Acerca de Nosotros</a></li>
-                        <li><a href="#">Información de Envío</a></li>
-                        <li><a href="#">Políticas de Privacidad</a></li>
-                        <li><a href="#">Términos y Condiciones</a></li>
-                            <li><a href="#">Contactános</a></li>
-                        </ul>
-                    </div>
-                <div class="my-account">
-                    <p class="title-footer">Mi cuenta</p>
-                    <ul>
-                        <li><a href="#">Mi cuenta</a></li>
-                        <li><a href="#">Historial de Órdenes</a></li>
-                        <li><a href="#">Lista de Deseos</a></li>
-                        <li><a href="#">Boletín</a></li>
-                        <li><a href="#">Reembolsos</a></li>
-                    </ul>
-                </div>
-                <div class="logo-footer">
-                    <img src="../assets/logo.png" alt="Logo Peace In Progress">
-                </div>
-            </div>
-
-            <div class="copyright">
-                <p>
-                    PEACE IN PROGRESS &copy; <?php echo date('Y'); ?>
-                </p>
-            </div>
-        </div>
-    </footer>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Función para manejar el botón "Me gusta"
-            const likeButton = document.querySelector('.like-button');
-            if (likeButton) {
-                likeButton.addEventListener('click', function() {
-                    const postId = this.getAttribute('data-post-id');
-                    
-                    // Enviar solicitud AJAX al servidor
-                    fetch('../ajax/like_post.php', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/x-www-form-urlencoded',
-                        },
-                        body: 'post_id=' + postId
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            // Actualizar UI
-                            const likeCount = this.querySelector('.like-count');
-                            likeCount.textContent = data.likes;
-                            
-                            if (data.liked) {
-                                this.classList.add('liked');
-                                this.querySelector('i').classList.replace('far', 'fas');
-                            } else {
-                                this.classList.remove('liked');
-                                this.querySelector('i').classList.replace('fas', 'far');
-                            }
-                        } else {
-                            // Mostrar mensaje de error
-                            showMessage(data.message || 'Debes iniciar sesión para dar me gusta');
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                        showMessage('Error al procesar la solicitud');
-                    });
-                });
-            }
-            
-            // Función para manejar el botón de compartir
-            const shareButton = document.querySelector('.share-button');
-            if (shareButton) {
-                shareButton.addEventListener('click', function() {
-                    const url = window.location.href;
-                    
-                    // Copiar al portapapeles
-                    navigator.clipboard.writeText(url).then(function() {
-                        showMessage('Enlace copiado al portapapeles');
-                    }, function(err) {
-                        console.error('No se pudo copiar el texto: ', err);
-                    });
-                });
-            }
-            
-            // Función para mostrar mensajes
-            function showMessage(text) {
-                const message = document.getElementById('message');
-                message.textContent = text;
-                message.classList.add('show');
-                
-                setTimeout(() => {
-                    message.classList.remove('show');
-                }, 3000);
-            }
-        });
-    </script>
-
+    <script src="../js/post.js"></script>
+    <script src="../views/js/nav-fix.js"></script>
+    <script src="../js/profile-menu.js"></script>
+    
+    <?php include 'includes/footer.php'; ?>
 </body>
 
 </html>

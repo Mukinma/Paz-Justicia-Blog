@@ -2,42 +2,36 @@
 session_start();
 require_once '../config/db.php';
 
-header('Content-Type: application/json');
-
-// Activar reporte de errores para depurar
-error_reporting(E_ALL);
-ini_set('display_errors', 0);
-
-// Verificar si el usuario está autenticado y es admin
-if (!isset($_SESSION['user_id']) || !isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
+// Verificar que el usuario tiene los permisos necesarios
+if (!isset($_SESSION['user_id']) || ($_SESSION['role'] !== 'admin' && $_SESSION['role'] !== 'editor')) {
+    header('Content-Type: application/json');
     echo json_encode(['success' => false, 'message' => 'No tienes permisos para realizar esta acción']);
     exit;
 }
 
-try {
-    if (!isset($_GET['id'])) {
-        echo json_encode(['success' => false, 'message' => 'ID no proporcionado']);
-        exit;
+if (isset($_GET['id'])) {
+    $id = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
+    
+    try {
+        // Incluye la columna imagen_fondo en la consulta
+        $stmt = $pdo->prepare("SELECT id_categoria, nombre, slug, descripcion, imagen, imagen_fondo FROM categorias WHERE id_categoria = ?");
+        $stmt->execute([$id]);
+        $categoria = $stmt->fetch(PDO::FETCH_ASSOC);
+        
+        if ($categoria) {
+            header('Content-Type: application/json');
+            echo json_encode(['success' => true, 'categoria' => $categoria]);
+        } else {
+            header('Content-Type: application/json');
+            echo json_encode(['success' => false, 'message' => 'Categoría no encontrada']);
+        }
+    } catch (PDOException $e) {
+        error_log("Error en obtener_categoria.php: " . $e->getMessage());
+        header('Content-Type: application/json');
+        echo json_encode(['success' => false, 'message' => 'Error al obtener los datos de la categoría']);
     }
-    
-    $id = $_GET['id'];
-    
-    // Verificar si la categoría existe y obtener sus datos
-    $stmt = $pdo->prepare("SELECT id_categoria, nombre, slug, descripcion FROM categorias WHERE id_categoria = ?");
-    $stmt->execute([$id]);
-    $categoria = $stmt->fetch(PDO::FETCH_ASSOC);
-    
-    if (!$categoria) {
-        echo json_encode(['success' => false, 'message' => 'Categoría no encontrada']);
-        exit;
-    }
-    
-    echo json_encode(['success' => true, 'categoria' => $categoria]);
-    
-} catch (PDOException $e) {
-    error_log("Error en obtener_categoria.php: " . $e->getMessage());
-    echo json_encode(['success' => false, 'message' => 'Error de base de datos: ' . $e->getMessage()]);
-} catch (Exception $e) {
-    error_log("Error inesperado en obtener_categoria.php: " . $e->getMessage());
-    echo json_encode(['success' => false, 'message' => 'Error inesperado: ' . $e->getMessage()]);
-} 
+} else {
+    header('Content-Type: application/json');
+    echo json_encode(['success' => false, 'message' => 'ID de categoría no especificado']);
+}
+?> 

@@ -31,7 +31,7 @@ if (!isset($_SESSION['avatar'])) {
 
 try {
     // Prepare and execute the SQL query to fetch posts
-    $sqlCategorias = "SELECT c.id_categoria, c.nombre AS NombreCategoria, c.slug AS SlugCategoria, COUNT(p.id_post) AS CantidadArticulos FROM categorias c LEFT JOIN posts p ON c.id_categoria = p.id_categoria GROUP BY c.id_categoria, c.nombre, c.slug ORDER BY CantidadArticulos DESC";
+    $sqlCategorias = "SELECT c.id_categoria, c.nombre AS NombreCategoria, c.slug AS SlugCategoria, c.imagen, COUNT(p.id_post) AS CantidadArticulos FROM categorias c LEFT JOIN posts p ON c.id_categoria = p.id_categoria GROUP BY c.id_categoria, c.nombre, c.slug, c.imagen ORDER BY CantidadArticulos DESC";
     $sqlCategoriasOpcion = "SELECT id_categoria, nombre FROM categorias ORDER BY nombre ASC";
     $sqlUsuarios = "SELECT u.id_usuario, u.name AS NombreUsuario, u.email AS EmailUsuario, u.rol AS RolUsuario, u.fecha_registro AS FechaRegistro, COUNT(p.id_post) AS CantidadPosts 
                     FROM usuarios u 
@@ -100,7 +100,9 @@ try {
         <?php if (!empty($_SESSION['avatar']) && file_exists('../' . $_SESSION['avatar'])): ?>
             <img src="../<?php echo htmlspecialchars($_SESSION['avatar']); ?>" alt="profile" class="profile-icon">
         <?php else: ?>
-            <img src="../assets/profile-icon.svg" alt="profile" class="profile-icon">
+            <div class="profile-initial">
+                <?php echo strtoupper(substr($_SESSION['usuario'], 0, 1)); ?>
+            </div>
         <?php endif; ?>
         <h2><?php 
             $nombre_completo = $_SESSION['usuario'];
@@ -142,8 +144,8 @@ try {
                 <?php if ($_SESSION['role'] === 'editor'): ?>
                     <div class="tooltip">Solo disponible para administradores</div>
                 <?php endif; ?>
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512" width="24" height="24">
-                    <path fill="currentColor" d="M144 0a48 48 0 1 0 0 96 48 48 0 1 0 0-96zM96 144c-26.5 0-48 21.5-48 48s21.5 48 48 48H192c26.5 0 48-21.5 48-48s-21.5-48-48-48H96zM352 0a48 48 0 1 0 0 96 48 48 0 1 0 0-96zM304 144c-26.5 0-48 21.5-48 48s21.5 48 48 48H448c26.5 0 48-21.5 48-48s-21.5-48-48-48H304zM144 512a48 48 0 1 0 0-96 48 48 0 1 0 0 96zM96 368c-26.5 0-48 21.5-48 48s21.5 48 48 48H192c26.5 0 48-21.5 48-48s-21.5-48-48-48H96zM352 512a48 48 0 1 0 0-96 48 48 0 1 0 0 96zM304 368c-26.5 0-48 21.5-48 48s21.5 48 48 48H448c26.5 0 48-21.5 48-48s-21.5-48-48-48H304zM416 208c0-26.5-21.5-48-48-48H272c-26.5 0-48 21.5-48 48s21.5 48 48 48H368c26.5 0 48-21.5 48-48zM160 464c0-26.5-21.5-48-48-48H48c-26.5 0-48 21.5-48 48s21.5 48 48 48H112c26.5 0 48-21.5 48-48zM592 464c0-26.5-21.5-48-48-48H528c-26.5 0-48 21.5-48 48s21.5 48 48 48h16c26.5 0 48-21.5 48-48z"/>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                    <path fill="currentColor" d="M12,16a4,4,0,1,1,4-4A4,4,0,0,1,12,16ZM5.683,16H1a1,1,0,0,1-1-1A6.022,6.022,0,0,1,5.131,9.084a1,1,0,0,1,1.1,1.266A6.009,6.009,0,0,0,6,12a5.937,5.937,0,0,0,.586,2.57,1,1,0,0,1-.9,1.43ZM17,24H7a1,1,0,0,1-1-1,6,6,0,0,1,12,0A1,1,0,0,1,17,24ZM18,8a4,4,0,1,1,4-4A4,4,0,0,1,18,8ZM6,8a4,4,0,1,1,4-4A4,4,0,0,1,6,8Zm17,8H18.317a1,1,0,0,1-.9-1.43A5.937,5.937,0,0,0,18,12a6.009,6.009,0,0,0-.236-1.65,1,1,0,0,1,1.105-1.266A6.022,6.022,0,0,1,24,15,1,1,0,0,1,23,16Z"/>
                 </svg>
                 Users
             </button>
@@ -586,10 +588,16 @@ try {
                             <textarea id="descripcion" name="descripcion"></textarea>
                         </div>
                         <div class="form-group">
-                            <label for="categoria_imagen">Imagen de la categoría:</label>
+                            <label for="categoria_imagen">Imagen de la categoría (icono):</label>
                             <input type="file" id="categoria_imagen" name="imagen" accept="image/*">
                             <small>Formato recomendado: PNG o JPG de al menos 300x300px</small>
                             <img id="preview_new_category_image" class="image-preview" alt="Vista previa de la imagen">
+                        </div>
+                        <div class="form-group">
+                            <label for="categoria_imagen_fondo">Imagen de fondo de la categoría:</label>
+                            <input type="file" id="categoria_imagen_fondo" name="imagen_fondo" accept="image/*">
+                            <small>Formato recomendado: PNG o JPG de al menos 1200x600px</small>
+                            <img id="preview_new_category_bg" class="image-preview" alt="Vista previa de la imagen de fondo">
                         </div>
                     </form>
                 </div>
@@ -762,6 +770,7 @@ try {
                     <form action="editar_categoria.php" method="POST" id="editCategoryForm" enctype="multipart/form-data">
                         <input type="hidden" id="edit-category-id" name="id" value="">
                         <input type="hidden" id="edit-category-imagen-actual" name="imagen_actual" value="">
+                        <input type="hidden" id="edit-category-imagen-fondo-actual" name="imagen_fondo_actual" value="">
                         <div class="form-group">
                             <label for="edit-category-nombre">Nombre de la categoría:</label>
                             <input type="text" id="edit-category-nombre" name="nombre" required>
@@ -771,17 +780,30 @@ try {
                             <textarea id="edit-category-descripcion" name="descripcion"></textarea>
                         </div>
                         <div class="form-group">
-                            <label>Imagen actual:</label>
+                            <label>Imagen actual (icono):</label>
                             <div id="category-current-image-container" class="image-container">
                                 <img id="category-current-image" src="" alt="Imagen de la categoría">
                                 <small>Esta es la imagen actual de la categoría</small>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="edit-category-imagen">Nueva imagen (opcional):</label>
+                            <label for="edit-category-imagen">Nueva imagen (icono):</label>
                             <input type="file" id="edit-category-imagen" name="imagen" accept="image/*">
                             <small>Formato recomendado: PNG o JPG de al menos 300x300px</small>
                             <img id="preview_category_image" class="image-preview" alt="Vista previa de la nueva imagen">
+                        </div>
+                        <div class="form-group">
+                            <label>Imagen de fondo actual:</label>
+                            <div id="category-current-bg-container" class="image-container">
+                                <img id="category-current-bg" src="" alt="Imagen de fondo de la categoría">
+                                <small>Esta es la imagen de fondo actual de la categoría</small>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="edit-category-imagen-fondo">Nueva imagen de fondo:</label>
+                            <input type="file" id="edit-category-imagen-fondo" name="imagen_fondo" accept="image/*">
+                            <small>Formato recomendado: PNG o JPG de al menos 1200x600px</small>
+                            <img id="preview_category_bg" class="image-preview" alt="Vista previa de la nueva imagen de fondo">
                         </div>
                     </form>
                 </div>
@@ -857,5 +879,27 @@ try {
             </div>
         </div>
     </div>
+    <script>
+
+
+    // Agregar event listeners a los inputs de tipo file para mostrar información
+    document.addEventListener('DOMContentLoaded', function() {
+        // Para categorías
+        const categoryImageInputs = document.querySelectorAll('input[type="file"][name="imagen"], input[type="file"][name="imagen_fondo"]');
+        categoryImageInputs.forEach(input => {
+            input.addEventListener('change', function() {
+                mostrarInfoImagen(this);
+            });
+        });
+        
+        // Para modal de edición
+        const editCategoryImageInputs = document.querySelectorAll('#edit-category-imagen, #edit-category-imagen-fondo');
+        editCategoryImageInputs.forEach(input => {
+            input.addEventListener('change', function() {
+                mostrarInfoImagen(this);
+            });
+        });
+    });
+    </script>
 </body>
 </html>

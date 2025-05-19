@@ -168,9 +168,9 @@ class TrendingCarousel {
                         el.style.opacity = '0';
                         el.style.transform = 'translateY(20px)';
                     }
-                });
-            }
-        });
+            });
+        }
+    });
         
         // Configurar slide activo
         const activeSlide = this.slides[this.state.currentIndex];
@@ -411,7 +411,7 @@ class TrendingCarousel {
             if (!this.state.isAnimating) {
                 if (e.key === 'ArrowLeft') {
                     this.showPrevSlide();
-                } else {
+    } else {
                     this.showNextSlide();
                 }
                 
@@ -550,7 +550,7 @@ class TrendingCarousel {
                     setTimeout(() => {
                         if (window.matchMedia('(max-width: 768px)').matches) {
                             nextContent.style.transform = 'translate(-50%, -50%) translateX(0)';
-                        } else {
+    } else {
                             nextContent.style.transform = 'translateY(-50%) translateX(0)';
                         }
                         nextContent.style.opacity = '1';
@@ -721,45 +721,99 @@ class TrendingCarousel {
     }
     
     /**
-     * Actualiza los thumbnails según el slide activo
+     * Actualiza las miniaturas para resaltar la actual
      */
     updateThumbnails() {
         if (!this.thumbnails || this.thumbnails.length === 0) return;
         
-        // Si hay igual número de slides y thumbnails
-        if (this.thumbnails.length === this.state.totalSlides) {
-            this.thumbnails.forEach((thumb, idx) => {
-                thumb.classList.toggle('active', idx === this.state.currentIndex);
-                thumb.style.display = 'block';
-            });
-            return;
-        }
+        const currentIndex = this.state.currentIndex;
         
-        // Si hay diferentes cantidades (caso típico: menos thumbnails que slides)
-        // Determinar qué thumbnail debe ocultarse (el correspondiente al slide activo)
-        let thumbnailToHide = -1;
-        
-        if (this.state.currentIndex === 0) {
-            thumbnailToHide = 0;
-        } else {
-            thumbnailToHide = this.state.currentIndex - 1;
-            
-            // Comprobar que no intentamos ocultar un thumbnail que no existe
-            if (thumbnailToHide >= this.thumbnails.length) {
-                thumbnailToHide = this.thumbnails.length - 1;
-            }
-        }
-        
-        // Aplicar visibilidad a los thumbnails
+        // Limpiar clases activas y aplicar estilos neutrales
         this.thumbnails.forEach((thumb, idx) => {
+            // Quitar clase activa de todas las miniaturas
             thumb.classList.remove('active');
             
-            if (idx === thumbnailToHide && thumbnailToHide >= 0) {
-                thumb.style.display = 'none';
-            } else {
-                thumb.style.display = 'block';
+            // Aplicar filtro y bordes neutrales
+            thumb.style.transition = 'all 0.3s ease';
+            thumb.style.filter = 'brightness(0.65) saturate(0.8)';
+            thumb.style.transform = 'translateX(0)';
+            thumb.style.borderColor = 'transparent';
+            
+            // Reducir opacidad del texto en todas las miniaturas
+            const titleEl = thumb.querySelector('.title');
+            const descEl = thumb.querySelector('.description');
+            
+            if (titleEl) {
+                titleEl.style.transition = 'all 0.3s ease';
+                titleEl.style.opacity = '0.7';
+            }
+            
+            if (descEl) {
+                descEl.style.transition = 'all 0.3s ease';
+                descEl.style.opacity = '0.6';
             }
         });
+        
+        // Aplicar estilo a la miniatura activa con un efecto más notable
+        const activeThumb = this.thumbnails[currentIndex];
+        if (activeThumb) {
+            // Agregar clase activa
+            activeThumb.classList.add('active');
+            
+            // Aplicar efectos visuales destacados
+            activeThumb.style.filter = 'brightness(1) saturate(1.2)';
+            activeThumb.style.transform = 'translateX(-5px) scale(1.05)';
+            activeThumb.style.borderColor = '#1976d2';
+            activeThumb.style.boxShadow = '0 6px 12px rgba(0, 0, 0, 0.4)';
+            
+            // Hacer que el texto sea más visible
+            const titleEl = activeThumb.querySelector('.title');
+            const descEl = activeThumb.querySelector('.description');
+            
+            if (titleEl) {
+                titleEl.style.opacity = '1';
+                titleEl.style.transform = 'translateY(0)';
+            }
+            
+            if (descEl) {
+                descEl.style.opacity = '0.9';
+                descEl.style.transform = 'translateY(0)';
+            }
+            
+            // Si estamos en móvil, asegurar que la miniatura activa esté visible
+            if (window.matchMedia('(max-width: 768px)').matches) {
+                // Dar tiempo para que se apliquen las clases antes de hacer scroll
+                setTimeout(() => {
+                    // Obtener el contenedor de miniaturas
+                    const thumbContainer = document.querySelector('.carousel .thumbnail');
+                    if (thumbContainer && activeThumb) {
+                        // Calcular posición para centrar
+                        const containerWidth = thumbContainer.offsetWidth;
+                        const thumbPosition = activeThumb.offsetLeft;
+                        const thumbWidth = activeThumb.offsetWidth;
+                        const scrollPos = thumbPosition - (containerWidth / 2) + (thumbWidth / 2);
+                        
+                        // Hacer scroll suave
+                        thumbContainer.scrollTo({
+                            left: scrollPos,
+                            behavior: 'smooth'
+                        });
+                    }
+                }, 50); // Pequeño retraso para asegurar que los elementos ya tienen sus clases
+            }
+        }
+        
+        // Opcionalmente, animar ligeramente las miniaturas adyacentes
+        const prevIndex = (currentIndex - 1 + this.state.totalSlides) % this.state.totalSlides;
+        const nextIndex = (currentIndex + 1) % this.state.totalSlides;
+        
+        if (this.thumbnails[prevIndex]) {
+            this.thumbnails[prevIndex].style.filter = 'brightness(0.75) saturate(0.9)';
+        }
+        
+        if (this.thumbnails[nextIndex]) {
+            this.thumbnails[nextIndex].style.filter = 'brightness(0.75) saturate(0.9)';
+        }
     }
     
     /**

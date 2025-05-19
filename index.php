@@ -10,41 +10,153 @@
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="views/css/style.css" />
     <link rel="stylesheet" href="views/css/noticias.css">
+    <link rel="stylesheet" href="views/css/categorias.css">
+    <link rel="stylesheet" href="views/css/nav-fix.css">
+    <link rel="stylesheet" href="views/css/footer.css">
+    <style>
+        /* Mejoras específicas para el menú de perfil en index */
+        .profile-dropdown {
+            position: relative;
+        }
+        
+        .profile-dropdown .dropdown-content {
+            transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
+        }
+        
+        .profile-btn {
+            cursor: pointer;
+            z-index: 1003;
+            position: relative;
+        }
+        
+        /* Área invisible ampliada para el hover */
+        .profile-dropdown::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: -30px;
+            width: calc(100% + 60px);
+            height: 25px;
+            background: transparent;
+            z-index: 1000;
+        }
+        
+        /* Crear un puente visual entre el botón de perfil y el menú */
+        .dropdown-content::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            right: 10px;
+            width: 20px;
+            height: 10px;
+            background-color: transparent;
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-bottom: 10px solid rgba(0, 0, 0, 0.85);
+            z-index: 1003;
+            pointer-events: none;
+        }
+        
+        .dropdown-content a {
+            padding: 10px 15px;
+            font-size: 0.95rem;
+        }
+        
+        /* Estilos para el icono de login */
+        .login-icon {
+            width: 20px;
+            height: 20px;
+            fill: white;
+            transition: all 0.3s ease;
+        }
+        .login-btn:hover .login-icon {
+            transform: scale(1.1);
+        }
+    </style>
 </head>
 
 <body>
+    <?php
+    // Incluir la configuración de la base de datos al inicio
+    require_once 'config/db.php';
+    
+    // Iniciar sesión
+    session_start();
+    ?>
+    
     <header class="main-header">
         <div class="header-container">
             <div class="logo-container">
-                <img src="assets/logo.png" class="logo" alt="Peace in Progress">
+                <a href="index.php">
+                    <img src="assets/logo.png" class="logo" alt="Peace in Progress">
+                </a>
             </div>
             
             <nav class="main-nav">
-                                <ul class="nav-menu">                    <li><a href="views/about.php">Sobre Nosotros</a></li>                    <li class="dropdown">                        <a href="#" class="dropdown-toggle">Categorías <i class="fas fa-chevron-down"></i></a>                        <ul class="dropdown-menu">                            <?php                            // Consulta para obtener todas las categorías con sus imágenes                            $sqlCategorias = "SELECT id_categoria, nombre, slug, imagen FROM categorias ORDER BY nombre";                            $stmtCategorias = $pdo->prepare($sqlCategorias);                            $stmtCategorias->execute();                            $categorias = $stmtCategorias->fetchAll(PDO::FETCH_ASSOC);                                                        foreach ($categorias as $cat) {                                $nombre = htmlspecialchars($cat['nombre']);                                $slug = htmlspecialchars($cat['slug']);                                $imagen = !empty($cat['imagen']) ? htmlspecialchars($cat['imagen']) : 'assets/image-placeholder.png';                                                                // Construir nombre del archivo PHP basado en la convención de nombres                                $nombreArchivo = 'categoria' . str_replace(' ', '', ucwords(str_replace('-', ' ', str_replace(' y ', ' ', $slug)))) . '.php';                                                                // Verificar si la imagen existe                                if (!file_exists($imagen) && strpos($imagen, '/') !== false) {                                    $imagen = 'assets/image-placeholder.png';                                }                                                                echo '<li>                                        <a href="views/' . $nombreArchivo . '">                                            <img src="' . $imagen . '" alt="' . $nombre . '" class="categoria-icono">                                            ' . $nombre . '                                        </a>                                      </li>';                            }                            ?>                        </ul>                    </li>                    <li><a href="views/contact.php">Contacto</a></li>                </ul>
+                <ul class="nav-menu">
+                    <li><a href="views/blog.php">Blog</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle">Categorías <i class="fas fa-chevron-down"></i></a>
+                        <ul class="dropdown-menu">
+                            <?php
+                            // Consultar todas las categorías para el menú
+                            $sqlCategorias = "SELECT id_categoria, nombre, slug, imagen FROM categorias ORDER BY nombre";
+                            $stmtCategorias = $pdo->prepare($sqlCategorias);
+                            $stmtCategorias->execute();
+                            $categorias_menu = $stmtCategorias->fetchAll(PDO::FETCH_ASSOC);
+                            
+                            foreach ($categorias_menu as $cat) {
+                                $nombre = htmlspecialchars($cat['nombre']);
+                                $slug = htmlspecialchars($cat['slug']);
+                                $imagen = !empty($cat['imagen']) ? htmlspecialchars($cat['imagen']) : 'assets/image-placeholder.png';
+                                
+                                // Verificar si la imagen existe
+                                if (!file_exists($imagen) && strpos($imagen, '/') !== false) {
+                                    $imagen = 'assets/image-placeholder.png';
+                                }
+                                
+                                echo '<li>
+                                    <a href="views/categoria.php?slug=' . $slug . '">
+                                        <img src="' . $imagen . '" alt="' . $nombre . '" class="categoria-icono">
+                                        ' . $nombre . '
+                                    </a>
+                                </li>';
+                            }
+                            ?>
+                        </ul>
+                    </li>
+                    <li><a href="views/about.php">Sobre Nosotros</a></li>
+                    <li><a href="views/contact.php">Contacto</a></li>
+                </ul>
             </nav>
             
             <div class="profile-section">
-                <?php
-                session_start();
+                <?php 
                 if (!isset($_SESSION['usuario'])) {
-                    echo '<a href="admin/usuario.php" class="login-btn">Iniciar Sesión</a>';
+                    echo '<a href="admin/usuario.php" class="login-btn">
+                        <svg class="login-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="m14 6c0 3.309-2.691 6-6 6s-6-2.691-6-6 2.691-6 6-6 6 2.691 6 6zm1 15v-6c0-.551.448-1 1-1h2v-2h-2c-1.654 0-3 1.346-3 3v6c0 1.654 1.346 3 3 3h2v-2h-2c-.552 0-1-.449-1-1zm8.583-3.841-3.583-3.159v3h-3v2h3v3.118l3.583-3.159c.556-.48.556-1.32 0-1.8zm-12.583-2.159c0-.342.035-.677.101-1h-6.601c-2.481 0-4.5 2.019-4.5 4.5v5.5h12.026c-.635-.838-1.026-1.87-1.026-3z"/>
+                        </svg>
+                    </a>';
                 } else {
                     echo '<div class="profile-dropdown">
-                            <button class="profile-btn">';
+                        <button class="profile-btn">';
                     if (!empty($_SESSION['avatar']) && file_exists($_SESSION['avatar'])) {
                         echo '<img src="' . htmlspecialchars($_SESSION['avatar']) . '" alt="Foto de perfil">';
                     } else {
                         echo '<i class="fas fa-user-circle"></i>';
                     }
                     echo '</button>
-                            <div class="dropdown-content">
-                                <a href="admin/perfil.php"><i class="fas fa-user"></i> Perfil</a>';
+                        <div class="dropdown-content">
+                            <a href="admin/perfil.php"><i class="fas fa-user"></i> Perfil</a>';
+                    
                     if (isset($_SESSION['role']) && ($_SESSION['role'] === 'admin' || $_SESSION['role'] === 'editor')) {
                         echo '<a href="admin/adminControl.php"><i class="fas fa-cog"></i> Admin</a>';
                     }
+                    
                     echo '<a href="admin/logout.php"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a>
-                            </div>
-                          </div>';
+                        </div>
+                    </div>';
                 }
                 ?>
             </div>
@@ -54,7 +166,7 @@
             </button>
         </div>
     </header>
-
+    
     <?php if (isset($_SESSION['error'])): ?>
         <div class="error-message" id="errorMessage">
             <?php 
@@ -75,8 +187,6 @@
     <div class="carousel">
         <div class="list">
             <?php
-            require_once 'config/db.php';
-            
             // Variable para debug
             $debugImagenes = false; // Cambiar a true para ver información de depuración
             
@@ -219,7 +329,7 @@
                     $descripcionMiniatura = strlen($post['resumen']) > 80 ? substr($post['resumen'], 0, 80) . '...' : $post['resumen'];
             ?>
             <div class="item <?php echo $activeClass; ?>" data-id="<?php echo $post['id_post']; ?>">
-                <img src="<?php echo htmlspecialchars($imagenURL); ?>" alt="Miniatura">
+                <img src="<?php echo htmlspecialchars($imagenURL); ?>" alt="<?php echo htmlspecialchars($tituloCorto); ?>">
                 <div class="content">
                     <div class="title"><?php echo htmlspecialchars($tituloCorto); ?></div>
                     <div class="description"><?php echo htmlspecialchars($descripcionMiniatura); ?></div>
@@ -355,7 +465,7 @@
             <h2>Involúcrate</h2>
             <p>¿Quieres sumar al cambio y no sabes cómo? Te mostramos como lograrlo desde donde estés.
             </p>
-            <a href="involucrate/involucrate.html" class="boton-involucrarse">Actuar Ahora</a>
+            <a href="views/involucrate.php" class="boton-involucrarse">Actuar Ahora</a>
         </div>
     </section>
 
@@ -363,63 +473,50 @@
         <h2 class="titulo-categorias">Explora por Temas</h2>
 
         <div class="grid-categorias">
-
-            <div class="categoria-card">
+            <?php
+            // Consulta para obtener todas las categorías con sus imágenes de la base de datos
+            $sqlCats = "SELECT id_categoria, nombre, slug, descripcion, imagen, imagen_fondo FROM categorias ORDER BY nombre";
+            $stmtCats = $pdo->prepare($sqlCats);
+            $stmtCats->execute();
+            $todasCategorias = $stmtCats->fetchAll(PDO::FETCH_ASSOC);
+            
+            foreach ($todasCategorias as $cat) {
+                // Obtener imagen desde la BD o usar una por defecto
+                $imagen = !empty($cat['imagen']) ? $cat['imagen'] : 'assets/image-placeholder.png';
+                
+                // Verificar si la imagen existe
+                if (!file_exists($imagen)) {
+                    $imagen = 'assets/image-placeholder.png';
+                }
+                
+                // Ya no usamos la imagen de fondo
+                // $imagenFondo = !empty($cat['imagen_fondo']) ? $cat['imagen_fondo'] : null;
+                // $tieneFondo = !empty($imagenFondo) && file_exists($imagenFondo);
+                
+                // Generar el nombre de archivo PHP adecuado para la vista de categoría
+                $slug = $cat['slug'];
+                
+                // Descripción recortada
+                $descripcion = !empty($cat['descripcion']) ? 
+                    (strlen($cat['descripcion']) > 150 ? substr($cat['descripcion'], 0, 150) . '...' : $cat['descripcion']) :
+                    'Artículos sobre ' . $cat['nombre'];
+                    
+                // Asegurar que la descripción tenga al menos cierta longitud
+                if (strlen($descripcion) < 30) {
+                    $descripcion = $descripcion . '. Explora nuestros artículos sobre esta temática.';
+                }
+            ?>
+            <div class="categoria-card clean-design">
                 <div class="icono">
-                    <img src="image/ICONOJUSTICIA.png" alt="Justicia y Derechos Humanos">
+                    <img src="<?php echo htmlspecialchars($imagen); ?>" alt="<?php echo htmlspecialchars($cat['nombre']); ?>">
                 </div>
-                <h3 class="titulo">Justicia y Derechos Humanos</h3>
-                <p class="descripcion">Acceso a la justicia, abusos de poder, sistema penitenciario..</p>
-                <a href="Categorias/categoriaJusticia.html" class="btn-categoria">Ver artículos</a>
+                <h3 class="titulo"><?php echo htmlspecialchars($cat['nombre']); ?></h3>
+                <p class="descripcion"><?php echo htmlspecialchars($descripcion); ?></p>
+                <a href="views/categoria.php?slug=<?php echo $slug; ?>" class="btn-categoria">Ver artículos</a>
             </div>
-
-            <div class="categoria-card">
-                <div class="icono">
-                    <img src="image/ICONOPAZ.png" alt="Paz y Conflictos">
-                </div>
-                <h3 class="titulo">Paz y Conflictos</h3>
-                <p class="descripcion">Cobertura de guerras, procesos de reconciliación y contextos de conflicto global.
-                </p>
-                <a href="Categorias/categoriapaz.html" class="btn-categoria">Ver artículos</a>
-            </div>
-
-            <div class="categoria-card">
-                <div class="icono">
-                    <img src="image/ICONODIVERSIDAD.png" alt="Igualdad y Diversidad">
-                </div>
-                <h3 class="titulo">Igualdad y Diversidad</h3>
-                <p class="descripcion">Causas y luchas por una sociedad más tolerante e inclusiva.</p>
-                <a href="Categorias/categoriaIgualdad.html" class="btn-categoria">Ver artículos</a>
-            </div>
-
-            <div class="categoria-card">
-                <div class="icono">
-                    <img src="image/ICONOPARTICIPACION.png" alt="Participación Ciudadana">
-                </div>
-                <h3 class="titulo">Participación Ciudadana</h3>
-                <p class="descripcion">Activismo, protestas pacíficas y organizaciones que protegen.</p>
-                <a href="Categorias/categoriaParticipacion.html" class="btn-categoria">Ver artículos</a>
-            </div>
-
-            <div class="categoria-card">
-                <div class="icono">
-                    <img src="image/ICONOCORRUPCION.png" alt="Corrupción y Transparencia">
-                </div>
-                <h3 class="titulo">Corrupción y Transparencia</h3>
-                <p class="descripcion">Investigaciones sobre corrupción y reformas por un sistema justo.</p>
-                <a href="Categorias/categoriacorrupcion.html" class="btn-categoria">Ver artículos</a>
-            </div>
-
-            <div class="categoria-card">
-                <div class="icono">
-                    <img src="image/ICONOPOLITICA.png" alt="Politica y gobernanza">
-                </div>
-                <h3 class="titulo">Politica y gobernanza</h3>
-                <p class="descripcion">Cobertura de politica, programas y acciones del gobierno para fortalecer la paz y
-                    seguridad.</p>
-                <a href="Categorias/categoriapolitica.html" class="btn-categoria">Ver artículos</a>
-            </div>
-
+            <?php
+            } // fin foreach
+            ?>
         </div>
     </section>
 
@@ -448,74 +545,71 @@
 
     <script src="js/app.js"></script>
     <script src="js/header.js"></script>
+    <script src="views/js/nav-fix.js"></script>
+    <script src="js/profile-menu.js"></script>
 
     <!-- Scripts del carousel -->
     <script src="js/noticia-script.js"></script>
 
-    <footer class="footer">
-        <div class="container container-footer">
-            <div class="container-container-container-footer">
-                <div class="menu-footer">
-                    <div class="contact-info">
-                        <p class="title-footer">Información de Contacto</p>
-                        <ul>
-                            <li>Teléfono: 314-149-5596</li>
-                            <li>EmaiL: PeaceInProgress.com</li>
-                        </ul>
-                        <div class="social-icons">
-                            <span class="facebook">
-                                <i class="fa-brands fa-facebook-f"></i>
-                            </span>
-                            <span class="twitter">
-                                <i class="fa-brands fa-twitter"></i>
-                            </span>
-                            <span class="instagram">
-                                <i class="fa-brands fa-instagram"></i>
-                            </span>
-                        </div>
-                    </div>
-
-                    <div class="information">
-                        <p class="title-footer">Información</p>
-                        <ul>
-                            <li><a href="#">Acerca de Nosotros</a></li>
-                            <li><a href="#">Contáctanos</a></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="logo-footer">
-                    <img src="image/logo.png" alt="Logo Peace In Progress">
-                </div>
-            </div>
-
-            <div class="copyright">
-                <p>
-                    PEACE IN PROGRESS &copy; 2025
-            </div>
-        </div>
-    </footer>
+    <?php include 'views/includes/footer.php'; ?>
 
     <!-- Script para menú móvil -->
     <script>
-        // Código para el menú móvil existente
+        // Gestión de la navegación y menú móvil
         document.addEventListener('DOMContentLoaded', function() {
+            // Control de menú móvil
             const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
             const mainNav = document.querySelector('.main-nav');
             
-            if (mobileMenuToggle && mainNav) {
+            if (mobileMenuToggle) {
                 mobileMenuToggle.addEventListener('click', function() {
                     mainNav.classList.toggle('active');
+                    this.querySelector('i').classList.toggle('fa-bars');
+                    this.querySelector('i').classList.toggle('fa-times');
                 });
             }
             
-            // Dropdown en móvil
-            const dropdownToggles = document.querySelectorAll('.dropdown-toggle');
-            dropdownToggles.forEach(toggle => {
-                toggle.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    this.closest('.dropdown').classList.toggle('active');
-                });
+            // Control de dropdowns en móvil
+            const dropdowns = document.querySelectorAll('.dropdown');
+            
+            dropdowns.forEach(dropdown => {
+                const dropdownToggle = dropdown.querySelector('.dropdown-toggle');
+                
+                if (dropdownToggle && window.innerWidth <= 992) {
+                    dropdownToggle.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        dropdown.classList.toggle('active');
+                    });
+                }
             });
+            
+            // Cambiar estilo de header al hacer scroll
+            window.addEventListener('scroll', function() {
+                const header = document.querySelector('header.main-header');
+                if (window.scrollY > 50) {
+                    header.classList.add('scrolled');
+                } else {
+                    header.classList.remove('scrolled');
+                }
+            });
+            
+            // Control del menú de perfil para dispositivos táctiles
+            const profileBtn = document.querySelector('.profile-btn');
+            const dropdownContent = document.querySelector('.dropdown-content');
+            
+            if (profileBtn && dropdownContent) {
+                profileBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    dropdownContent.classList.toggle('active');
+                });
+                
+                // Cerrar el menú al hacer clic fuera
+                document.addEventListener('click', function(e) {
+                    if (!e.target.closest('.profile-dropdown')) {
+                        dropdownContent.classList.remove('active');
+                    }
+                });
+            }
         });
     </script>
 </body>

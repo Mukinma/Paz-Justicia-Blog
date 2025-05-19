@@ -2,7 +2,7 @@
 // db.php
 
 $host = 'localhost'; // Database host
-$dbname = 'blog'; // Databaseb name
+$dbname = 'blog'; // Database name
 $username = 'root'; // Database username
 $password = '123456789'; // Database password
 

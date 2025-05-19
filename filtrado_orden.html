@@ -1,0 +1,1039 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Blog - Peace in Progress</title>
+    <link rel="icon" href="../assets/minilogo.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+        integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="css/nav-fix.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #024365;
+            --secondary-color: #7cbcbc;
+            --accent-color: #1a3a5c;
+            --text-color: #333;
+            --light-text: #f8f9fa;
+            --border-radius: 12px;
+            --box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f8f9fa;
+            color: var(--text-color);
+            line-height: 1.6;
+            padding-top: 70px;
+        }
+        
+        .blog-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            color: white;
+            padding: 60px 20px;
+            text-align: center;
+            margin-bottom: 40px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .blog-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('../assets/pattern-dots.png');
+            opacity: 0.1;
+            z-index: 0;
+        }
+        
+        .blog-header h1 {
+            font-size: 2.8rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            position: relative;
+            z-index: 1;
+        }
+        
+        .blog-header p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto;
+            font-weight: 300;
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .blog-filters {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding: 25px;
+            background: linear-gradient(135deg, rgba(16, 79, 112, 0.85) 0%, rgba(9, 58, 88, 0.9) 100%);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .blog-filters::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            transform: rotate(30deg);
+            z-index: 0;
+        }
+        
+        .search-box {
+            position: relative;
+            flex: 1;
+            margin-right: 20px;
+            z-index: 1;
+        }
+        
+        .search-box input {
+            width: 100%;
+            padding: 12px 20px;
+            padding-right: 50px;
+            border-radius: 50px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.15);
+            color: #ffffff;
+            font-size: 1rem;
+            transition: var(--transition);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+        
+        .search-box input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .search-box input:focus {
+            outline: none;
+            background-color: rgba(255, 255, 255, 0.25);
+            border-color: rgba(255, 255, 255, 0.5);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+        
+        .search-box button {
+            position: absolute;
+            right: 5px;
+            top: 5px;
+            background-color: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 38px;
+            height: 38px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .search-box button:hover {
+            background-color: rgba(255, 255, 255, 0.3);
+            transform: scale(1.1);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+        
+        .filter-options {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            z-index: 1;
+            position: relative;
+        }
+        
+        .category-filter select,
+        .order-filter select {
+            padding: 10px 15px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(5px);
+        }
+        
+        .category-filter select:focus,
+        .order-filter select:focus {
+            outline: none;
+            background-color: rgba(255, 255, 255, 0.25);
+            border-color: rgba(255, 255, 255, 0.4);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+        
+        .category-filter select option,
+        .order-filter select option {
+            background-color: var(--primary-color);
+            color: #fff;
+        }
+        
+        /* Estilos para el grid de posts */
+        .posts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+        
+        .post-card {
+            background-color: white;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--box-shadow);
+            transition: var(--transition);
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .post-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+        
+        .post-image {
+            position: relative;
+            height: 200px;
+            overflow: hidden;
+            display: block;
+        }
+        
+        .post-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .post-card:hover .post-image img {
+            transform: scale(1.05);
+        }
+        
+        .category-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 5px 12px;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            opacity: 0.9;
+            text-transform: uppercase;
+        }
+        
+        .post-content {
+            padding: 20px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .post-meta {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            color: #777;
+            font-size: 0.85rem;
+        }
+        
+        .post-meta span {
+            display: flex;
+            align-items: center;
+        }
+        
+        .post-meta i {
+            margin-right: 5px;
+        }
+        
+        .post-content h3 {
+            font-size: 1.25rem;
+            margin-bottom: 15px;
+            font-weight: 600;
+            line-height: 1.4;
+        }
+        
+        .post-content h3 a {
+            color: var(--text-color);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+        
+        .post-content h3 a:hover {
+            color: var(--primary-color);
+        }
+        
+        .post-content p {
+            color: #666;
+            margin-bottom: 20px;
+            font-size: 0.95rem;
+            flex: 1;
+        }
+        
+        .post-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: auto;
+        }
+        
+        .read-more {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            transition: var(--transition);
+        }
+        
+        .read-more i {
+            margin-left: 5px;
+            transition: transform 0.3s ease;
+        }
+        
+        .read-more:hover {
+            color: var(--accent-color);
+        }
+        
+        .read-more:hover i {
+            transform: translateX(5px);
+        }
+        
+        .author {
+            font-size: 0.85rem;
+            color: #777;
+            font-style: italic;
+        }
+        
+        /* Estilos para la paginación */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 5px;
+            margin: 40px 0;
+        }
+        
+        .pagination-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: white;
+            color: var(--text-color);
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: 500;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: var(--transition);
+        }
+        
+        .pagination-link:hover {
+            background-color: #f2f2f2;
+        }
+        
+        .pagination-link.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        /* Estilos para chips de categoría */
+        .category-chips {
+            margin: 40px 0;
+        }
+        
+        .category-chips h3 {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+        
+        .chips-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .category-chip {
+            background-color: white;
+            color: var(--text-color);
+            padding: 8px 15px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: var(--transition);
+        }
+        
+        .category-chip:hover {
+            background-color: #f2f2f2;
+        }
+        
+        .category-chip.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        /* Estilos para mensaje de no resultados */
+        .no-results {
+            background-color: white;
+            border-radius: var(--border-radius);
+            padding: 60px 20px;
+            text-align: center;
+            margin-bottom: 40px;
+            box-shadow: var(--box-shadow);
+        }
+        
+        .no-results-message {
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        
+        .no-results-message i {
+            color: var(--secondary-color);
+            margin-bottom: 20px;
+            opacity: 0.8;
+        }
+        
+        .no-results-message h2 {
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+            color: var(--primary-color);
+        }
+        
+        .no-results-message p {
+            color: #666;
+            margin-bottom: 20px;
+        }
+        
+        .btn-reset {
+            display: inline-block;
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+        
+        .btn-reset:hover {
+            background-color: var(--primary-color);
+        }
+        
+        /* Estilos para el footer */
+        footer {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 60px 0 20px;
+            margin-top: 60px;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-column h3 {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .footer-column h3::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 50px;
+            height: 3px;
+            background-color: var(--secondary-color);
+        }
+        
+        .footer-column p {
+            margin-bottom: 15px;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.95rem;
+        }
+        
+        .footer-column ul {
+            list-style: none;
+        }
+        
+        .footer-column ul li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-column ul li a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+        }
+        
+        .footer-column ul li a i {
+            margin-right: 8px;
+            font-size: 0.8rem;
+        }
+        
+        .footer-column ul li a:hover {
+            color: white;
+            transform: translateX(5px);
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+            border-radius: 50%;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+        
+        .social-links a:hover {
+            background-color: var(--secondary-color);
+            transform: translateY(-3px);
+        }
+        
+        .footer-bottom {
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        /* Responsive */
+        @media (max-width: 992px) {
+            .posts-grid {
+                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            }
+            
+            .blog-header h1 {
+                font-size: 2.2rem;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .blog-filters {
+                flex-direction: column;
+            }
+            
+            .search-box {
+                width: 100%;
+                margin-right: 0;
+                margin-bottom: 20px;
+            }
+            
+            .filter-options {
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            .posts-grid {
+                grid-template-columns: repeat(auto-fill, minmax(100%, 1fr));
+            }
+            
+            .pagination-link {
+                width: 35px;
+                height: 35px;
+            }
+            
+            .blog-header {
+                padding: 40px 20px;
+            }
+            
+            .blog-header h1 {
+                font-size: 1.8rem;
+            }
+            
+            .blog-header p {
+                font-size: 1rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .post-meta {
+                flex-wrap: wrap;
+                gap: 10px;
+            }
+            
+            .post-meta span {
+                font-size: 0.8rem;
+            }
+            
+            .filter-options {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 10px;
+            }
+            
+            .pagination {
+                gap: 3px;
+            }
+            
+            .pagination-link {
+                width: 30px;
+                height: 30px;
+                font-size: 0.8rem;
+            }
+        }
+        
+        /* Animaciones */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .post-card {
+            animation: fadeIn 0.5s ease forwards;
+        }
+        
+        .categoria-icono {
+            width: 24px;
+            height: 24px;
+            object-fit: cover;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="main-header">
+        <div class="header-container">
+            <div class="logo-container">
+                <a href="../index.php">
+                    <img src="../assets/logo.png" class="logo" alt="Peace in Progress">
+                </a>
+            </div>
+            
+            <nav class="main-nav">
+                <ul class="nav-menu">
+                    <li><a href="about.php">Sobre Nosotros</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle">Categorías <i class="fas fa-chevron-down"></i></a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                        <a href="categoria.php?slug=corrupcion-y-transparencia">
+                                            <img src="../assets/categorias/6829f77212a92_categoria_16.png" alt="Corrupción y Transparencia" class="categoria-icono">
+                                            Corrupción y Transparencia</a></li><li>
+                                        <a href="categoria.php?slug=igualdad-y-diversidad">
+                                            <img src="../assets/categorias/6829f79e47e7e_categoria_14.png" alt="Igualdad y Diversidad" class="categoria-icono">
+                                            Igualdad y Diversidad</a></li><li>
+                                        <a href="categoria.php?slug=justicia-y-derechos-humanos">
+                                            <img src="../assets/categorias/ICONOJUSTICIA.png" alt="Justicia y Derechos Humanos" class="categoria-icono">
+                                            Justicia y Derechos Humanos</a></li><li>
+                                        <a href="categoria.php?slug=participacion-ciudadana">
+                                            <img src="../assets/categorias/6829f77ccc4ca_categoria_15.png" alt="Participación Ciudadana" class="categoria-icono">
+                                            Participación Ciudadana</a></li><li>
+                                        <a href="categoria.php?slug=paz-y-conflictos">
+                                            <img src="../assets/categorias/ICONOPAZ.png" alt="Paz y Conflictos" class="categoria-icono">
+                                            Paz y Conflictos (3)</a></li><li>
+                                        <a href="categoria.php?slug=politica-y-gobernanza">
+                                            <img src="../assets/categorias/6829f78e14f1d_categoria_17.png" alt="Política y Gobernanza" class="categoria-icono">
+                                            Política y Gobernanza (2)</a></li>                        </ul>
+                    </li>
+                    <li><a href="blog.php" class="active">Blog</a></li>
+                    <li><a href="contact.php">Contacto</a></li>
+                </ul>
+            </nav>
+            
+            <div class="profile-section">
+                <a href="../admin/usuario.php" class="login-btn">Iniciar Sesión</a>            </div>
+            
+            <button class="mobile-menu-toggle">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </header>
+
+    <div class="blog-header">
+        <h1>Nuestro Blog</h1>
+        <p>Explora todos nuestros artículos sobre paz, cooperación internacional y desarrollo sostenible</p>
+    </div>
+
+    <div class="container">
+        <div class="blog-filters">
+            <form method="GET" action="blog.php" class="search-box" id="searchForm">
+                <input type="text" name="busqueda" placeholder="Buscar artículos..." value="">
+                <button type="submit"><i class="fas fa-search"></i></button>
+                
+                                
+                                <input type="hidden" name="orden" value="populares">
+                            </form>
+            
+            <div class="filter-options">
+                <div class="category-filter">
+                    <select name="categoria" id="categoriaSelect">
+                        <option value="0" selected>Todas las Categorías</option>
+                                                    <option value="16" 
+                                >
+                                Corrupción y Transparencia (0)                            </option>
+                                                    <option value="14" 
+                                >
+                                Igualdad y Diversidad (0)                            </option>
+                                                    <option value="13" 
+                                >
+                                Justicia y Derechos Humanos (0)                            </option>
+                                                    <option value="15" 
+                                >
+                                Participación Ciudadana (0)                            </option>
+                                                    <option value="10" 
+                                >
+                                Paz y Conflictos (3)                            </option>
+                                                    <option value="17" 
+                                >
+                                Política y Gobernanza (2)                            </option>
+                                            </select>
+                </div>
+                
+                <div class="order-filter">
+                    <select name="orden" id="ordenSelect">
+                        <option value="recientes" >Más recientes</option>
+                        <option value="populares" selected>Más populares</option>
+                        <option value="antiguos" >Más antiguos</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        
+                
+        <div class="posts-grid">
+                        <div class="post-card">
+                <a href="post.php?id=12" class="post-image">
+                    <img src="../assets/682803ee60788.webp" 
+                         alt="Presidenta de México dialoga con primer ministro de Canadá"
+                         onerror="this.src='../assets/image-placeholder.png';">
+                    <div class="category-badge">Política y Gobernanza</div>
+                </a>
+                <div class="post-content">
+                    <div class="post-meta">
+                        <span><i class="far fa-calendar"></i> 17 de May de 2025</span>
+                        <span><i class="far fa-eye"></i> 0</span>
+                        <span><i class="far fa-heart"></i> 0</span>
+                    </div>
+                    <h3><a href="post.php?id=12">Presidenta de México dialoga con primer ministro de Canadá</a></h3>
+                    <p>La presidenta Claudia Sheinbaum, y el primer ministro de Canadá, Mark Carney, sostuvieron un diálogo estratégico sobr...</p>
+                    <div class="post-footer">
+                        <a href="post.php?id=12" class="read-more">Leer más <i class="fas fa-arrow-right"></i></a>
+                        <span class="author">Christopher Eugenio Nieves Martínez</span>
+                    </div>
+                </div>
+            </div>
+                        <div class="post-card">
+                <a href="post.php?id=11" class="post-image">
+                    <img src="../assets/682803a73d0db.jpg" 
+                         alt="Durango alcanza primer lugar nacional en seguridad; registra cero homicidios dolosos en abril"
+                         onerror="this.src='../assets/image-placeholder.png';">
+                    <div class="category-badge">Política y Gobernanza</div>
+                </a>
+                <div class="post-content">
+                    <div class="post-meta">
+                        <span><i class="far fa-calendar"></i> 17 de May de 2025</span>
+                        <span><i class="far fa-eye"></i> 0</span>
+                        <span><i class="far fa-heart"></i> 0</span>
+                    </div>
+                    <h3><a href="post.php?id=11">Durango alcanza primer lugar nacional en seguridad; registra cero homicidios dolosos en abril</a></h3>
+                    <p>Durango alcanza primer lugar nacional en seguridad; registra cero homicidios dolosos en abril.</p>
+                    <div class="post-footer">
+                        <a href="post.php?id=11" class="read-more">Leer más <i class="fas fa-arrow-right"></i></a>
+                        <span class="author">Christopher Eugenio Nieves Martínez</span>
+                    </div>
+                </div>
+            </div>
+                        <div class="post-card">
+                <a href="post.php?id=10" class="post-image">
+                    <img src="../assets/6828037563cfa.jfif" 
+                         alt="Durango se posiciona entre los tres estados más pacíficos del país, según el Índice de Paz México 2025"
+                         onerror="this.src='../assets/image-placeholder.png';">
+                    <div class="category-badge">Paz y Conflictos</div>
+                </a>
+                <div class="post-content">
+                    <div class="post-meta">
+                        <span><i class="far fa-calendar"></i> 17 de May de 2025</span>
+                        <span><i class="far fa-eye"></i> 0</span>
+                        <span><i class="far fa-heart"></i> 1</span>
+                    </div>
+                    <h3><a href="post.php?id=10">Durango se posiciona entre los tres estados más pacíficos del país, según el Índice de Paz México 2025</a></h3>
+                    <p>Durango se distingue por su baja incidencia de violencia y se sitúa en el tercer lugar a nivel nacional, superado únic...</p>
+                    <div class="post-footer">
+                        <a href="post.php?id=10" class="read-more">Leer más <i class="fas fa-arrow-right"></i></a>
+                        <span class="author">Christopher Eugenio Nieves Martínez</span>
+                    </div>
+                </div>
+            </div>
+                        <div class="post-card">
+                <a href="post.php?id=9" class="post-image">
+                    <img src="../assets/682802d37d178.jpg" 
+                         alt="Abogan por soluciones africanas a problemas de paz y seguridad"
+                         onerror="this.src='../assets/image-placeholder.png';">
+                    <div class="category-badge">Paz y Conflictos</div>
+                </a>
+                <div class="post-content">
+                    <div class="post-meta">
+                        <span><i class="far fa-calendar"></i> 17 de May de 2025</span>
+                        <span><i class="far fa-eye"></i> 0</span>
+                        <span><i class="far fa-heart"></i> 0</span>
+                    </div>
+                    <h3><a href="post.php?id=9">Abogan por soluciones africanas a problemas de paz y seguridad</a></h3>
+                    <p>El presidente de la UA dijo que colaborará mucho más estrechamente con el presidente Yoweri Musseveni en el caso de Su...</p>
+                    <div class="post-footer">
+                        <a href="post.php?id=9" class="read-more">Leer más <i class="fas fa-arrow-right"></i></a>
+                        <span class="author">Christopher Eugenio Nieves Martínez</span>
+                    </div>
+                </div>
+            </div>
+                        <div class="post-card">
+                <a href="post.php?id=8" class="post-image">
+                    <img src="../assets/6827f882d940b.webp" 
+                         alt="Trump asegura que no habrá avances sobre la guerra en Ucrania hasta que se reúna con Putin"
+                         onerror="this.src='../assets/image-placeholder.png';">
+                    <div class="category-badge">Paz y Conflictos</div>
+                </a>
+                <div class="post-content">
+                    <div class="post-meta">
+                        <span><i class="far fa-calendar"></i> 17 de May de 2025</span>
+                        <span><i class="far fa-eye"></i> 0</span>
+                        <span><i class="far fa-heart"></i> 0</span>
+                    </div>
+                    <h3><a href="post.php?id=8">Trump asegura que no habrá avances sobre la guerra en Ucrania hasta que se reúna con Putin</a></h3>
+                    <p>El presidente estadounidense Donald Trump, ha declarado que no se realizarán avances en las negociaciones entre Rusia y...</p>
+                    <div class="post-footer">
+                        <a href="post.php?id=8" class="read-more">Leer más <i class="fas fa-arrow-right"></i></a>
+                        <span class="author">Christopher Eugenio Nieves Martínez</span>
+                    </div>
+                </div>
+            </div>
+                    </div>
+        
+                        
+        <div class="category-chips">
+            <h3>Explorar por categoría</h3>
+            <div class="chips-container">
+                <a href="blog.php?orden=populares" 
+                   class="category-chip active">
+                    Todas
+                </a>
+                                    <a href="blog.php?categoria=16&orden=populares" 
+                       class="category-chip ">
+                        Corrupción y Transparencia                                                    (0)
+                                            </a>
+                                    <a href="blog.php?categoria=14&orden=populares" 
+                       class="category-chip ">
+                        Igualdad y Diversidad                                                    (0)
+                                            </a>
+                                    <a href="blog.php?categoria=13&orden=populares" 
+                       class="category-chip ">
+                        Justicia y Derechos Humanos                                                    (0)
+                                            </a>
+                                    <a href="blog.php?categoria=15&orden=populares" 
+                       class="category-chip ">
+                        Participación Ciudadana                                                    (0)
+                                            </a>
+                                    <a href="blog.php?categoria=10&orden=populares" 
+                       class="category-chip ">
+                        Paz y Conflictos                                                    (3)
+                                            </a>
+                                    <a href="blog.php?categoria=17&orden=populares" 
+                       class="category-chip ">
+                        Política y Gobernanza                                                    (2)
+                                            </a>
+                            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>Sobre Nosotros</h3>
+                    <p>Peace in Progress es una organización dedicada a promover la paz, el entendimiento intercultural y el desarrollo sostenible a través de investigación, educación y acción.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Enlaces Rápidos</h3>
+                    <ul>
+                        <li><a href="../index.php"><i class="fas fa-angle-right"></i> Inicio</a></li>
+                        <li><a href="about.php"><i class="fas fa-angle-right"></i> Sobre Nosotros</a></li>
+                        <li><a href="blog.php"><i class="fas fa-angle-right"></i> Blog</a></li>
+                        <li><a href="contact.php"><i class="fas fa-angle-right"></i> Contacto</a></li>
+                        <li><a href="../admin/usuario.php"><i class="fas fa-angle-right"></i> Iniciar Sesión</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Categorías</h3>
+                    <ul>
+                                                <li>
+                            <a href="blog.php?categoria=10">
+                                <i class="fas fa-angle-right"></i> Paz y Conflictos                            </a>
+                        </li>
+                                                <li>
+                            <a href="blog.php?categoria=17">
+                                <i class="fas fa-angle-right"></i> Política y Gobernanza                            </a>
+                        </li>
+                                            </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Contacto</h3>
+                    <p><i class="fas fa-map-marker-alt"></i> Universidad de Colima, Campus Villa de Álvarez</p>
+                    <p><i class="fas fa-phone"></i> +52 312 123 4567</p>
+                    <p><i class="fas fa-envelope"></i> info@peaceinprogress.org</p>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2025 Peace in Progress. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Manejar filtros de categoría y orden
+            const categoriaSelect = document.getElementById('categoriaSelect');
+            const ordenSelect = document.getElementById('ordenSelect');
+            const searchForm = document.getElementById('searchForm');
+            
+            if (categoriaSelect) {
+                categoriaSelect.addEventListener('change', function() {
+                    // Construcción directa de URL en lugar de manipular el DOM
+                    redirigirConFiltros();
+                });
+            }
+            
+            if (ordenSelect) {
+                ordenSelect.addEventListener('change', function() {
+                    // Construcción directa de URL en lugar de manipular el DOM
+                    redirigirConFiltros();
+                });
+            }
+            
+            // Nueva función simplificada que evita manipular el DOM
+            function redirigirConFiltros() {
+                const categoria = categoriaSelect ? categoriaSelect.value : '0';
+                const orden = ordenSelect ? ordenSelect.value : 'recientes';
+                const busqueda = document.querySelector('input[name="busqueda"]').value.trim();
+                
+                // Construir URL directamente
+                let url = 'blog.php';
+                let params = [];
+                
+                if (categoria !== '0') {
+                    params.push(`categoria=${categoria}`);
+                }
+                
+                if (busqueda) {
+                    params.push(`busqueda=${encodeURIComponent(busqueda)}`);
+                }
+                
+                if (orden !== 'recientes') {
+                    params.push(`orden=${orden}`);
+                }
+                
+                if (params.length > 0) {
+                    url += '?' + params.join('&');
+                }
+                
+                // Redirigir directamente
+                window.location.href = url;
+            }
+            
+            // Hacer que las tarjetas de posts tengan la misma altura en cada fila
+            function equalizeCardHeights() {
+                // Solo ejecutar en pantallas más grandes donde hay múltiples columnas
+                if (window.innerWidth >= 768) {
+                    const cards = document.querySelectorAll('.post-card');
+                    let maxHeight = 0;
+                    
+                    // Restablecer alturas
+                    cards.forEach(card => {
+                        card.style.height = 'auto';
+                        const height = card.offsetHeight;
+                        maxHeight = Math.max(maxHeight, height);
+                    });
+                    
+                    // Aplicar altura máxima
+                    cards.forEach(card => {
+                        card.style.height = maxHeight + 'px';
+                    });
+                } else {
+                    // En móvil, resetear alturas
+                    const cards = document.querySelectorAll('.post-card');
+                    cards.forEach(card => {
+                        card.style.height = 'auto';
+                    });
+                }
+            }
+            
+            // Ejecutar al cargar la página
+            equalizeCardHeights();
+            
+            // Ejecutar al cambiar el tamaño de la ventana
+            window.addEventListener('resize', equalizeCardHeights);
+        });
+    </script>
+    <script src="../views/js/nav-fix.js"></script>
+    <script src="../js/profile-menu.js"></script>
+</body>
+</html> 
