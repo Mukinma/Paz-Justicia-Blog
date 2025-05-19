@@ -1,32 +1,49 @@
 <!DOCTYPE html>
 <html lang="en">
+  <link rel="icon" href="../assets/minilogo.png" />
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Nueva Contraseña</title>
-    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-    <link rel="stylesheet" href="login_style.css">
-</head>
+    <link
+      href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="login_style.css" />
+  </head>
 
-<body>
-
+  <body>
     <div class="container">
-        <div class="signup-section">
-            <header>Nueva Contraseña</header>
-            <form action="/procesar-nueva-contrasena" method="POST" style="margin-top: 30px;">
-                <input type="hidden" name="token" value="{{token}}">
+      <div class="signup-section">
+        <header>Nueva Contraseña</header>
+        <form
+          action="/procesar-nueva-contrasena"
+          method="POST"
+          style="margin-top: 30px"
+        >
+          <input type="hidden" name="token" value="{{token}}" />
 
-                <input type="password" name="password" placeholder="Nueva contraseña" required>
-                <input type="password" name="confirm_password" placeholder="Confirmar contraseña" required>
-                <button type="submit" class="btn">Guardar contraseña</button>
-                <a href="index.html" style="text-align: center; margin-top: 10px;">Volver al inicio de sesión</a>
-            </form>
-        </div>
+          <input
+            type="password"
+            name="password"
+            placeholder="Nueva contraseña"
+            required
+          />
+          <input
+            type="password"
+            name="confirm_password"
+            placeholder="Confirmar contraseña"
+            required
+          />
+          <button type="submit" class="btn">Guardar contraseña</button>
+          <a href="../index.php" style="text-align: center; margin-top: 10px"
+            >Volver al inicio de sesión</a
+          >
+        </form>
+      </div>
     </div>
 
-    <img src="logo.png" alt="Logo" class="logo">
-
-</body>
-
+    <img src="logo.png" alt="Logo" class="logo" />
+  </body>
 </html>

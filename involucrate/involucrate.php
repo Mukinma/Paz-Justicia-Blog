@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+    <link rel="icon" href="assets/minilogo.png">
 
 <head>
     <meta charset="UTF-8" />
@@ -657,7 +658,7 @@
 <body>
 
     <header>
-        <img src="logo.png" class="logo" onclick="location.href='index.html'">
+        <img src="logo.png" class="logo" onclick="location.href='index.php'">
 
         <div class="search-bar">
             <input type="text" placeholder="Search...">
@@ -666,9 +667,9 @@
 
         <nav>
             <a href="../index.php">Home</a>
-            <a href="../views/contact.html">Contact</a>
-            <a href="../views/about.html">Info</a>
-            <a href="login/login.html" class="btn">Login</a>
+            <a href="../views/contact.php">Contact</a>
+            <a href="../views/about.php">Info</a>
+            <a href="../admin/usuario.php" class="btn">Login</a>
         </nav>
     </header>
 
@@ -842,8 +843,8 @@
                     <div class="information">
                         <p class="title-footer">Información</p>
                         <ul>
-                            <li><a href="#">Acerca de Nosotros</a></li>
-                            <li><a href="#">Contactános</a></li>
+                            <li><a href="../views/about.php">Acerca de Nosotros</a></li>
+                            <li><a href="../views/contact.php">Contactános</a></li>
                         </ul>
                     </div>
                 </div>

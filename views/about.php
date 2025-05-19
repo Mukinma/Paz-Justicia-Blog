@@ -122,24 +122,14 @@
                 <i class="fas fa-bars"></i>
             </button>
         </div>
-    </header>
 
-    <?php if (isset($_SESSION['error'])): ?>
-        <div class="error-message" id="errorMessage">
-            <?php 
-            echo $_SESSION['error'];
-            unset($_SESSION['error']);
-            ?>
-        </div>
-        <script>
-            setTimeout(() => {
-                const errorMessage = document.getElementById('errorMessage');
-                if (errorMessage) {
-                    errorMessage.remove();
-                }
-            }, 5000);
-        </script>
-    <?php endif; ?>
+        <nav>
+            <a href="../index.php">Home</a>
+            <a href="contact.php">Contact</a>
+            <a href="about.php">Info</a>
+            <a href="../admin/usuario.php" class="btn">Login</a>
+        </nav>
+    </header>
 
     <!-- Sección About Us -->
     <main>

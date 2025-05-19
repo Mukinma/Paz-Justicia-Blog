@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+  <link rel="icon" href="../assets/minilogo.png" />
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -31,7 +32,7 @@
             required
           />
           <button type="submit" class="btn">Enviar enlace</button>
-          <a href="index.html" style="text-align: center; margin-top: 10px"
+          <a href="../index.php" style="text-align: center; margin-top: 10px"
             >Volver al inicio de sesión</a
           >
         </form>

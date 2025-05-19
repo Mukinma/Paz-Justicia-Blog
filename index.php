@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 
+<link rel="icon" href="assets/minilogo.png">
+
+
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -9,6 +12,7 @@
         integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" 
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="views/css/style.css" />
+    <link rel="stylesheet" href="views/css/index_style.css">
     <link rel="stylesheet" href="views/css/noticias.css">
     <link rel="stylesheet" href="views/css/categorias.css">
     <link rel="stylesheet" href="views/css/nav-fix.css">
@@ -538,6 +542,7 @@
 
         </div>
         <div class="experience-image">
+            <img src="assets/imginvolucrate/formulario2.png" alt="Persona escribiendo experiencia">
             <img src="image/formulario2.png" alt="Persona escribiendo experiencia">
         </div>
     </section>
