@@ -1,10 +1,9 @@
 body {
     margin: 0;
-    padding: 0;
-    font-family: 'Poppins', sans-serif;
-    background-color: #a3c6dd;
+    font-family: 'Rubik', sans-serif;
+    background: linear-gradient(to bottom, #0a1e35, #82aed0);
+    padding-top: 100px;
 }
-
 
 header {
     width: 100%;
@@ -67,7 +66,7 @@ header nav {
     gap: 30px;
 }
 
-<<<<<<< HEAD
+
 .traductor {
     background: none;
     border: 2px solid #eee;
@@ -83,13 +82,29 @@ header nav {
 }
 
 
-=======
->>>>>>> 17f400250494cd8031d05bf44b731ee3be4130dd
+
 header nav a {
     color: #eee;
     text-decoration: none;
     font-weight: 500;
 }
+
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+}
+
+header .logo {
+    height: 50px;
+    cursor: pointer;
+    filter: brightness(1.2);
+    transition: transform 0.3s ease, filter 0.3s ease;
+}
+
 
 .contact-section {
     padding: 90px 80px;
@@ -102,6 +117,8 @@ header nav a {
     font-size: 36px;
     margin-bottom: 30px;
     letter-spacing: 2px;
+    position: relative;
+    bottom: 100px;
 }
 
 .contact-box {
@@ -144,6 +161,8 @@ header nav a {
     display: flex;
     align-items: center;
     gap: 15px;
+    position: relative;
+    transform: translate(15%, 0%);
 }
 
 .icon {
@@ -172,6 +191,8 @@ header nav a {
     display: flex;
     gap: 15px;
     margin-top: 10px;
+    position: relative;
+    justify-content: center;
 }
 
 .social {
@@ -237,4 +258,103 @@ textarea.glass-input {
     .form-row {
         flex-direction: column;
     }
+}
+
+@media (max-width: 480px) {
+
+    header .logo {
+    height: 30px;
+    cursor: pointer;
+    filter: brightness(1.2);
+    transition: transform 0.3s ease, filter 0.3s ease;
+    transform: translate(-35%, 0%);
+    }
+
+    header nav {
+    display: flex;
+    gap: 10px;
+    position: relative;
+    right: 17%;
+    }
+
+    .search-bar {
+    position: relative;
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    padding: 6px 8px;
+    border-radius: 20px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    right: 19%;
+    }
+
+    .contact-section h2 {
+    font-size: 36px;
+    margin-bottom: 20px;
+    letter-spacing: 2px;
+    position: relative;
+    bottom: 0px;
+    }
+
+    .contact-section {
+    padding: 5px 15px;
+    text-align: center;
+    background: linear-gradient(to bottom, #1d3a5c, #2d6b91);
+    color: white;
+    }
+
+    .info-block {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    position: relative;
+    transform: translate(5%, 0%);
+    }
+
+    .label {
+    font-weight: 600;
+    margin: 0;
+    position: relative;
+    bottom: 7px;
+    left: -20px;
+    }
+
+    .socials .icons {
+    display: flex;
+    gap: 15px;
+    margin-top: 10px;
+    position: relative;
+    transform: translate(-5%, -5%);
+    }
+
+    .glass-input {
+    padding: 12px;
+    border: none;
+    border-radius: 10px;
+    font-size: 14px;
+    background: rgba(255, 255, 255, 0.2);
+    color: #0a1e35;
+    width: 85%;
+    box-sizing: border-box;
+    backdrop-filter: blur(6px);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    position: relative;
+    right: 5px;
+    }
+
+    .right-panel button {
+        padding: 10px 25px;
+        background-color: #0a1e35;
+        color: white;
+        border: none;
+        border-radius: 10px;
+        font-weight: bold;
+        cursor: pointer;
+        box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.2);
+        width: 30%;
+        position: relative;
+        right: 145px;
+    }
+
 }

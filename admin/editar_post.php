@@ -3,6 +3,8 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
+session_start(); // Añadido para manejar sesiones
+
 require '../config/db.php';
 
 // Configuration for image uploads
@@ -13,6 +15,11 @@ if (!file_exists($uploadDir)) {
 $allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/jpg'];
 $maxFileSize = 2 * 1024 * 1024; // 2MB
 
+// Función para depuración
+function debug_log($message) {
+    error_log("[DEBUG] " . $message);
+}
+
 // Function for generating slug
 function generarSlug($titulo) {
     $slug = strtolower($titulo);
@@ -21,33 +28,90 @@ function generarSlug($titulo) {
     return $slug;
 }
 
-// Function for uploading image
+// Función para subir imágenes
 function subirImagen($file, $uploadDir, $allowedTypes, $maxFileSize) {
+    debug_log("Iniciando carga de imagen: " . $file['name']);
+    
+    // Verificar si hubo algún error en la carga
     if ($file['error'] !== UPLOAD_ERR_OK) {
-        throw new Exception("Error uploading the file: " . $file['error']);
+        $errorMessages = [
+            UPLOAD_ERR_INI_SIZE => 'El archivo excede el tamaño máximo permitido por el servidor',
+            UPLOAD_ERR_FORM_SIZE => 'El archivo excede el tamaño máximo permitido por el formulario',
+            UPLOAD_ERR_PARTIAL => 'El archivo se cargó parcialmente',
+            UPLOAD_ERR_NO_FILE => 'No se seleccionó ningún archivo',
+            UPLOAD_ERR_NO_TMP_DIR => 'Falta la carpeta temporal del servidor',
+            UPLOAD_ERR_CANT_WRITE => 'Error al escribir el archivo en el disco',
+            UPLOAD_ERR_EXTENSION => 'Una extensión de PHP detuvo la carga'
+        ];
+        
+        $errorMessage = isset($errorMessages[$file['error']]) 
+                       ? $errorMessages[$file['error']] 
+                       : 'Error desconocido al cargar el archivo';
+        
+        debug_log("Error en carga: " . $errorMessage);
+        return [
+            'success' => false, 
+            'message' => $errorMessage
+        ];
     }
     
-    // Verify file type
-    $fileType = mime_content_type($file['tmp_name']);
-    if (!in_array($fileType, $allowedTypes)) {
-        throw new Exception("File type not allowed. Only JPEG, PNG and GIF are accepted.");
+    // Verificar tipo de archivo
+    if (!in_array($file['type'], $allowedTypes)) {
+        debug_log("Tipo de archivo no permitido: " . $file['type']);
+        return [
+            'success' => false, 
+            'message' => 'Tipo de archivo no permitido. Sólo se permiten: ' . implode(', ', $allowedTypes)
+        ];
     }
     
-    // Verify size
+    // Verificar tamaño de archivo
     if ($file['size'] > $maxFileSize) {
-        throw new Exception("The file is too large. Maximum size: 2MB.");
+        debug_log("Archivo excede el tamaño máximo: " . $file['size'] . " > " . $maxFileSize);
+        return [
+            'success' => false, 
+            'message' => 'El archivo excede el tamaño máximo permitido de ' . ($maxFileSize / (1024 * 1024)) . 'MB'
+        ];
     }
     
-    // Generate unique name
+    // Generar nombre único para el archivo
     $extension = pathinfo($file['name'], PATHINFO_EXTENSION);
-    $filename = uniqid() . '.' . $extension;
-    $destination = $uploadDir . $filename;
+    $nuevoNombre = uniqid() . '.' . $extension;
+    $rutaDestino = $uploadDir . $nuevoNombre;
     
-    if (!move_uploaded_file($file['tmp_name'], $destination)) {
-        throw new Exception("Could not save the uploaded file.");
+    // Asegurarse de que la ruta del directorio no contenga "../" al principio
+    $rutaDestino = ltrim($rutaDestino, '../');
+    
+    // Verificar que el directorio exista
+    $directorio = dirname($rutaDestino);
+    if (!file_exists($directorio)) {
+        debug_log("El directorio no existe, intentando crear: " . $directorio);
+        if (!mkdir($directorio, 0755, true)) {
+            debug_log("Error al crear directorio: " . $directorio);
+            return [
+                'success' => false, 
+                'message' => 'Error al crear el directorio para guardar la imagen'
+            ];
+        }
     }
     
-    return $destination; // Return full path
+    // Intentar mover el archivo
+    $rutaCompleta = __DIR__ . '/../' . $rutaDestino;
+    debug_log("Intentando mover archivo a: " . $rutaCompleta);
+    
+    if (!move_uploaded_file($file['tmp_name'], $rutaCompleta)) {
+        debug_log("Error al mover el archivo de " . $file['tmp_name'] . " a " . $rutaCompleta);
+        return [
+            'success' => false, 
+            'message' => 'Error al guardar el archivo en el servidor'
+        ];
+    }
+    
+    debug_log("Archivo subido exitosamente: " . $rutaDestino);
+    return [
+        'success' => true, 
+        'ruta' => $rutaDestino,
+        'message' => 'Archivo cargado exitosamente'
+    ];
 }
 
 // Endpoint to get post data for editing
@@ -73,149 +137,239 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['id'])) {
         }
         
         // Get image information if exists
-        $imagen = null;
-        if ($post['id_imagen_destacada']) {
-            $sqlImagen = "SELECT * FROM imagenes WHERE id_imagen = :id";
+        $imagen_destacada = null;
+        $imagen_background = null;
+        
+        if (isset($post['id_imagen_destacada']) && $post['id_imagen_destacada']) {
+            $sqlImagen = "SELECT id_imagen, ruta FROM imagenes WHERE id_imagen = :id";
             $stmtImagen = $pdo->prepare($sqlImagen);
             $stmtImagen->bindParam(':id', $post['id_imagen_destacada'], PDO::PARAM_INT);
             $stmtImagen->execute();
             $imagen = $stmtImagen->fetch(PDO::FETCH_ASSOC);
+            if ($imagen && isset($imagen['ruta'])) {
+                $imagen_destacada = $imagen['ruta'];
+                
+                // Verificar que la imagen exista físicamente
+                $rutaFisica = $imagen_destacada;
+                if (strpos($rutaFisica, '../') === 0) {
+                    $rutaFisica = substr($rutaFisica, 3);
+                }
+                
+                if (!file_exists($rutaFisica)) {
+                    debug_log("Imagen destacada no encontrada físicamente: " . $rutaFisica);
+                }
+            }
         }
         
-        $post['imagen'] = $imagen;
+        if (isset($post['id_imagen_background']) && $post['id_imagen_background']) {
+            $sqlBackground = "SELECT id_imagen, ruta FROM imagenes WHERE id_imagen = :id";
+            $stmtBackground = $pdo->prepare($sqlBackground);
+            $stmtBackground->bindParam(':id', $post['id_imagen_background'], PDO::PARAM_INT);
+            $stmtBackground->execute();
+            $background = $stmtBackground->fetch(PDO::FETCH_ASSOC);
+            if ($background && isset($background['ruta'])) {
+                $imagen_background = $background['ruta'];
+                
+                // Verificar que la imagen exista físicamente
+                $rutaFisica = $imagen_background;
+                if (strpos($rutaFisica, '../') === 0) {
+                    $rutaFisica = substr($rutaFisica, 3);
+                }
+                
+                if (!file_exists($rutaFisica)) {
+                    debug_log("Imagen de fondo no encontrada físicamente: " . $rutaFisica);
+                }
+            }
+        }
         
-        echo json_encode($post);
+        // Añadir información sobre la URL base para construir rutas absolutas
+        $server_protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https://' : 'http://';
+        $server_host = $_SERVER['HTTP_HOST'];
+        $base_url = $server_protocol . $server_host;
+        
+        // Create the response structure that matches what the frontend expects
+        $response = [
+            'post' => [
+                'id_post' => $post['id_post'],
+                'titulo' => $post['titulo'],
+                'resumen' => $post['resumen'],
+                'contenido' => $post['contenido'],
+                'id_categoria' => $post['id_categoria'],
+                'imagen_destacada' => $imagen_destacada,
+                'id_imagen_destacada' => $post['id_imagen_destacada'],
+                'imagen_background' => $imagen_background,
+                'id_imagen_background' => $post['id_imagen_background'],
+                'base_url' => $base_url
+            ]
+        ];
+        
+        // Enviar respuesta con cabeceras para debug
+        header('Content-Type: application/json');
+        echo json_encode($response);
         exit();
     } catch (PDOException $e) {
+        debug_log("Error al obtener los datos del post: " . $e->getMessage());
         http_response_code(500);
         echo json_encode(['error' => 'Database error: ' . $e->getMessage()]);
         exit();
     }
 }
 
-// Handle POST request to update post
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+// Procesar actualización de un post existente
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id'])) {
+    debug_log("Iniciando actualización del post ID: " . $_POST['id']);
+    
+    // Imprimir todos los datos recibidos para depuración
+    debug_log("Datos POST recibidos: " . json_encode($_POST));
+    
+    $post_id = intval($_POST['id']);
+    $titulo = trim($_POST['titulo']);
+    $descripcion = trim($_POST['descripcion']);
+    $contenido = $_POST['contenido'];
+    $categoria = intval($_POST['categoria']);
+    
+    // Registrar datos de archivos
+    if (isset($_FILES)) {
+        debug_log("Archivos recibidos: " . json_encode($_FILES));
+    }
+    
+    // Generar slug
+    $slug = generarSlug($titulo);
+    debug_log("Slug generado: " . $slug);
+    
     try {
-        // Collect and validate form data
-        $id = intval($_POST['id']);
-        $titulo = trim($_POST['titulo']);
-        $descripcion = trim($_POST['descripcion']);
-        $contenido = trim($_POST['contenido']);
-        $id_categoria = intval($_POST['categoria']);
-        $estado = $_POST['estado'];
-        $id_usuario = 1; // Assume admin with ID 1
+        // Obtener los IDs de las imágenes actuales para preservarlos en caso de que no se suban nuevas imágenes
+        $stmtGetImagenes = $pdo->prepare("SELECT id_imagen_destacada, id_imagen_background FROM posts WHERE id_post = ?");
+        $stmtGetImagenes->execute([$post_id]);
+        $imagenes_actuales = $stmtGetImagenes->fetch(PDO::FETCH_ASSOC);
         
-        // Basic validations
-        if (empty($titulo) || strlen($titulo) > 255) {
-            throw new Exception("Title is required and must not exceed 255 characters");
+        $id_imagen_destacada = $imagenes_actuales['id_imagen_destacada'];  // ID actual por defecto
+        $id_imagen_background = $imagenes_actuales['id_imagen_background']; // ID actual por defecto
+        
+        // Si se enviaron campos con los IDs actuales de las imágenes, guardarlos
+        if (isset($_POST['current_image_id']) && !empty($_POST['current_image_id'])) {
+            $id_imagen_destacada = $_POST['current_image_id'];
+            debug_log("Usando ID de imagen destacada existente: $id_imagen_destacada");
         }
         
-        if (empty($contenido)) {
-            throw new Exception("Content is required");
+        if (isset($_POST['current_background_id']) && !empty($_POST['current_background_id'])) {
+            $id_imagen_background = $_POST['current_background_id'];
+            debug_log("Usando ID de imagen de fondo existente: $id_imagen_background");
         }
         
-        if ($id_categoria <= 0) {
-            throw new Exception("You must select a valid category");
-        }
-        
-        // Get current post data to check if slug needs to be updated
-        $sqlGetPost = "SELECT titulo FROM posts WHERE id_post = :id";
-        $stmtGetPost = $pdo->prepare($sqlGetPost);
-        $stmtGetPost->bindParam(':id', $id, PDO::PARAM_INT);
-        $stmtGetPost->execute();
-        $currentPost = $stmtGetPost->fetch(PDO::FETCH_ASSOC);
-        
-        // Update slug if title changed
-        $slug = null;
-        if ($currentPost && $currentPost['titulo'] !== $titulo) {
-            $slug = generarSlug($titulo);
+        // Procesamiento de la nueva imagen destacada (si se subió)
+        if (isset($_FILES['imagen_ilustrativa']) && $_FILES['imagen_ilustrativa']['error'] !== UPLOAD_ERR_NO_FILE) {
+            debug_log("Procesando nueva imagen destacada");
+            $resultado_subida = subirImagen($_FILES['imagen_ilustrativa'], $uploadDir, $allowedTypes, $maxFileSize);
             
-            // Verify if slug already exists
-            $sqlVerifySlug = "SELECT COUNT(*) FROM posts WHERE slug = :slug AND id_post != :id";
-            $stmtVerify = $pdo->prepare($sqlVerifySlug);
-            $stmtVerify->execute([
-                ':slug' => $slug,
-                ':id' => $id
-            ]);
-            
-            if ($stmtVerify->fetchColumn() > 0) {
-                $slug = $slug . '-' . uniqid();
+            if ($resultado_subida['success']) {
+                // Insertar en la tabla de imágenes y obtener el ID
+                $stmt = $pdo->prepare("INSERT INTO imagenes (titulo, ruta, alt_text, fecha_subida) VALUES (?, ?, ?, NOW())");
+                $stmt->execute([$_POST['titulo'], $resultado_subida['ruta'], $_POST['titulo']]);
+                $id_imagen_destacada = $pdo->lastInsertId();
+                debug_log("Nueva imagen destacada subida, ID: $id_imagen_destacada, Ruta: " . $resultado_subida['ruta']);
+            } else {
+                debug_log("Error al subir imagen destacada: " . $resultado_subida['message']);
+                // No cambiar el ID, mantener el actual
             }
         }
         
-        // Process image if uploaded
-        $id_imagen_destacada = null;
-        if (!empty($_FILES['imagen']['name'])) {
-            $imagenPath = subirImagen($_FILES['imagen'], $uploadDir, $allowedTypes, $maxFileSize);
+        // Procesamiento de la nueva imagen de fondo (si se subió)
+        if (isset($_FILES['imagen_background']) && $_FILES['imagen_background']['error'] !== UPLOAD_ERR_NO_FILE) {
+            debug_log("Procesando nueva imagen de fondo");
+            $resultado_subida = subirImagen($_FILES['imagen_background'], $uploadDir, $allowedTypes, $maxFileSize);
             
-            // Insert image in database
-            $sqlImagen = "INSERT INTO imagenes (ruta, titulo, alt_text, id_usuario) 
-                         VALUES (:ruta, :titulo, :alt_text, :id_usuario)";
-            
-            $stmtImagen = $pdo->prepare($sqlImagen);
-            $tituloImagen = "Featured image for: " . substr($titulo, 0, 50);
-            $altText = "Illustrative image for post: " . substr($titulo, 0, 100);
-            
-            $stmtImagen->execute([
-                ':ruta' => $imagenPath,
-                ':titulo' => $tituloImagen,
-                ':alt_text' => $altText,
-                ':id_usuario' => $id_usuario
-            ]);
-            
-            $id_imagen_destacada = $pdo->lastInsertId();
-        } else if (isset($_POST['current_image_id'])) {
-            // Keep current image
-            $id_imagen_destacada = $_POST['current_image_id'];
+            if ($resultado_subida['success']) {
+                // Insertar en la tabla de imágenes y obtener el ID
+                $stmt = $pdo->prepare("INSERT INTO imagenes (titulo, ruta, alt_text, fecha_subida) VALUES (?, ?, ?, NOW())");
+                $stmt->execute([$_POST['titulo'] . ' (fondo)', $resultado_subida['ruta'], $_POST['titulo'] . ' fondo']);
+                $id_imagen_background = $pdo->lastInsertId();
+                debug_log("Nueva imagen de fondo subida, ID: $id_imagen_background, Ruta: " . $resultado_subida['ruta']);
+            } else {
+                debug_log("Error al subir imagen de fondo: " . $resultado_subida['message']);
+                // No cambiar el ID, mantener el actual
+            }
         }
         
-        // Prepare SQL query to update post
+        // Actualizar el post
         $sql = "UPDATE posts SET 
-                titulo = :titulo,
-                " . ($slug ? "slug = :slug," : "") . "
-                resumen = :resumen,
-                contenido = :contenido,
+                titulo = :titulo, 
+                slug = :slug, 
+                resumen = :resumen, 
+                contenido = :contenido, 
                 id_categoria = :id_categoria,
-                " . ($id_imagen_destacada ? "id_imagen_destacada = :id_imagen_destacada," : "") . "
-                estado = :estado,
+                id_imagen_destacada = :id_imagen_destacada,
+                id_imagen_background = :id_imagen_background,
                 fecha_actualizacion = NOW()
-                WHERE id_post = :id";
-        
+                WHERE id_post = :id_post";
+                
+        debug_log("Ejecutando SQL de actualización: " . $sql);
+        debug_log("Parámetros: " . json_encode([
+            'titulo' => $titulo,
+            'slug' => $slug,
+            'resumen' => $descripcion,
+            'contenido' => substr($contenido, 0, 50) . '...',
+            'id_categoria' => $categoria,
+            'id_imagen_destacada' => $id_imagen_destacada,
+            'id_imagen_background' => $id_imagen_background,
+            'id_post' => $post_id
+        ]));
+                
         $stmt = $pdo->prepare($sql);
+        $resultado = $stmt->execute([
+            ':titulo' => $titulo,
+            ':slug' => $slug,
+            ':resumen' => $descripcion,
+            ':contenido' => $contenido,
+            ':id_categoria' => $categoria,
+            ':id_imagen_destacada' => $id_imagen_destacada,
+            ':id_imagen_background' => $id_imagen_background,
+            ':id_post' => $post_id
+        ]);
         
-        // Bind parameters
-        $stmt->bindParam(':titulo', $titulo, PDO::PARAM_STR);
-        if ($slug) {
-            $stmt->bindParam(':slug', $slug, PDO::PARAM_STR);
-        }
-        $stmt->bindParam(':resumen', $descripcion, PDO::PARAM_STR);
-        $stmt->bindParam(':contenido', $contenido, PDO::PARAM_STR);
-        $stmt->bindParam(':id_categoria', $id_categoria, PDO::PARAM_INT);
-        if ($id_imagen_destacada) {
-            $stmt->bindParam(':id_imagen_destacada', $id_imagen_destacada, PDO::PARAM_INT);
-        }
-        $stmt->bindParam(':estado', $estado, PDO::PARAM_STR);
-        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
-        
-        // Execute query
-        if ($stmt->execute()) {
-            // Redirect with success message
-            header('Location: adminControl.php?success=2');
-            exit();
-        } else {
-            throw new Exception("Error updating the post in the database");
+        if (!$resultado) {
+            debug_log("Error al ejecutar la actualización: " . implode(", ", $stmt->errorInfo()));
+            throw new Exception("No se pudo actualizar el post en la base de datos: " . implode(", ", $stmt->errorInfo()));
         }
         
+        // Verificar filas afectadas
+        $filasAfectadas = $stmt->rowCount();
+        debug_log("Filas afectadas por la actualización: $filasAfectadas");
+        
+        if ($filasAfectadas === 0) {
+            debug_log("Advertencia: La consulta se ejecutó correctamente pero no se modificaron filas. Esto puede indicar que no hubo cambios en los datos o que el post no existe.");
+            // Vamos a hacer una comprobación adicional para confirmar que el post existe
+            $check_post = $pdo->prepare("SELECT id_post FROM posts WHERE id_post = ?");
+            $check_post->execute([$post_id]);
+            if (!$check_post->fetch()) {
+                throw new Exception("No se encontró el post con ID $post_id");
+            }
+        }
+        
+        // Registrar los valores finales para depuración
+        debug_log("Valores finales de imágenes - Destacada: $id_imagen_destacada, Fondo: $id_imagen_background");
+        
+        // Confirmar transacción
+        debug_log("Confirmando transacción");
+        $pdo->commit();
+        
+        // Redirigir de vuelta al panel de control
+        $_SESSION['success'] = "El artículo se ha actualizado correctamente.";
+        debug_log("Operación completada con éxito. Redirigiendo a adminControl.php");
+        header('Location: adminControl.php');
+        exit();
     } catch (Exception $e) {
-        // Handle errors
-        error_log("Error updating post: " . $e->getMessage());
-        
-        // Redirect with error message
-        header('Location: adminControl.php?error=' . urlencode($e->getMessage()));
+        // Revertir cambios en caso de error
+        debug_log("Error en la transacción: " . $e->getMessage());
+        $pdo->rollBack();
+        debug_log("Transacción revertida");
+        $_SESSION['error'] = "Error al actualizar el artículo: " . $e->getMessage();
+        header('Location: adminControl.php');
         exit();
     }
 } else if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
     // If not GET or POST, redirect
+    debug_log("Método no permitido: " . $_SERVER['REQUEST_METHOD']);
     header('Location: adminControl.php');
     exit();
 }

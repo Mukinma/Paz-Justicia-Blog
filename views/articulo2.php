@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="es">
+    <link rel="icon" href="../assets/minilogo.png">
+
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Artículo - Marcha de Paz</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+        integrity="..." crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #35688e;
+            color: #fff;
+        }
+
+        header {
+            width: 100%;
+            height: 60px;
+            padding: 40px;
+            box-sizing: border-box;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(8px);
+        }
+
+        header .logo {
+            height: 40px;
+            cursor: pointer;
+        }
+
+        .search-bar {
+            position: relative;
+            flex-grow: 1;
+            max-width: 600px;
+            margin-left: 30px;
+            display: flex;
+            align-items: center;
+            padding: 6px 12px;
+            border-radius: 20px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .search-bar input {
+            width: 100%;
+            color: #eee;
+            padding: 6px 36px 6px 12px;
+            border: none;
+            outline: none;
+            font-size: 14px;
+            background-color: transparent;
+            font-weight: 400;
+        }
+
+        .search-bar .search-icon {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            pointer-events: none;
+            font-size: 16px;
+            color: #555;
+        }
+
+        header nav {
+            display: flex;
+            gap: 30px;
+        }
+
+        header nav a {
+            color: #eee;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        /* Imagen y título del artículo */
+        .article-header {
+            width: 100%;
+            height: 600px;
+            background: url('image/img2.jpg') no-repeat center center / cover;
+            position: relative;
+        }
+
+        .article-header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(4px);
+        }
+
+        .article-header h1 {
+            position: absolute;
+            top: 150px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 3.2em;
+            color: white;
+            z-index: 1;
+            padding: 0 20px;
+            text-align: center;
+        }
+
+        .article-header h2 {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            font-size: 1em;
+            color: white;
+            z-index: 1;
+            text-align: right;
+        }
+
+
+        .container {
+            display: flex;
+            max-width: 1400px;
+            gap: 40px;
+            padding: 0 20px;
+            padding-left: 0;
+            margin-left: 0;
+        }
+
+        .main-content {
+            position: relative;
+            top: -200px;
+            flex: 9;
+            background: #35688e;
+            padding: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            color: #fff;
+            z-index: 2;
+        }
+
+        .main-content h2 {
+            font-size: 2em;
+            margin-bottom: 20px;
+            color: #b0d1ff;
+        }
+
+        .main-content p {
+            font-size: 1.1em;
+            line-height: 1.6;
+            color: #e0e0e0;
+            margin-bottom: 20px;
+            text-align: justify;
+        }
+
+        .sidebar {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            padding-top: 20px;
+        }
+
+        .card {
+            background: #82aed0;
+            border-radius: 10px;
+            padding: 10px;
+            font-size: 1em;
+            color: #333;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .card h3 {
+            font-size: 1em;
+            margin-bottom: 5px;
+        }
+
+        .card p {
+            font-size: 0.95em;
+        }
+
+        .carousel {
+            overflow-x: auto;
+            display: flex;
+            gap: 10px;
+            scroll-snap-type: x mandatory;
+            padding: 5px;
+        }
+
+        .carousel::-webkit-scrollbar {
+            display: none;
+        }
+
+        .carousel-card {
+            min-width: 100px;
+            background: #82aed0;
+            color: #333;
+            border-radius: 8px;
+            padding: 8px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
+            scroll-snap-align: start;
+            flex-shrink: 0;
+            font-size: 0.7em;
+        }
+
+        .carousel-card h4 {
+            font-size: 0.8em;
+            margin-bottom: 4px;
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 10px;
+            padding: 15px;
+        }
+
+        .social-icons a {
+            text-decoration: none;
+            background: #82aed0;
+            border-radius: 50%;
+            width: 70px;
+            height: 70px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #333333;
+            transition: background 0.3s;
+        }
+
+        .social-icons a:hover {
+            background: #35688e;
+            color: #fff;
+        }
+
+        a.back {
+            display: inline-block;
+            margin-top: 30px;
+            color: #82aed0;
+            text-decoration: none;
+            font-weight: bold;
+            border-bottom: 2px solid transparent;
+            transition: border-color 0.3s;
+        }
+
+        a.back:hover {
+            border-color: #82aed0;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                flex-direction: row;
+                justify-content: space-between;
+                flex-wrap: wrap;
+            }
+
+            .card,
+            .social-icons {
+                flex: 1 1 100%;
+            }
+        }
+
+        .footer {
+            background-color: #024365;
+        }
+
+        .container-footer {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            padding: 2rem;
+        }
+
+        .menu-footer {
+            display: flex;
+            justify-items: space-between 300px;
+            grid-template-columns: repeat(3, 1fr) 30rem;
+            gap: 2rem;
+
+        }
+
+        .title-footer {
+            font-weight: 600;
+            font-size: 1.6rem;
+            text-transform: uppercase;
+        }
+
+        .contact-info,
+        .information,
+        .my-account,
+        .newsletter {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .contact-info ul,
+        .information ul,
+        .my-account ul {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .contact-info ul li,
+        .information ul li,
+        .my-account ul li {
+            list-style: none;
+            color: #fff;
+            font-size: 1.4rem;
+            font-weight: 300;
+        }
+
+        .information ul li a,
+        .my-account ul li a {
+            text-decoration: none;
+            color: #fff;
+            font-weight: 300;
+        }
+
+        .information ul li a:hover,
+        .my-account ul li a:hover {
+            color: var(--dark-color);
+        }
+
+        .social-icons2 {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .social-icons2 span {
+            border-radius: 50%;
+            width: 3rem;
+            height: 3rem;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .social-icons2 span i {
+            color: #fff;
+            font-size: 1.2rem;
+        }
+
+        .facebook {
+            background-color: #3b5998;
+        }
+
+        .twitter {
+            background-color: #00acee;
+        }
+
+        .youtube {
+            background-color: #c4302b;
+        }
+
+        .pinterest {
+            background-color: #c8232c;
+        }
+
+        .instagram {
+            background: linear-gradient(#405de6,
+                    #833ab4,
+                    #c13584,
+                    #e1306c,
+                    #fd1d1d,
+                    #f56040,
+                    #fcaf45);
+        }
+
+        .content p {
+            font-size: 1.4rem;
+            color: #fff;
+            font-weight: 300;
+        }
+
+        .content input {
+            outline: none;
+            background: none;
+            border: none;
+            border-bottom: 2px solid #d2b495;
+            cursor: pointer;
+            padding: 0.5rem 0 1.2rem;
+            color: var(--dark-color);
+            display: block;
+            margin-bottom: 3rem;
+            margin-top: 2rem;
+            width: 100%;
+            font-family: inherit;
+        }
+
+        .content input::-webkit-input-placeholder {
+            color: #eee;
+        }
+
+        .content button {
+            border: none;
+            background-color: #000;
+            color: #fff;
+            text-transform: uppercase;
+            padding: 1rem 3rem;
+            border-radius: 2rem;
+            font-size: 1.4rem;
+            font-family: inherit;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .content button:hover {
+            background-color: var(--background-color);
+            color: var(--primary-color);
+        }
+
+        .copyright {
+            display: flex;
+            justify-content: space-between;
+            padding-top: 2rem;
+
+            border-top: 1px solid #d2b495;
+        }
+
+        .copyright p {
+            font-weight: 400;
+            font-size: 1.6rem;
+        }
+
+        .logo-footer {
+            display: flex;
+            align-items: right;
+            justify-content: right;
+
+        }
+
+        .logo-footer img {
+            max-width: 100%;
+            height: auto;
+            object-fit: contain;
+            align-items: 0px;
+        }
+
+        .container-container-container-footer {
+            display: flex;
+            justify-content: space-between;
+        }
+    </style>
+  </head>
+
+<body>
+
+    <header>
+        <img src="../assets/logo.png" class="logo" onclick="location.href='../index.php'">
+
+        <div class="search-bar">
+            <input type="text" placeholder="Search...">
+            <span class="search-icon">🔍</span>
+        </div>
+
+        <nav>
+            <a href="../index.php">Home</a>
+            <a href="contact.php">Contact</a>
+            <a href="about.php">Info</a>
+            <a href="../admin/usuario.php" class="btn">Login</a>
+        </nav>
+    </header>
+
+    <div class="article-header">
+        <h1>LA IGLESIA</h1>
+        <h2>Autor: Fatima Contreras</h2>
+    </div>
+
+    <div class="container">
+        <div class="main-content">
+            <h2>URGEN A CONSTRUIR LA PAZ ANTE OLA DE VIOLENCIA</h2>
+            <p>
+                En un contexto de creciente violencia que afecta de manera alarmante a los jóvenes de México, la Iglesia
+                Católica ha emitido un mensaje de solidaridad y acción, invitando a los agentes de pastoral de
+                adolescentes y jóvenes a unirse en la tarea urgente de construir la paz en el país. Este pronunciamiento
+                surge en respuesta al trágico asesinato de ocho jóvenes en la parroquia San José de Mendoza, Salamanca,
+                en el estado de Guanajuato, varios de los cuales eran miembros activos de la Pastoral Juvenil.
+                Ante este episodio, la Pastoral Juvenil Latinoamericana y Caribeña (PJ) adhiere a la oración con sus
+                familias y comunidades, clamando por la paz y la justicia. “Que su testimonio de fe y entrega -escribió
+                la PJ- siga iluminando nuestro caminar. En medio del dolor, seguimos creyendo en un mundo donde reine el
+                amor de Cristo”.
+                La Conferencia del Episcopado Mexicano (CEM), en un comunicado emitido con motivo de esta tragedia,
+                expresó su cercanía y solidaridad con las familias de las víctimas y con todas aquellas que, a lo largo
+                de la actual crisis de violencia, han perdido a un ser querido. La Iglesia, alzando su voz en este
+                difícil momento, ha mostrado una vez más su compromiso con la protección de los más vulnerables y la
+                promoción de la paz.
+            </p>
+
+            <p>Un llamado al diálogo y a la justicia
+                El comunicado no solo se limita a la solidaridad, sino que también hace un llamado a la acción. En un
+                esfuerzo conjunto, la CEM, la Conferencia de Superiores Mayores de Religiosos de México (CIRM) y los
+                Jesuitas han convocado a un Diálogo Nacional por la Paz. Este esfuerzo busca que la sociedad mexicana
+                asuma su responsabilidad en la construcción de un ambiente pacífico y seguro para todos.
+                Obispo de Irapuato: Seamos hijos del Dios que es Amor
+                El obispo de la diócesis de Irapuato (circunscripción a la que pertenece la parroquia en la que ocurrió
+                el crimen), Mons. Enrique Díaz Díaz, ha exigido una investigación exhaustiva sobre los hechos ocurridos
+                en Salamanca, subrayando la necesidad de justicia y de medidas preventivas para evitar que situaciones
+                tan dolorosas se repitan. La Iglesia también recordó que los adolescentes y jóvenes son los más
+                afectados por la violencia, instando a cuidar sus vidas y ofrecerles los medios para alejarlos de la
+                maldad que amenaza con atraparlos.
+                En efecto, Díaz Díaz aseguró que acompaña “con profundo amor de padre” a los familiares y amigos de las
+                víctimas, primero con su “oración cercana, que es la primera fuerza de los cristianos”. También presidió
+                la santa misa exequial de los jóvenes asesinados el miércoles 19 de marzo, en la solemnidad de San José.
+                Igualmente, se rezará el santo rosario a partir del jueves 20 a las 21:00 por Zoom, con la participación
+                de jóvenes y asesores de distintas parroquias de la diócesis.
+            </p>
+
+            <p>
+                Acciones para la promoción de la paz
+                Ante el impacto devastador de la violencia, la Iglesia ha propuesto una serie de acciones que involucran
+                a toda la comunidad en la promoción de la paz. Entre las actividades destacadas se incluyen: el domingo
+                23 de marzo, en todas las iglesias, se encenderán ocho velas en honor a los adolescentes y jóvenes
+                asesinados o desaparecidos. Los asistentes podrán escribir los nombres de las víctimas en tarjetas,
+                colocándolas junto a las velas como un símbolo de recuerdo y compromiso con la paz.
+                Asimismo, el sábado 29 de marzo a las 17 se llevará a cabo una movilización en las principales plazas de
+                pueblos y ciudades del país, llevando rosas y fotografías de los jóvenes fallecidos, sumándose a una
+                caravana por la paz que partirá desde San José de Mendoza.
+                Además, durante los viernes de Cuaresma se promoverá el rezo del viacrucis por la paz en diversas
+                localidades, pidiendo por las víctimas de la violencia y por el fin de la crisis de inseguridad en el
+                país.
+                A su vez, el Episcopado exhorta a los grupos juveniles y pastorales a vincularse con los equipos
+                estatales del Diálogo Nacional por la Paz, con el objetivo de diseñar proyectos locales y mantener un
+                diálogo constante con las autoridades para asegurar el seguimiento de los compromisos en materia de
+                pacificación.
+            </p>
+
+            <img src="../assets/img2.jpg" alt="Imagen ilustrativa" style="width: 100%; margin-top: 30px; margin-bottom: 30px;">
+
+            <a href="../index.php" class="back">← Volver al inicio</a>
+        </div>
+
+        <aside class="sidebar">
+            <div class="card">
+                <h3>Autor</h3>
+                <p>Resumen del autor y fecha de publicación.</p>
+            </div>
+
+            <div class="card">
+                <h3>Populares</h3>
+                <div class="carousel">
+                    <div class="carousel-card">
+                        <h4>Nota 1</h4>
+                        <p>Resumen 1.</p>
+                    </div>
+                    <div class="carousel-card">
+                        <h4>Nota 2</h4>
+                        <p>Resumen 2.</p>
+                    </div>
+                    <div class="carousel-card">
+                        <h4>Nota 3</h4>
+                        <p>Resumen 3.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>Recomendado</h3>
+                <p>Contenido útil o sugerido para el lector.</p>
+            </div>
+
+            <div class="social-icons">
+                <a href="#"><img src="https://img.icons8.com/ios-filled/20/facebook--v1.png" alt="Facebook" /></a>
+                <a href="#"><img src="https://img.icons8.com/ios-filled/20/linkedin.png" alt="LinkedIn" /></a>
+                <a href="#"><img src="https://img.icons8.com/ios-filled/20/twitterx.png" alt="X" /></a>
+                <a href="#"><img src="https://img.icons8.com/ios-filled/20/instagram-new.png" alt="Instagram" /></a>
+            </div>
+
+            <div class="card">
+                <h3>Comentarios</h3>
+                <form id="commentForm">
+                    <textarea id="commentInput" placeholder="Escribe tu comentario..." rows="3"
+                        style="width: 100%; padding: 5px; border-radius: 5px; border: none;"></textarea>
+                    <button type="submit"
+                        style="margin-top: 10px; padding: 6px 12px; background: #35688e; color: white; border: none; border-radius: 5px; cursor: pointer;">Publicar</button>
+                </form>
+                <div id="commentList" style="margin-top: 10px;"></div>
+            </div>
+
+            <script>
+                const form = document.getElementById('commentForm');
+                const input = document.getElementById('commentInput');
+                const list = document.getElementById('commentList');
+
+                form.addEventListener('submit', function (e) {
+                    e.preventDefault();
+                    const text = input.value.trim();
+                    if (text !== '') {
+                        const comment = document.createElement('div');
+                        comment.style.display = 'flex';
+                        comment.style.alignItems = 'center';
+                        comment.style.background = '#d0e3f1';
+                        comment.style.padding = '5px';
+                        comment.style.borderRadius = '5px';
+                        comment.style.marginBottom = '10px';
+
+                        // Imagen del usuario
+                        const img = document.createElement('img');
+                        img.src = 'Usuario.webp';
+                        img.alt = 'Usuario';
+                        img.style.width = '40px';
+                        img.style.height = '40px';
+                        img.style.borderRadius = '50%';
+                        img.style.marginRight = '10px';
+
+                        // Comentario de texto
+                        const commentText = document.createElement('p');
+                        commentText.textContent = text;
+                        commentText.style.margin = '0';
+
+                        // Agregar la imagen y el texto al comentario
+                        comment.appendChild(img);
+                        comment.appendChild(commentText);
+                        list.prepend(comment); // Agrega el comentario arriba
+                        input.value = '';
+                    }
+                });
+            </script>
+
+        </aside>
+    </div>
+
+    <footer class="footer">
+        <div class="container container-footer">
+            <div class="container-container-container-footer">
+                <div class="menu-footer">
+                    <div class="contact-info">
+                        <p class="title-footer">Información de Contacto</p>
+                        <ul>
+                            <li>Teléfono: 314-149-5596</li>
+                            <li>EmaiL: PeaceInProgress@gmail.com</li>
+                        </ul>
+                        <div class="social-icons2">
+                            <span class="facebook">
+                                <i class="fa-brands fa-facebook-f"></i>
+                            </span>
+                            <span class="twitter">
+                                <i class="fa-brands fa-twitter"></i>
+                            </span>
+                            <span class="instagram">
+                                <i class="fa-brands fa-instagram"></i>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="information">
+                        <p class="title-footer">Información</p>
+                        <ul>
+                            <li><a href="about.php">Acerca de Nosotros</a></li>
+                            <li><a href="contact.php">Contactános</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="logo-footer">
+                    <img src="../assets/logo.png" alt="Logo Peace In Progress">
+                </div>
+            </div>
+
+            <div class="copyright">
+                <p>
+                    PEACE IN PROGRESS &copy; 2025
+            </div>
+        </div>
+    </footer>
+
+</body>
+
+</html>

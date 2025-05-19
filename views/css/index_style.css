@@ -1,0 +1,135 @@
+header {
+    width: 100%;
+    height: 60px;
+    padding: 40px;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(8px);
+}
+
+header .logo {
+    height: 40px;
+    cursor: pointer;
+}
+
+.search-bar {
+    position: relative;
+    flex-grow: 1;
+    max-width: 500px;
+    margin-left: 30px;
+    display: flex;
+    align-items: center;
+    padding: 6px 12px;
+    border-radius: 20px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+.search-bar input {
+    width: 100%;
+    color: #eee;
+    padding: 6px 36px 6px 12px;
+    border: none;
+    outline: none;
+    font-size: 14px;
+    background-color: transparent;
+    font-weight: 400;
+}
+
+.search-bar .search-icon {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    font-size: 16px;
+    color: #555;
+}
+
+
+nav a {
+    color: white;
+    text-decoration: none;
+    font-size: 14px;
+    padding: 8px 12px;
+    border-radius: 4px;
+    transition: color 0.3s ease, background-color 0.3s ease;
+}
+nav a:hover {
+    color: #ccc;
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+}
+
+.traductor-select {
+    background-color: transparent;
+    color:#EEEEEE;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    font-family: 'Poppins';
+}
+
+.traductor-select:hover {
+    background-color: #444;
+    color: white;
+}
+
+.traductor-select:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.2);
+}
+
+
+header .logo {
+    height: 50px;
+    cursor: pointer;
+    filter: brightness(1.2);
+    transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+/*@media(max-width: 480px){
+    
+    .logo-footer img {
+    width: 165%;
+    height: 8%;
+    object-fit: contain;
+    align-items: flex-end;
+    position: relative;
+    transform: translate(15%, 77%);
+    }
+
+    .container-footer {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    padding: 1rem;
+    }
+
+    header .logo {
+    height: 30px;
+    cursor: pointer;
+    filter: brightness(1.2);
+    transition: transform 0.3s ease, filter 0.3s ease;
+    transform: translate(-18%);
+    }
+
+} */

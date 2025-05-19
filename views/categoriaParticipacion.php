@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+    <link rel="icon" href="../assets/minilogo.png">
 
 <head>
     <meta charset="UTF-8" />
